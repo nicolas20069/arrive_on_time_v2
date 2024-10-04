@@ -5,5 +5,5 @@ export const {
     DB_DATABASE = "arrive_on_time",
     PORT = 5000,
     NODE_ENV = 'development',
-    FRONTEND_URL = "http://localhost:4321",
+    FRONTEND_URL = "http://localhost:5173",
 } = process.env
