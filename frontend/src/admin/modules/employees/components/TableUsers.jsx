@@ -15,7 +15,7 @@ export function TableUsers({ users }) {
         showGridlines
         stripedRows
         paginator
-        rows={10}
+        rows={5}
         rowsPerPageOptions={[5, 10, 25, 50]}
         tableStyle={{ minWidth: "50rem" }}
       >
