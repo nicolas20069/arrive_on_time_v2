@@ -1,5 +1,5 @@
 import { UserModel } from "../models/user.js";
-import { validateUser } from "../schemas/users.js";
+import { validateUser, validateUserUpdate } from "../schemas/users.js";
 
 export class UserController {
   // Método para obtener todos los usuarios
@@ -53,7 +53,7 @@ export class UserController {
   // Método para actualizar un usuario siendo administrador
   static async update(req, res) {
     const { id } = req.params;
-    const result = validateUser(req.body);
+    const result = validateUserUpdate(req.body);
 
     if (!result.success) {
       return res.status(400).json({ error: JSON.parse(result.error.message) });

@@ -78,15 +78,12 @@ export class UserModel {
         correo,
         direccion,
         telefono,
-        contraseña,
         empresaId,
         rolId,
       } = input;
 
-      const passwordHash = await bycrypt.hash(contraseña, 10);
-
       const [result] = await pool.query(
-        "UPDATE users SET nombres = ?, apellidos = ?, edad = ?, cedula = ?, correo = ?, direccion = ?, telefono = ?, contraseña = ?, empresa_id = ?, rol_id = ? WHERE user_id = ?",
+        "UPDATE users SET nombres = ?, apellidos = ?, edad = ?, cedula = ?, correo = ?, direccion = ?, telefono = ?, empresa_id = ?, rol_id = ? WHERE user_id = ?",
         [
           nombres,
           apellidos,
@@ -95,7 +92,6 @@ export class UserModel {
           correo,
           direccion,
           telefono,
-          passwordHash,
           empresaId,
           rolId,
           id,

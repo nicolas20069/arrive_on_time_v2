@@ -9,11 +9,17 @@
   padding: 10px 10%;
 }
 
-.add-user-form {
+.add-user-form, .update-user-form {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 .label-form {

@@ -2,11 +2,14 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { useState } from "react";
+import { Toast } from "primereact/toast";
+import { useState, useRef } from "react";
 
 import { createUser } from "../api/users.js";
 
 export function AddUser({ visible, setVisible }) {
+  const toast = useRef(null);
+
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [correo, setCorreo] = useState("");
@@ -18,6 +21,33 @@ export function AddUser({ visible, setVisible }) {
   const [selectCompany, setSelectCompany] = useState(null);
   const [selectRol, setSelectRol] = useState(null);
 
+  const showSuccess = ({ detail }) => {
+    toast.current.show({
+      severity: "success",
+      summary: "Success",
+      detail,
+      life: 3000,
+    });
+  };
+
+  const showWarn = ({ detail }) => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Warning",
+      detail,
+      life: 3000,
+    });
+  };
+
+  const showError = ({ detail }) => {
+    toast.current.show({
+      severity: "error",
+      summary: "Error",
+      detail,
+      life: 3000,
+    });
+  };
+
   const companys = [{ id: 3, name: "Arrive on Time" }];
   const roles = [
     { id: 1, name: "Administrador" },
@@ -25,27 +55,55 @@ export function AddUser({ visible, setVisible }) {
   ];
 
   const handleCreateUser = async () => {
+    if (
+      !nombres ||
+      !apellidos ||
+      !correo ||
+      !edad ||
+      !cedula ||
+      !telefono ||
+      !contraseña ||
+      !selectCompany ||
+      !selectRol
+    ) {
+      showWarn({ detail: "Porfavor llena todos los campos" });
+      return;
+    }
+
     const parsedEdad = Number(edad);
     const parsedCedula = Number(cedula);
     const parsedTelefono = Number(telefono);
     const empresaId = Number(selectCompany.id);
     const rolId = Number(selectRol.id);
 
-    const user = await createUser({
-      nombres,
-      apellidos,
-      correo,
-      edad: parsedEdad,
-      cedula: parsedCedula,
-      direccion,
-      telefono: parsedTelefono,
-      contraseña,
-      empresaId,
-      rolId,
-      adminId: 1,
-    });
+    try {
+      const user = await createUser({
+        nombres,
+        apellidos,
+        correo,
+        edad: parsedEdad,
+        cedula: parsedCedula,
+        direccion,
+        telefono: parsedTelefono,
+        contraseña,
+        empresaId,
+        rolId,
+        adminId: 1,
+      });
 
-    console.log(user);
+      if (user) {
+        alert({ detail: "Usuario creado correctamente" });
+        setVisible(false);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    } catch (error) {
+      showError({
+        detail: "Error al crear usuario, porfavor revisa la informacion",
+      });
+    }
   };
 
   const footerContent = (
@@ -60,9 +118,10 @@ export function AddUser({ visible, setVisible }) {
       <Button
         label="Agregar Usuario"
         icon="pi pi-check"
+        type="submit"
+        form="add-user-form"
         onClick={() => {
           handleCreateUser();
-          setVisible(false);
         }}
         autoFocus
       />
@@ -71,6 +130,7 @@ export function AddUser({ visible, setVisible }) {
 
   return (
     <div className="card flex justify-content-center">
+      <Toast ref={toast} />
       <Dialog
         header="Agregar Nuevo Usuario"
         visible={visible}
@@ -82,13 +142,14 @@ export function AddUser({ visible, setVisible }) {
         }}
         footer={footerContent}
       >
-        <form className="add-user-form">
+        <form id="add-user-form" className="add-user-form">
           <label className="label-form" htmlFor="nombres">
             Nombres
             <InputText
               id="nombres"
               type="text"
               placeholder="Nombres"
+              required
               value={nombres}
               onChange={(e) => setNombres(e.target.value)}
             />
@@ -100,6 +161,7 @@ export function AddUser({ visible, setVisible }) {
               id="apellidos"
               type="text"
               placeholder="Apellidos"
+              required
               value={apellidos}
               onChange={(e) => setApellidos(e.target.value)}
             />
@@ -110,7 +172,9 @@ export function AddUser({ visible, setVisible }) {
             <InputText
               id="correo"
               type="email"
+              keyfilter="email"
               placeholder="Correo electronico"
+              required
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
             />
@@ -121,7 +185,9 @@ export function AddUser({ visible, setVisible }) {
             <InputText
               id="edad"
               type="number"
+              keyfilter="pnum"
               placeholder="Edad"
+              required
               value={edad}
               onChange={(e) => setEdad(e.target.value)}
             />
@@ -132,7 +198,9 @@ export function AddUser({ visible, setVisible }) {
             <InputText
               id="cedula"
               type="number"
+              keyfilter="pnum"
               placeholder="Cedula"
+              required
               value={cedula}
               onChange={(e) => setCedula(e.target.value)}
             />
@@ -154,7 +222,9 @@ export function AddUser({ visible, setVisible }) {
             <InputText
               id="telefono"
               type="text"
+              keyfilter="pnum"
               placeholder="Telefono"
+              required
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
             />
@@ -166,6 +236,7 @@ export function AddUser({ visible, setVisible }) {
               id="contraseña"
               type="password"
               placeholder="Contraseña"
+              required
               value={contraseña}
               onChange={(e) => setContraseña(e.target.value)}
             />
@@ -178,6 +249,7 @@ export function AddUser({ visible, setVisible }) {
             options={companys}
             optionLabel="name"
             placeholder="Seleccione una empresa"
+            required
           />
 
           <Dropdown
@@ -187,6 +259,7 @@ export function AddUser({ visible, setVisible }) {
             options={roles}
             optionLabel="name"
             placeholder="Seleccione un rol"
+            required
           />
         </form>
       </Dialog>

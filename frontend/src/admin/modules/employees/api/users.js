@@ -45,7 +45,10 @@ export async function createUser({
       adminId,
     }),
   });
-  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Error al crear usuario");
+  }
 
+  const data = await response.json();
   return data;
 }

@@ -30,9 +30,20 @@ export function TableUsers({ users }) {
         <Column field="edad" header="Edad"></Column>
         <Column field="direccion" header="Direccion"></Column>
         <Column field="telefono" header="Telefono"></Column>
-        <Column field="empresa_id" header="Empresa"></Column>
-        <Column field="rol_id" header="Rol"></Column>
-        <Column header="Acciones" body={TableActions}></Column>
+        <Column
+          header="Empresa"
+          body={(user) =>
+            user.empresa_id === 3 ? "Arrive On TIme" : user.empresa_id
+          }
+        ></Column>
+        <Column
+          header="Rol"
+          body={(user) => (user.rol_id === 1 ? "Administrador" : "Empleado")}
+        ></Column>
+        <Column
+          header="Acciones"
+          body={(user) => <TableActions user={user} />}
+        ></Column>
       </DataTable>
     </div>
   );
