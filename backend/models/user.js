@@ -41,6 +41,15 @@ export class UserModel {
         empresaId,
         rolId,
       } = input;
+
+      const [confirmUser] = await pool.query("SELECT * FROM users WHERE cedula = ? OR correo = ?", [
+        cedula,
+        correo,
+      ]);
+      if (confirmUser.length > 0) {
+        throw new Error("El usuario ya existe con la misma cédula o correo");
+      }
+
       const passwordHash = await bycrypt.hash(contraseña, 10);
 
       const [result] = await pool.query(

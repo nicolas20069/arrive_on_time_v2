@@ -26,29 +26,37 @@ export async function createUser({
   rolId,
   adminId,
 }) {
-  const response = await fetch("http://localhost:5000/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      nombres,
-      apellidos,
-      correo,
-      edad,
-      cedula,
-      direccion,
-      telefono,
-      contraseña,
-      empresaId,
-      rolId,
-      adminId,
-    }),
-  });
-  if (!response.ok) {
-    throw new Error("Error al crear usuario");
+  try {
+    const response = await fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nombres,
+        apellidos,
+        correo,
+        edad,
+        cedula,
+        direccion,
+        telefono,
+        contraseña,
+        empresaId,
+        rolId,
+        adminId,
+      }),
+    });
+    
+    if (!response.ok) {
+      return(null);
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error(error)
+    throw new Error(error);
   }
 
-  const data = await response.json();
-  return data;
 }

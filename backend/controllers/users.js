@@ -71,7 +71,7 @@ export class UserController {
       res.status(201).json({ affectedRows: resultUser });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error al actualizar el usuario" });
+      res.status(500).json({ message: error.message });
     }
   }
 
