@@ -54,7 +54,7 @@ export function AddUser({ visible, setVisible }) {
     { id: 2, name: "Empleado" },
   ];
 
-  const handleCreateUser = async () => {
+  const handleCreateUser = async (e) => {
     if (
       !nombres ||
       !apellidos ||
@@ -92,16 +92,18 @@ export function AddUser({ visible, setVisible }) {
       });
 
       if (user) {
-        alert({ detail: "Usuario creado correctamente" });
+        showSuccess({ detail: "Usuario creado correctamente" });
         setVisible(false);
 
         setTimeout(() => {
           window.location.reload();
         }, 1000);
+      } else {
+        showError({ detail: "Error al crear el usuario" });
       }
     } catch (error) {
       showError({
-        detail: "Error al crear usuario, porfavor revisa la informacion",
+        detail: error.message
       });
     }
   };
@@ -118,8 +120,6 @@ export function AddUser({ visible, setVisible }) {
       <Button
         label="Agregar Usuario"
         icon="pi pi-check"
-        type="submit"
-        form="add-user-form"
         onClick={() => {
           handleCreateUser();
         }}
@@ -221,7 +221,7 @@ export function AddUser({ visible, setVisible }) {
             Telefono
             <InputText
               id="telefono"
-              type="text"
+              type="number"
               keyfilter="pnum"
               placeholder="Telefono"
               required

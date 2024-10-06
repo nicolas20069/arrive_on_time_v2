@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 
@@ -15,7 +14,7 @@ export function UpdateUser({ visible, setVisible, user }) {
   const [userData, setUserData] = useState({
     nombres: "",
     apellidos: "",
-    edad: null,
+    edad: Number(),
     cedula: null,
     correo: "",
     direccion: "",
@@ -32,11 +31,12 @@ export function UpdateUser({ visible, setVisible, user }) {
   ];
 
   useEffect(() => {
+    console.log(typeof user.edad, typeof userData.edad);
     if (user) {
       setUserData({
         nombres: user.nombres,
         apellidos: user.apellidos,
-        edad: user.edad,
+        edad: Number(user.edad),
         cedula: user.cedula,
         correo: user.correo,
         direccion: user.direccion,
@@ -52,13 +52,15 @@ export function UpdateUser({ visible, setVisible, user }) {
 
   const handleChange = (e, field) => {
     const value = e.target ? e.target.value : e.value;
+  
     setUserData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [field]: field === "edad" || field === "telefono" || field === "cedula" ? Number(value) : value,
     }));
   };
 
   const handleSubmit = async () => {
+    console.log(typeof userData.edad);
     try {
       console.log(userData);
       const response = await fetch(`http://localhost:5000/users/${userId}`, {
@@ -74,7 +76,6 @@ export function UpdateUser({ visible, setVisible, user }) {
       }
 
       const data = await response.text();
-      /* console.log("Película agregada:", data); */
       toast.current.show({
         severity: "success",
         summary: "Felicidades",
@@ -83,7 +84,9 @@ export function UpdateUser({ visible, setVisible, user }) {
       });
 
       setVisible(false);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
 

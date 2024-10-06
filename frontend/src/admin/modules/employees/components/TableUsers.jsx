@@ -33,7 +33,7 @@ export function TableUsers({ users }) {
         <Column
           header="Empresa"
           body={(user) =>
-            user.empresa_id === 3 ? "Arrive On TIme" : user.empresa_id
+            user.empresa_id === 3 ? "Arrive On Time" : user.empresa_id
           }
         ></Column>
         <Column
