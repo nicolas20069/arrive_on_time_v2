@@ -7,6 +7,6 @@ export const rolesRouter = Router();
 rolesRouter.get("/", RoleController.getAll);
 rolesRouter.get("/:id", RoleController.getById);
 
-/* rolesRouter.post("/", RoleController.create);
+rolesRouter.post("/", RoleController.create);
 rolesRouter.put("/:id", RoleController.update);
-rolesRouter.delete("/:id", RoleController.delete); */
+rolesRouter.delete("/:id", RoleController.delete);
