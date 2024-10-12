@@ -1,5 +1,6 @@
 import { RolModel } from "../models/rol.js";
 import { validateRol } from "../schemas/roles.js"
+
 export class RoleController {
   // Método para obtener todos los roles
   static async getAll(req, res) {
