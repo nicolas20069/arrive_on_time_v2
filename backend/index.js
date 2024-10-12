@@ -4,6 +4,7 @@ import cors from "cors";
 import { FRONTEND_URL, PORT } from "./config/global.js";
 import { usersRouter } from "./routes/users.js";
 import { rolesRouter } from "./routes/roles.js";
+import { companiesRouter } from "./routes/companies.js";
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.disable("x-powered-by");
 
 app.use('/users', usersRouter)
 app.use('/roles', rolesRouter)
+app.use('/companies', companiesRouter)
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
