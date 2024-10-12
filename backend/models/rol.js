@@ -27,7 +27,9 @@ export class RolModel {
   }
 
   // Query para crear un usuario
-  static async create({ rolName }) {
+  static async create({ input }) {
+    const { rolName } = input;
+
     try {
       const [confirmRol] = await pool.query(
         "SELECT * FROM user_rol WHERE rol_name = ?",
@@ -50,7 +52,9 @@ export class RolModel {
   }
 
   // Query para actualizar un usuario
-  static async update({ id, rolName }) {
+  static async update({ id, input }) {
+    const { rolName } = input;
+    
     try {
 
       const [result] = await pool.query(

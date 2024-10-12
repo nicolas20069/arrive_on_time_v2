@@ -1,4 +1,5 @@
 import { RolModel } from "../models/rol.js";
+import { validateRol } from "../schemas/roles.js"
 export class RoleController {
   // Método para obtener todos los roles
   static async getAll(req, res) {
@@ -26,23 +27,21 @@ export class RoleController {
 
   // Método para crear un usuario siendo administrador
   static async create(req, res) {
-    const { rolName, adminId } = req.body;
-    // Validar los datos del usuario para crear el rol
-    /* const result = validateUser(req.body); */
+    const result = validateRol(req.body);
 
-    /* if (!result.success) {
+    if (!result.success) {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
-    } */
+    }
 
-    // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (/* result.data. */adminId != 1) {
+    // Validar que el usuario que esta creando el nuevo rol sea un administrador
+    if (result.data.adminId != 1) {
       return res
         .status(400)
         .json({ message: "No tienes permisos para crear roles" });
     }
 
     try {
-      const rol = await RolModel.create({ rolName });
+      const rol = await RolModel.create({ input: result.data });
       res.status(201).json(rol);
     } catch (error) {
       console.error(error);
@@ -53,22 +52,21 @@ export class RoleController {
   // Método para actualizar un usuario siendo administrador
   static async update(req, res) {
     const { id } = req.params;
-    const { rolName, adminId } = req.body;
-    /* const result = validateUserUpdate(req.body);
+    const result = validateRol(req.body);
 
     if (!result.success) {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
-    } */
+    }
 
     // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (/* result.data. */adminId != 1) {
+    if (result.data.adminId != 1) {
       return res
         .status(400)
         .json({ message: "No tienes permisos para actualizar roles" });
     }
 
     try {
-      const resultRol = await RolModel.update({ id, rolName });
+      const resultRol = await RolModel.update({ id, input: result.data });
       res.status(201).json({ affectedRows: resultRol });
     } catch (error) {
       console.error(error);
