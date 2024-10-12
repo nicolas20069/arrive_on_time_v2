@@ -15,9 +15,10 @@ export class RolModel {
   // Query para obtener un usuario por su id
   static async getById({ id }) {
     try {
-      const [rol] = await pool.query("SELECT * FROM user_rol WHERE rol_id = ?", [
-        id,
-      ]);
+      const [rol] = await pool.query(
+        "SELECT * FROM user_rol WHERE rol_id = ?",
+        [id]
+      );
       return rol;
     } catch (error) {
       console.log(error);
@@ -26,82 +27,36 @@ export class RolModel {
   }
 
   // Query para crear un usuario
-  /* static async create({ input }) {
+  static async create({ rolName }) {
     try {
-      const {
-        nombres,
-        apellidos,
-        edad,
-        cedula,
-        correo,
-        direccion,
-        telefono,
-        contraseña,
-        empresaId,
-        rolId,
-      } = input;
-
-      const [confirmUser] = await pool.query("SELECT * FROM users WHERE cedula = ? OR correo = ?", [
-        cedula,
-        correo,
-      ]);
-      if (confirmUser.length > 0) {
-        throw new Error("El usuario ya existe con la misma cédula o correo");
+      const [confirmRol] = await pool.query(
+        "SELECT * FROM user_rol WHERE rol_name = ?",
+        [rolName]
+      );
+      if (confirmRol.length > 0) {
+        throw new Error("El rol ya existe");
       }
 
-      const passwordHash = await bycrypt.hash(contraseña, 10);
-
       const [result] = await pool.query(
-        "INSERT INTO users (nombres, apellidos, edad, cedula, correo, direccion, telefono, contraseña, empresa_id, rol_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          nombres,
-          apellidos,
-          edad,
-          cedula,
-          correo,
-          direccion,
-          telefono,
-          passwordHash,
-          empresaId,
-          rolId,
-        ]
+        "INSERT INTO user_rol (rol_name) VALUES (?)",
+        [rolName]
       );
 
-      const { contraseña: _, ...user } = input;
-      return { id: result.insertId, user };
+      return { id: result.insertId, rolName };
     } catch (error) {
       console.log(error);
-      throw new Error("Error al crear el usuario");
+      throw new Error(error.message);
     }
   }
 
   // Query para actualizar un usuario
-  static async update({ id, input }) {
+  static async update({ id, rolName }) {
     try {
-      const {
-        nombres,
-        apellidos,
-        edad,
-        cedula,
-        correo,
-        direccion,
-        telefono,
-        empresaId,
-        rolId,
-      } = input;
 
       const [result] = await pool.query(
-        "UPDATE users SET nombres = ?, apellidos = ?, edad = ?, cedula = ?, correo = ?, direccion = ?, telefono = ?, empresa_id = ?, rol_id = ? WHERE user_id = ?",
+        "UPDATE user_rol SET rol_name = ? WHERE rol_id = ?",
         [
-          nombres,
-          apellidos,
-          edad,
-          cedula,
-          correo,
-          direccion,
-          telefono,
-          empresaId,
-          rolId,
+          rolName,
           id,
         ]
       );
@@ -109,20 +64,21 @@ export class RolModel {
       return result.affectedRows;
     } catch (error) {
       console.log(error);
-      throw new Error("Error al actualizar el usuario");
+      throw new Error("Error al actualizar el rol");
     }
   }
 
   // Query para eliminar un usuario
   static async delete({ id }) {
     try {
-      const [result] = await pool.query("DELETE FROM users WHERE user_id = ?", [
-        id,
-      ]);
+      const [result] = await pool.query(
+        "DELETE FROM user_rol WHERE rol_id = ?",
+        [id]
+      );
       return result.affectedRows;
     } catch (error) {
       console.error(error);
-      throw new Error("Error al eliminar el usuario");
+      throw new Error("Error al eliminar el rol");
     }
-  } */
+  }
 }
