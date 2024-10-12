@@ -25,7 +25,7 @@ export class RoleController {
     }
   }
 
-  // Método para crear un usuario siendo administrador
+  // Método para crear un rol siendo administrador
   static async create(req, res) {
     const result = validateRol(req.body);
 
@@ -49,7 +49,7 @@ export class RoleController {
     }
   }
 
-  // Método para actualizar un usuario siendo administrador
+  // Método para actualizar un rol siendo administrador
   static async update(req, res) {
     const { id } = req.params;
     const result = validateRol(req.body);
@@ -58,7 +58,7 @@ export class RoleController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando el nuevo usuario sea un administrador
+    // Validar que el usuario que esta actualizando el rol sea un administrador
     if (result.data.adminId != 1) {
       return res
         .status(400)
@@ -74,7 +74,7 @@ export class RoleController {
     }
   }
 
-  // Método para eliminar un usuario siendo administrador
+  // Método para eliminar un rol siendo administrador
   static async delete(req, res) {
     const { id } = req.params;
 

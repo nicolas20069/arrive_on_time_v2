@@ -1,7 +1,7 @@
 import { pool } from "../config/db.js";
 
 export class RolModel {
-  // Query para obtener todos los usuarios
+  // Query para obtener todos los roles
   static async getAll() {
     try {
       const [roles] = await pool.query("SELECT * FROM user_rol");
@@ -12,7 +12,7 @@ export class RolModel {
     }
   }
 
-  // Query para obtener un usuario por su id
+  // Query para obtener un rol por su id
   static async getById({ id }) {
     try {
       const [rol] = await pool.query(
@@ -26,7 +26,7 @@ export class RolModel {
     }
   }
 
-  // Query para crear un usuario
+  // Query para crear un rol
   static async create({ input }) {
     const { rolName } = input;
 
@@ -51,7 +51,7 @@ export class RolModel {
     }
   }
 
-  // Query para actualizar un usuario
+  // Query para actualizar un rol
   static async update({ id, input }) {
     const { rolName } = input;
     
@@ -72,7 +72,7 @@ export class RolModel {
     }
   }
 
-  // Query para eliminar un usuario
+  // Query para eliminar un rol
   static async delete({ id }) {
     try {
       const [result] = await pool.query(
