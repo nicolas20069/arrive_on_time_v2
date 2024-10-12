@@ -1,5 +1,4 @@
 import { RolModel } from "../models/rol.js";
-
 export class RoleController {
   // Método para obtener todos los roles
   static async getAll(req, res) {
@@ -12,7 +11,7 @@ export class RoleController {
     }
   }
 
-  // Método para obtener un usuario por su id
+  // Método para obtener un rol por su id
   static async getById(req, res) {
     const { id } = req.params;
 
@@ -26,48 +25,51 @@ export class RoleController {
   }
 
   // Método para crear un usuario siendo administrador
-  /* static async create(req, res) {
-    const result = validateUser(req.body);
+  static async create(req, res) {
+    const { rolName, adminId } = req.body;
+    // Validar los datos del usuario para crear el rol
+    /* const result = validateUser(req.body); */
 
-    if (!result.success) {
+    /* if (!result.success) {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
-    }
+    } */
 
     // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (result.data.adminId != 1) {
+    if (/* result.data. */adminId != 1) {
       return res
         .status(400)
-        .json({ message: "No tienes permisos para crear usuarios" });
+        .json({ message: "No tienes permisos para crear roles" });
     }
 
     try {
-      const user = await UserModel.create({ input: result.data });
-      res.status(201).json(user);
+      const rol = await RolModel.create({ rolName });
+      res.status(201).json(rol);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error al crear el usuario" });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Método para actualizar un usuario siendo administrador
   static async update(req, res) {
     const { id } = req.params;
-    const result = validateUserUpdate(req.body);
+    const { rolName, adminId } = req.body;
+    /* const result = validateUserUpdate(req.body);
 
     if (!result.success) {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
-    }
+    } */
 
     // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (result.data.adminId != 1) {
+    if (/* result.data. */adminId != 1) {
       return res
         .status(400)
-        .json({ message: "No tienes permisos para actualizar usuarios" });
+        .json({ message: "No tienes permisos para actualizar roles" });
     }
 
     try {
-      const resultUser = await UserModel.update({ id, input: result.data });
-      res.status(201).json({ affectedRows: resultUser });
+      const resultRol = await RolModel.update({ id, rolName });
+      res.status(201).json({ affectedRows: resultRol });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: error.message });
@@ -79,11 +81,11 @@ export class RoleController {
     const { id } = req.params;
 
     try {
-      const result = await UserModel.delete({ id });
+      const result = await RolModel.delete({ id });
       res.json({ affectedRows: result });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error al eliminar el usuario" });
+      res.status(500).json({ message: "Error al eliminar el rol" });
     }
-  } */
+  }
 }
