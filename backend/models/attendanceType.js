@@ -40,7 +40,7 @@ export class AttendanceTypeModel {
       }
 
       const [result] = await pool.query(
-        "INSERT INTO tipo_asistencia (tipo_nombre) VALUES (?)",
+        "INSERT INTO tipo_asistencia (tipo_asistencia) VALUES (?)",
         [attendanceTypeName]
       );
 
@@ -58,7 +58,7 @@ export class AttendanceTypeModel {
     try {
 
       const [result] = await pool.query(
-        "UPDATE tipo_asistencia SET tipo_nombre = ? WHERE tipo_id = ?",
+        "UPDATE tipo_asistencia SET tipo_asistencia = ? WHERE tipo_id = ?",
         [
           attendanceTypeName,
           id,
