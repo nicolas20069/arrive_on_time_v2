@@ -46,7 +46,7 @@ export class UserController {
       res.status(201).json(user);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error al crear el usuario" });
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -68,7 +68,7 @@ export class UserController {
 
     try {
       const resultUser = await UserModel.update({ id, input: result.data });
-      res.status(201).json({ affectedRows: resultUser });
+      res.status(201).json({ message: 'Usuario actualizado correctamente', affectedRows: resultUser });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: error.message });
@@ -81,7 +81,7 @@ export class UserController {
 
     try {
       const result = await UserModel.delete({ id });
-      res.json({ affectedRows: result });
+      res.json({ message: 'Usuario eliminado correctamente', affectedRows: result });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error al eliminar el usuario" });
