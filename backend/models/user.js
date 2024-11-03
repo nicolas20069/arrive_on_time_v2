@@ -69,10 +69,10 @@ export class UserModel {
       );
 
       const { contraseña: _, ...user } = input;
-      return { id: result.insertId, user };
+      return { message: 'Usuario creado correctamente' , id: result.insertId, user };
     } catch (error) {
       console.log(error);
-      throw new Error("Error al crear el usuario");
+      throw new Error(error);
     }
   }
 
