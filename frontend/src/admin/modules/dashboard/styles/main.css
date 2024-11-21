@@ -1,0 +1,42 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    padding: 20px 10%;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.dashboard-aside {
+    background-color: #000;
+    color: aliceblue;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dashboard-main article {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 4px 8px;
+}
+
+.dashboard-main article h2 {
+    font-size: medium;
+}
+
+.dashboard-main article span {
+    font-size: small;
+}
+
+.dashboard-main article img {
+    width: 38px;
+    height: 38px;
+    border-radius: 6px;
+    background-color: #0ae98a;
+}
