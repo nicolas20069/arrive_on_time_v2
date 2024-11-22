@@ -14,6 +14,7 @@ export function HeaderTable() {
           label="Agregar Usuario"
           icon="pi pi-plus"
           size="small"
+          className="primary-button"
           style={{ marginRight: ".5em" }}
           onClick={() => setVisible(true)}
         />

@@ -110,6 +110,7 @@ export function UpdateUser({ visible, setVisible, user }) {
         onClick={() => setVisible(false)}
       />
       <Button
+        className="primary-button"
         label="Actualizar Datos"
         icon="pi pi-refresh"
         size="small"

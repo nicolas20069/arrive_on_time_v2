@@ -120,6 +120,7 @@ export function AddUser({ visible, setVisible }) {
       <Button
         label="Agregar Usuario"
         icon="pi pi-check"
+        className="primary-button"
         onClick={() => {
           handleCreateUser();
         }}
