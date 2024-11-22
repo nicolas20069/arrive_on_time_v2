@@ -59,11 +59,13 @@ export function TableActions({ user }) {
         message={`¿Deseas borrar al usuario ${user.nombres} ${user.apellidos}?`}
         icon="pi pi-exclamation-triangle"
         acceptClassName="p-button-danger"
-        rejectClassName="p-button-secondary outline"
+        rejectClassName="p-button-secondary p-button-text"
         accept={() => {
           accept(user.user_id);
         }}
         reject={reject}
+        acceptLabel="Eliminar"
+        rejectLabel="Cancelar"
       />
 
       <Button
