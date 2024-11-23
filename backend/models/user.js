@@ -5,7 +5,7 @@ export class UserModel {
   // Query para obtener todos los usuarios
   static async getAll() {
     try {
-      const [users] = await pool.query("SELECT * FROM users");
+      const [users] = await pool.query("SELECT u.*, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id");
       return users;
     } catch (error) {
       console.log(error);
