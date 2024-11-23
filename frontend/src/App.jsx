@@ -6,6 +6,7 @@ import { Employees } from "./admin/modules/employees/index.jsx";
 import { Dashboard } from "./admin/modules/dashboard/index.jsx";
 import { Reports } from "./admin/modules/reports/index.jsx";
 import { Attendance } from "./admin/modules/attendances/index.jsx";
+import { Companies } from "./admin/modules/companies/index.jsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/admin/employees" element={<Employees/>} />
         <Route path="/admin/reports" element={<Reports/>} />
         <Route path="/admin/attendances" element={<Attendance/>} />
+        <Route path="/admin/companies" element={<Companies/>} />
       </Routes>
     </BrowserRouter>
   )
