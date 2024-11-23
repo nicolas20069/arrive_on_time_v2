@@ -1,0 +1,29 @@
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 40px;
+}
+
+.users-table {
+  padding: 10px 10%;
+}
+
+.add-user-form, .update-user-form {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.label-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

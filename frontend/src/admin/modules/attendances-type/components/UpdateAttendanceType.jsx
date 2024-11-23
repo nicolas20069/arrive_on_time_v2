@@ -1,0 +1,126 @@
+import { useState, useRef, useEffect } from "react";
+
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { Toast } from "primereact/toast";
+
+export function UpdateAttendanceType({ visible, setVisible, attendanceType }) {
+  const toast = useRef(null);
+  const [attendanceTypeId, setAttendanceTypeId] = useState({
+    attendanceTypeId: attendanceType.tipo_id,
+  });
+  const [attendanceTypeData, setAttendanceTypeData] = useState({
+    attendanceTypeName: "",
+    adminId: null,
+  });
+
+  useEffect(() => {
+    if (attendanceType) {
+      setAttendanceTypeData({
+        attendanceTypeName: attendanceType.tipo_asistencia,
+        adminId: 1,
+      });
+
+      setAttendanceTypeId(attendanceType.tipo_id);
+    }
+  }, [attendanceType]);
+
+  const handleChange = (e, field) => {
+    const value = e.target ? e.target.value : e.value;
+  
+    setAttendanceTypeData((prevData) => ({
+      ...prevData,
+      [field]: field === "adminId" ? Number(value) : value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/attendances-type/${attendanceTypeId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(attendanceTypeData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+
+      const data = await response.text();
+      toast.current.show({
+        severity: "success",
+        summary: "Felicidades",
+        detail: "Tipo de asistencia actualizada correctamente",
+        life: 3000,
+      });
+
+      setVisible(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.error("Error al actualizar los datos del tipo de asistencia:", error);
+
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Error al actualizar los datos del tipo de asistencia",
+        life: 3000,
+      });
+    }
+  };
+
+  const footerContent = (
+    <div>
+      <Button
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="secondary"
+        className="p-button-text"
+        size="small"
+        onClick={() => setVisible(false)}
+      />
+      <Button
+        className="primary-button"
+        label="Actualizar Datos"
+        icon="pi pi-refresh"
+        size="small"
+        onClick={handleSubmit}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      <Toast ref={toast} />
+      <Dialog
+        header={`Actualizar datos del tip de asistencia: ${attendanceType.tipo_asistencia}`}
+        visible={visible}
+        style={{ width: "50vw" }}
+        draggable={false}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+        footer={footerContent}
+      >
+        <form id="update-user-form" className="update-user-form">
+          <label className="label-form" htmlFor="nombre-tipo-asistencia">
+            Nombre del Tipo de Asistencia
+            <InputText
+              id="nombre-tipo-asistencia"
+              type="text"
+              placeholder="Nombre del Tipo de Asistencia"
+              required
+              value={attendanceTypeData.attendanceTypeName}
+              onChange={(e) => handleChange(e, "attendanceTypeName")}
+            />
+          </label>
+        </form>
+      </Dialog>
+    </>
+  );
+}
