@@ -1,5 +1,6 @@
 import "./styles/header.css";
 import { Link, useLocation } from "react-router-dom";
+import { Tooltip } from 'primereact/tooltip';
 
 export function Header() {
   const location = useLocation();
@@ -23,15 +24,25 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="nav">
-          <ul className="nav-list">
-            {items.map((item, index) => (
-              <li key={index} className={location.pathname === item.path ? "active" : ""}>
-                <Link to={item.path}>{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="aside-header">
+          <nav className="nav">
+            <ul className="nav-list">
+              {items.map((item, index) => (
+                <li
+                  key={index}
+                  className={location.pathname === item.path ? "active" : ""}
+                >
+                  <Link to={item.path}>{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <Tooltip target=".user" position="bottom" />
+          <Link to="/admin/profile" className="user" data-pr-tooltip="Ver Perfil">
+            <img className="user-img" src="/user.svg" />
+          </Link>
+        </div>
       </header>
     </>
   );
