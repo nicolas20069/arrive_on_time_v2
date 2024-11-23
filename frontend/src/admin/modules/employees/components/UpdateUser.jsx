@@ -6,11 +6,15 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 
+import { getCompanies } from "../api/companies";
+import { getRoles } from "../api/roles";
+
 export function UpdateUser({ visible, setVisible, user }) {
   const toast = useRef(null);
-  const [userId, setUserId] = useState({
-    userId: user.user_id,
-  });
+  const [companies, setCompanies] = useState([]);
+  const [roles, setRoles] = useState([]);
+
+  const [userId, setUserId] = useState({userId: user.user_id});
   const [userData, setUserData] = useState({
     nombres: "",
     apellidos: "",
@@ -24,14 +28,34 @@ export function UpdateUser({ visible, setVisible, user }) {
     adminId: null,
   });
 
-  const companys = [{ id: 3, name: "Arrive on Time" }];
-  const roles = [
-    { id: 1, name: "Administrador" },
-    { id: 2, name: "Empleado" },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const companiesData = await getCompanies();
+        const rolesData = await getRoles();
+
+        setCompanies(
+          companiesData.map((company) => ({
+            label: company.nombre_empresa,
+            value: company.empresa_id,
+          }))
+        );
+
+        setRoles(
+          rolesData.map((role) => ({
+            label: role.rol_name,
+            value: role.rol_id,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching companies or roles:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    console.log(typeof user.edad, typeof userData.edad);
     if (user) {
       setUserData({
         nombres: user.nombres,
@@ -60,9 +84,7 @@ export function UpdateUser({ visible, setVisible, user }) {
   };
 
   const handleSubmit = async () => {
-    console.log(typeof userData.edad);
     try {
-      console.log(userData);
       const response = await fetch(`http://localhost:5000/users/${userId}`, {
         method: "PUT",
         headers: {
@@ -223,26 +245,20 @@ export function UpdateUser({ visible, setVisible, user }) {
 
           <Dropdown
             id="empresa"
-            value={userData.empresaId === 3 ? companys[0] : userData.empresaId}
+            value={userData.empresaId}
             onChange={(e) => handleChange(e, "empresaId")}
-            options={companys}
-            optionLabel="name"
+            options={companies}
+            /* optionLabel="nombre_empresa" */
             placeholder="Seleccione una empresa"
             required
           />
 
           <Dropdown
             id="rol"
-            value={
-              userData.rolId === 1
-                ? roles[0]
-                : userData.rolId === 2
-                ? roles[1]
-                : userData.rolId
-            }
+            value={userData.rolId}
             onChange={(e) => handleChange(e, "rolId")}
             options={roles}
-            optionLabel="name"
+            /* optionLabel="rol_name" */
             placeholder="Seleccione un rol"
             required
           />

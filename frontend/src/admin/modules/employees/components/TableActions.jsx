@@ -71,7 +71,7 @@ export function TableActions({ user }) {
       <Button
         icon="pi pi-pencil"
         size="small"
-        className="p-button-success"
+        className="secondary-button"
         tooltip="Editar Usuario"
         tooltipOptions={{ position: "bottom" }}
         style={{ marginRight: ".5em" }}
@@ -80,7 +80,7 @@ export function TableActions({ user }) {
       <Button
         icon="pi pi-trash"
         size="small"
-        className="p-button-danger"
+        className="danger-button"
         tooltip="Eliminar Usuario"
         tooltipOptions={{ position: "bottom" }}
         onClick={deleteUserDialog}

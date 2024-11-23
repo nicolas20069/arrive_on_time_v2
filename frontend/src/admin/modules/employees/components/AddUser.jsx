@@ -3,12 +3,17 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { createUser } from "../api/users.js";
+import { getCompanies } from "../api/companies.js";
+import { getRoles } from "../api/roles.js";
 
 export function AddUser({ visible, setVisible }) {
   const toast = useRef(null);
+
+  const [companies, setCompanies] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
@@ -20,6 +25,18 @@ export function AddUser({ visible, setVisible }) {
   const [contraseña, setContraseña] = useState("");
   const [selectCompany, setSelectCompany] = useState(null);
   const [selectRol, setSelectRol] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const companies = await getCompanies();
+      const roles = await getRoles();
+
+      setCompanies(companies);
+      setRoles(roles);
+    };
+
+    fetchData();
+  }, []);
 
   const showSuccess = ({ detail }) => {
     toast.current.show({
@@ -48,12 +65,6 @@ export function AddUser({ visible, setVisible }) {
     });
   };
 
-  const companys = [{ id: 3, name: "Arrive on Time" }];
-  const roles = [
-    { id: 1, name: "Administrador" },
-    { id: 2, name: "Empleado" },
-  ];
-
   const handleCreateUser = async (e) => {
     if (
       !nombres ||
@@ -73,8 +84,8 @@ export function AddUser({ visible, setVisible }) {
     const parsedEdad = Number(edad);
     const parsedCedula = Number(cedula);
     const parsedTelefono = Number(telefono);
-    const empresaId = Number(selectCompany.id);
-    const rolId = Number(selectRol.id);
+    const empresaId = Number(selectCompany.empresa_id);
+    const rolId = Number(selectRol.rol_id);
 
     try {
       const user = await createUser({
@@ -103,7 +114,7 @@ export function AddUser({ visible, setVisible }) {
       }
     } catch (error) {
       showError({
-        detail: error.message
+        detail: error.message,
       });
     }
   };
@@ -247,8 +258,8 @@ export function AddUser({ visible, setVisible }) {
             id="empresa"
             value={selectCompany}
             onChange={(e) => setSelectCompany(e.value)}
-            options={companys}
-            optionLabel="name"
+            options={companies}
+            optionLabel="nombre_empresa"
             placeholder="Seleccione una empresa"
             required
           />
@@ -258,7 +269,7 @@ export function AddUser({ visible, setVisible }) {
             value={selectRol}
             onChange={(e) => setSelectRol(e.value)}
             options={roles}
-            optionLabel="name"
+            optionLabel="rol_name"
             placeholder="Seleccione un rol"
             required
           />

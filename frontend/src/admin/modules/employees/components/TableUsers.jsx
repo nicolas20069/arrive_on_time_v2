@@ -29,17 +29,18 @@ export function TableUsers({ users }) {
         <Column field="correo" header="Correo"></Column>
         <Column field="edad" header="Edad"></Column>
         <Column field="direccion" header="Direccion"></Column>
-        <Column field="telefono" header="Telefono"></Column>
-        <Column
+        <Column field="nombre_empresa" header="Empresa"></Column>
+        <Column field="rol_name" header="Rol"></Column>
+        {/* <Column
           header="Empresa"
           body={(user) =>
             user.empresa_id === 3 ? "Arrive On Time" : user.empresa_id
           }
-        ></Column>
-        <Column
+        ></Column> */}
+        {/* <Column
           header="Rol"
           body={(user) => (user.rol_id === 1 ? "Administrador" : "Empleado")}
-        ></Column>
+        ></Column> */}
         <Column
           header="Acciones"
           body={(user) => <TableActions user={user} />}
