@@ -4,7 +4,6 @@ import { TableUsers } from "./components/TableUsers.jsx";
 
 import { getUsers } from "./api/users.js";
 import './styles/employees.css'
-import "./styles/buttons.css";
 
 export function Employees() {
   const [users, setUsers] = useState([])
