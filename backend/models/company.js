@@ -4,7 +4,7 @@ export class CompanyModel {
   // Query para obtener todos las empresas
   static async getAll() {
     try {
-      const [companies] = await pool.query("SELECT * FROM empresas");
+      const [companies] = await pool.query("SELECT e.empresa_id, e.nombre_empresa, admin_id, u.nombres, u.apellidos, u.cedula FROM empresas e JOIN users u ON e.admin_id = u.user_id");
       return companies;
     } catch (error) {
       console.log(error);
