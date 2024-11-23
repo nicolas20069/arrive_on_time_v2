@@ -1,13 +1,16 @@
 import "./styles/header.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
+  const location = useLocation();
+
   const items = [
     { label: "Empleados", path: "/admin/employees" },
     /* { label: "Reportes", path: "/admin/reports" },
     { label: "Asistencias", path: "/admin/attendances" }, */
     { label: "Empresas", path: "/admin/companies" },
     { label: "Roles", path: "/admin/roles" },
+    { label: "Tipos de Asistencias", path: "/admin/attendances-type" },
   ];
 
   return (
@@ -23,7 +26,7 @@ export function Header() {
         <nav className="nav">
           <ul className="nav-list">
             {items.map((item, index) => (
-              <li key={index}>
+              <li key={index} className={location.pathname === item.path ? "active" : ""}>
                 <Link to={item.path}>{item.label}</Link>
               </li>
             ))}
