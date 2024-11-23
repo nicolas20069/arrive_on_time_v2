@@ -6,6 +6,7 @@ export function Header() {
     { label: "Empleados", path: "/admin/employees" },
     { label: "Reportes", path: "/admin/reports" },
     { label: "Asistencias", path: "/admin/attendances" },
+    { label: "Empresas", path: "/admin/companies" },
   ];
 
   return (
