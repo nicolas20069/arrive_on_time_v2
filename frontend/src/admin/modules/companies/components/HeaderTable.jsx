@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "primereact/button";
 
-import { AddUser } from "./AddUser.jsx";
+import { AddCompany } from "./AddCompany.jsx";
 
 export function HeaderTable() {
   const [visible, setVisible] = useState(false);
@@ -9,9 +9,9 @@ export function HeaderTable() {
   return (
     <>
       <div className="table-header">
-        <h2>Usuarios</h2>
+        <h2>Empresas</h2>
         <Button
-          label="Agregar Usuario"
+          label="Agregar nueva Empresa"
           icon="pi pi-plus"
           size="small"
           className="primary-button"
@@ -19,7 +19,7 @@ export function HeaderTable() {
           onClick={() => setVisible(true)}
         />
       </div>
-      <AddUser visible={visible} setVisible={setVisible} />
+      <AddCompany visible={visible} setVisible={setVisible} />
     </>
   );
 }

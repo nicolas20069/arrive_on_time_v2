@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../includes/Header.jsx";
-import { TableUsers } from "./components/TableUsers.jsx";
+import { TableCompanies } from "./components/TableCompanies.jsx";
 
-import { getUsers } from "./api/users.js";
+import { getCompanies } from "./api/companies.js";
 import "./styles/employees.css";
 
 export function Companies() {
-  const [users, setUsers] = useState([])
+  const [companies, setCompanies] = useState([])
 
   useEffect(() => {
-    getUsers().then((data) => {
-      setUsers(data)
+    getCompanies().then((data) => {
+      setCompanies(data)
     })
   },[])
 
   return (
     <>
       <Header />
-      { users && <TableUsers users={users}/>}
+      { companies && <TableCompanies companies={companies}/>}
     </>
   );
 }

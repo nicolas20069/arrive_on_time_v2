@@ -1,11 +1,11 @@
-export async function getUsers() {
+export async function getCompanies() {
   const response = await fetch("http://localhost:5000/companies");
   const data = await response.json();
 
   return data;
 }
 
-export async function getUserById({ id }) {
+export async function getCompanyById({ id }) {
   if (!id) return;
   const response = await fetch(`http://localhost:5000/companies/${id}`);
   const data = await response.json();
@@ -13,36 +13,20 @@ export async function getUserById({ id }) {
   return data;
 }
 
-export async function createUser({
-  nombres,
-  apellidos,
-  correo,
-  edad,
-  cedula,
-  direccion,
-  telefono,
-  contraseña,
-  empresaId,
-  rolId,
+export async function createCompany({
+  companyName,
+  userAdminId,
   adminId,
 }) {
   try {
-    const response = await fetch("http://localhost:5000/users", {
+    const response = await fetch("http://localhost:5000/companies", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        nombres,
-        apellidos,
-        correo,
-        edad,
-        cedula,
-        direccion,
-        telefono,
-        contraseña,
-        empresaId,
-        rolId,
+        companyName,
+        userAdminId,
         adminId,
       }),
     });

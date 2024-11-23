@@ -3,14 +3,14 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 
-import { UpdateUser } from "./UpdateUser.jsx";
+import { UpdateCompany } from "./UpdateCompany.jsx";
 
-export function TableActions({ user }) {
+export function TableActions({ company }) {
   const toast = useRef(null);
   const [visible, setVisible] = useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
 
-  const deleteUserDialog = () => {
+  const deleteCompanyDialog = () => {
     setVisible(true);
   };
 
@@ -20,7 +20,7 @@ export function TableActions({ user }) {
 
   const accept = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/users/${id}`, {
+      const response = await fetch(`http://localhost:5000/companies/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -34,12 +34,12 @@ export function TableActions({ user }) {
       setVisible(false);
       window.location.reload();
     } catch (error) {
-      console.error("Error al eliminar el usuario:", error);
+      console.error("Error al eliminar la empresa:", error);
 
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: "Error al Eliminar el Usuario",
+        detail: "Error al eliminar la empresa",
         life: 3000,
       });
 
@@ -55,13 +55,13 @@ export function TableActions({ user }) {
         onHide={() => setVisible(false)}
         draggable={false}
         resizable={false}
-        header="Eliminar Usuario"
-        message={`¿Deseas borrar al usuario ${user.nombres} ${user.apellidos}?`}
+        header="Eliminar Empresa"
+        message={`¿Deseas eliminar la empresa ${company.nombre_empresa}?`}
         icon="pi pi-exclamation-triangle"
         acceptClassName="p-button-danger"
         rejectClassName="p-button-secondary p-button-text"
         accept={() => {
-          accept(user.user_id);
+          accept(company.empresa_id);
         }}
         reject={reject}
         acceptLabel="Eliminar"
@@ -71,8 +71,8 @@ export function TableActions({ user }) {
       <Button
         icon="pi pi-pencil"
         size="small"
-        className="p-button-success"
-        tooltip="Editar Usuario"
+        className="secondary-button"
+        tooltip="Editar Empresa"
         tooltipOptions={{ position: "bottom" }}
         style={{ marginRight: ".5em" }}
         onClick={() => setUpdateVisible(true)}
@@ -80,16 +80,16 @@ export function TableActions({ user }) {
       <Button
         icon="pi pi-trash"
         size="small"
-        className="p-button-danger"
-        tooltip="Eliminar Usuario"
+        className="danger-button"
+        tooltip="Eliminar Empresa"
         tooltipOptions={{ position: "bottom" }}
-        onClick={deleteUserDialog}
+        onClick={deleteCompanyDialog}
       />
 
-      <UpdateUser
+      <UpdateCompany
         visible={updateVisible}
         setVisible={setUpdateVisible}
-        user={user}
+        company={company}
       />
     </div>
   );
