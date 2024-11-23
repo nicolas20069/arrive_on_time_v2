@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 export function Header() {
   const items = [
     { label: "Empleados", path: "/admin/employees" },
-    { label: "Reportes", path: "/admin/reports" },
-    { label: "Asistencias", path: "/admin/attendances" },
+    /* { label: "Reportes", path: "/admin/reports" },
+    { label: "Asistencias", path: "/admin/attendances" }, */
     { label: "Empresas", path: "/admin/companies" },
+    { label: "Roles", path: "/admin/roles" },
   ];
 
   return (
