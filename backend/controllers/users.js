@@ -6,7 +6,13 @@ export class UserController {
   static async getAll(req, res) {
     try {
       const users = await UserModel.getAll();
-      res.json(users);
+
+      const publicUsers = users.map((user) => {
+        const { contraseña: _, ...publicUser } = user
+        return publicUser
+      })
+
+      res.json(publicUsers);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Error al obtener los usuarios" });
