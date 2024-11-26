@@ -9,10 +9,14 @@ export function Login() {
       <header className="login-header">
         <img
           className="login-img"
-          src="/logo.svg"
+          src="/favicon.svg"
           alt="Logo de arrive on time"
         />
-        <h1 className="login-title">Iniciar sesión</h1>
+
+        <div className="login-hero">
+          <h1 className="login-title">Iniciar sesión</h1>
+          <h2 className="login-subtitle">Arrive On Time</h2>
+        </div>
       </header>
 
       <form className="login-form">
