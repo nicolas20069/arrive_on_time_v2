@@ -5,6 +5,7 @@ import { UserController } from "../controllers/users.js";
 export const usersRouter = Router();
 
 usersRouter.get("/", UserController.getAll);
+usersRouter.get("/admins", UserController.getAdmins);
 usersRouter.get("/:id", UserController.getById);
 
 usersRouter.post("/", UserController.create);
