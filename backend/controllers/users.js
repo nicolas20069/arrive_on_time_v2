@@ -19,6 +19,23 @@ export class UserController {
     }
   }
 
+  // Método para obtener todos los usuarios administradores
+  static async getAdmins(req, res) {
+    try {
+      const users = await UserModel.getAdmins();
+
+      const publicUsers = users.map((user) => {
+        const { contraseña: _, ...publicUser } = user
+        return publicUser
+      })
+
+      res.json(publicUsers);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error al obtener los usuarios administradores" });
+    }
+  }
+
   // Método para obtener un usuario por su id
   static async getById(req, res) {
     const { id } = req.params;
