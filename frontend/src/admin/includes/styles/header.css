@@ -52,7 +52,6 @@
   .nav-list {
     list-style: none;
     display: flex;
-    gap: 4px;
     align-items: center;
 
     li {
