@@ -4,9 +4,13 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
+import { getUsersAdmins } from "../api/usersAdmins";
+import { Dropdown } from "primereact/dropdown";
 
 export function UpdateCompany({ visible, setVisible, company }) {
   const toast = useRef(null);
+  const [usersAdmins, setUsersAdmins] = useState([]);
+
   const [companyId, setCompanyId] = useState({
     companyId: company.empresa_id,
   });
@@ -15,6 +19,25 @@ export function UpdateCompany({ visible, setVisible, company }) {
     userAdminId: null,
     adminId: null,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersAdminsData = await getUsersAdmins();
+
+        setUsersAdmins(
+          usersAdminsData.map((userAdmin) => ({
+            label: `${userAdmin.nombres} ${userAdmin.apellidos}`,
+            value: userAdmin.user_id,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching users admins:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (company) {
@@ -30,7 +53,7 @@ export function UpdateCompany({ visible, setVisible, company }) {
 
   const handleChange = (e, field) => {
     const value = e.target ? e.target.value : e.value;
-  
+
     setcompanyData((prevData) => ({
       ...prevData,
       [field]: field === "userAdminId" ? Number(value) : value,
@@ -40,13 +63,16 @@ export function UpdateCompany({ visible, setVisible, company }) {
   const handleSubmit = async () => {
     console.log(companyId);
     try {
-      const response = await fetch(`http://localhost:5000/companies/${companyId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(companyData),
-      });
+      const response = await fetch(
+        `http://localhost:5000/companies/${companyId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(companyData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error en la solicitud");
@@ -125,14 +151,13 @@ export function UpdateCompany({ visible, setVisible, company }) {
 
           <label className="label-form" htmlFor="admin-empresa">
             Administrador de la empresa
-            <InputText
+            <Dropdown
               id="admin-empresa"
-              type="number"
-              keyfilter="pnum"
-              placeholder="Administrador de la empresa"
-              required
               value={companyData.userAdminId}
               onChange={(e) => handleChange(e, "userAdminId")}
+              options={usersAdmins}
+              placeholder="Seleccione el administrador de la empresa"
+              required
             />
           </label>
         </form>
