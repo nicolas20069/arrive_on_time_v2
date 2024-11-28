@@ -13,6 +13,17 @@ export class UserModel {
     }
   }
 
+  // Query para obtener todos los usuarios administradores
+  static async getAdmins() {
+    try {
+      const [users] = await pool.query("SELECT * FROM users WHERE rol_id = 1");
+      return users;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
   // Query para obtener un usuario por su id
   static async getById({ id }) {
     try {
