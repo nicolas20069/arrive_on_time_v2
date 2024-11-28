@@ -2,15 +2,29 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { createCompany } from "../api/companies.js";
+import { getUsersAdmins } from "../api/usersAdmins.js";
+import { Dropdown } from "primereact/dropdown";
 
 export function AddCompany({ visible, setVisible }) {
   const toast = useRef(null);
 
+  const [usersAdmins, setUsersAdmins] = useState([]);
+
   const [companyName, setCompanyName] = useState("");
   const [userAdminId, setUserAdminId] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const usersAdminsData = await getUsersAdmins();
+
+      setUsersAdmins(usersAdminsData);
+    };
+
+    fetchData();
+  }, []);
 
   const showSuccess = ({ detail }) => {
     toast.current.show({
@@ -40,15 +54,12 @@ export function AddCompany({ visible, setVisible }) {
   };
 
   const handleCreateCompany = async (e) => {
-    if (
-      !companyName ||
-      !userAdminId
-    ) {
+    if (!companyName || !userAdminId.user_id) {
       showWarn({ detail: "Porfavor llena todos los campos" });
       return;
     }
 
-    const parsedUserAdmindId = Number(userAdminId);
+    const parsedUserAdmindId = Number(userAdminId.user_id);
 
     try {
       const company = await createCompany({
@@ -69,7 +80,7 @@ export function AddCompany({ visible, setVisible }) {
       }
     } catch (error) {
       showError({
-        detail: error.message
+        detail: error.message,
       });
     }
   };
@@ -84,7 +95,7 @@ export function AddCompany({ visible, setVisible }) {
         severity="secondary"
       />
       <Button
-        label="Agregar Usuario"
+        label="Agregar Empresa"
         icon="pi pi-check"
         className="primary-button"
         onClick={() => {
@@ -124,14 +135,14 @@ export function AddCompany({ visible, setVisible }) {
 
           <label className="label-form" htmlFor="admin-empresa">
             Administrador de la Empresa
-            <InputText
+            <Dropdown
               id="admin-empresa"
-              type="number"
-              keyfilter="pnum"
-              placeholder="Administrador de la Empresa"
-              required
               value={userAdminId}
-              onChange={(e) => setUserAdminId(e.target.value)}
+              onChange={(e) => setUserAdminId(e.value)}
+              options={usersAdmins}
+              optionLabel={(option) => `${option.nombres} ${option.apellidos}`}
+              placeholder="Seleccione el administrador de la empresa"
+              required
             />
           </label>
         </form>
