@@ -15,44 +15,25 @@ export function Dashboard() {
             <Link to="/admin/employees">
               <article>
                 <img src="/dashboard/users.svg" alt="" />
-                <span>Gestionar Usuarios</span>
+
+                <div>
+                  <span>Gestionar Usuarios</span>
+                  <small>Haz click aqui</small>
+                </div>
               </article>
             </Link>
 
             <Link to="/admin/companies">
               <article>
                 <img src="/dashboard/buildings.svg" alt="" />
-                <span>Gestionar Empresas</span>
+
+                <div>
+                  <span>Gestionar Empresas</span>
+                  <small>Haz click aqui</small>
+                </div>
               </article>
             </Link>
 
-            <Link to="/admin/employees">
-              <article>
-                <img src="/dashboard/users.svg" alt="" />
-                <span>Gestionar Usuarios</span>
-              </article>
-            </Link>
-
-            <Link to="/admin/companies">
-              <article>
-                <img src="/dashboard/buildings.svg" alt="" />
-                <span>Gestionar Empresas</span>
-              </article>
-            </Link>
-
-            <Link to="/admin/employees">
-              <article>
-                <img src="/dashboard/users.svg" alt="" />
-                <span>Gestionar Usuarios</span>
-              </article>
-            </Link>
-
-            <Link to="/admin/companies">
-              <article>
-                <img src="/dashboard/buildings.svg" alt="" />
-                <span>Gestionar Empresas</span>
-              </article>
-            </Link>
           </div>
         </aside>
 
