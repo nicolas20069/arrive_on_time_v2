@@ -1,8 +1,46 @@
-import { Link } from "react-router-dom";
 import { Header } from "../../includes/Header.jsx";
 import "./styles/main.css";
+import { AsideNavButton } from "./components/AsideNavButton.jsx";
 
 export function Dashboard() {
+
+  const asideNavItems = [
+    {
+      to: "/admin/employees",
+      icon: "users",
+      title: "Gestionar Usuarios",
+    },
+
+    {
+      to: "/admin/companies",
+      icon: "buildings",
+      title: "Gestionar Empresas",
+    },
+
+    {
+      to: "/admin/roles",
+      icon: "user-tag",
+      title: "Gestionar Roles",
+    },
+
+    {
+      to: "/admin/attendances",
+      icon: "calendar-alt",
+      title: "Gestionar Asistencias",
+    },
+
+    {
+      to: "/admin/attendances-type",
+      icon: "calendar-check",
+      title: "Gestionar Tipos de Asistencias",
+    },
+
+    {
+      to: "/admin/reports",
+      icon: "chart-line",
+      title: "Gestionar Reportes",
+    }
+  ]
   return (
     <>
       <Header />
@@ -12,28 +50,18 @@ export function Dashboard() {
           <h1>Dashboard</h1>
 
           <div className="dashboard-aside-links">
-            <Link to="/admin/employees">
-              <article>
-                <img src="/dashboard/users.svg" alt="" />
-
-                <div>
-                  <span>Gestionar Usuarios</span>
-                  <small>Haz click aqui</small>
-                </div>
-              </article>
-            </Link>
-
-            <Link to="/admin/companies">
-              <article>
-                <img src="/dashboard/buildings.svg" alt="" />
-
-                <div>
-                  <span>Gestionar Empresas</span>
-                  <small>Haz click aqui</small>
-                </div>
-              </article>
-            </Link>
-
+            {
+              asideNavItems.map((item, index) => {
+                return (
+                  <AsideNavButton
+                    key={index}
+                    to={item.to}
+                    icon={item.icon}
+                    title={item.title}
+                  />
+                );
+              })
+            }
           </div>
         </aside>
 
