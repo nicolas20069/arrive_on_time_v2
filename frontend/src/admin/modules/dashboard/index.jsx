@@ -3,70 +3,78 @@ import "./styles/main.css";
 import { AsideNavButton } from "./components/AsideNavButton.jsx";
 
 export function Dashboard() {
-
   const asideNavItems = [
     {
       to: "/admin/employees",
-      icon: "users",
+      icon: "dashboard/users",
       title: "Gestionar Usuarios",
     },
 
     {
       to: "/admin/companies",
-      icon: "buildings",
-      title: "Gestionar Empresas",
+      icon: "dashboard/buildings",
+      title: "Gestionar Empresas o Instituciones",
     },
 
     {
       to: "/admin/roles",
-      icon: "user-tag",
+      icon: "dashboard/user-tag",
       title: "Gestionar Roles",
     },
 
     {
       to: "/admin/attendances",
-      icon: "calendar-alt",
+      icon: "dashboard/calendar-alt",
       title: "Gestionar Asistencias",
     },
 
     {
       to: "/admin/attendances-type",
-      icon: "calendar-check",
+      icon: "dashboard/calendar-check",
       title: "Gestionar Tipos de Asistencias",
     },
 
     {
-      to: "/admin/reports",
-      icon: "chart-line",
-      title: "Gestionar Reportes",
-    }
-  ]
+      to: "/admin/profile",
+      icon: "user",
+      title: "Ver Perfil",
+    },
+  ];
   return (
     <>
       <Header />
 
       <section className="dashboard">
-        <aside className="dashboard-aside">
-          <h1>Dashboard</h1>
-
-          <div className="dashboard-aside-links">
-            {
-              asideNavItems.map((item, index) => {
-                return (
-                  <AsideNavButton
-                    key={index}
-                    to={item.to}
-                    icon={item.icon}
-                    title={item.title}
-                  />
-                );
-              })
-            }
-          </div>
-        </aside>
-
         <main className="dashboard-main">
-          <h1>Dashboard</h1>
+          <h1>
+            ¡Bienvenido de nuevo a <span>Arrive On Time</span>!
+          </h1>
+          <h2>¿Que deseas hacer hoy?</h2>
+
+          <div className="dashboard-links">
+            {asideNavItems.map((item, index) => {
+              return (
+                <AsideNavButton
+                  key={index}
+                  to={item.to}
+                  icon={item.icon}
+                  title={item.title}
+                />
+              );
+            })}
+          </div>
+
+          <footer className="dashboard-footer">
+            <div>
+              <span>©Arrive On Time 2024 </span>
+              <span>- Todos los derechos reservados</span>
+            </div>
+
+            <div>
+              <small>Desarrollado por: </small>
+              <small>Juan Cuellar y Nicolas Melo</small>
+            </div>
+          </footer>
         </main>
       </section>
     </>

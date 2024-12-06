@@ -1,44 +1,65 @@
 .dashboard {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  padding: 20px 10%;
+  padding: 40px 10%;
   gap: 10px;
   box-sizing: border-box;
 }
 
-.dashboard-aside {
-  background-color: #fff;
-  border: 1px solid #fefefe;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.dashboard-aside-links {
+.dashboard-main {
   display: flex;
   flex-direction: column;
+  text-align: center;
+  gap: 10px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+
+  h1 {
+    margin: 0;
+    letter-spacing: 1px;
+
+    span {
+      color: var(--primary-color);
+    }
+  }
+
+  h2 {
+    letter-spacing: 1px;
+    margin-top: 0;
+    font-weight: 500;
+  }
+}
+
+.dashboard-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  justify-items: center;
   gap: 10px;
 
   a {
-    height: 52px;
-    background-color: var(--primary-color);
+    height: 66px;
+    width: 320px;
+    background-color: var(--hover-color);
     border-radius: 10px;
+    border: 1px solid #000;
     color: #000;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
 
     &:hover {
-      background-color: var(--secondary-color);
+      background-color: var(--primary-color);
     }
   }
 
   article {
     height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 6px;
     padding: 4px 8px;
 
     div {
+      text-align: start;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -51,32 +72,11 @@
   }
 }
 
-.dashboard-main {
+.dashboard-footer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.dashboard-main article {
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
-  border: 1px solid #000;
-  border-radius: 10px;
-  padding: 4px 8px;
-}
-
-.dashboard-main article h2 {
-  font-size: medium;
-}
-
-.dashboard-main article span {
-  font-size: small;
-}
-
-.dashboard-main article img {
-  width: 38px;
-  height: 38px;
-  border-radius: 6px;
-  background-color: #0ae98a;
+  gap: 10px;
+  margin-top: 140px;
+  color: #333;
 }
