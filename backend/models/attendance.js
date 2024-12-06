@@ -5,7 +5,7 @@ export class AttendanceModel {
   static async getAll() {
     try {
       const [attendances] = await pool.query(
-        "SELECT a.asistencia_id, a.fecha, a.hora, u.nombres, u.apellidos, u.cedula, e.nombre_empresa, t.tipo_asistencia FROM asistencia a JOIN users u ON a.user_id = u.user_id JOIN empresas e ON u.empresa_id = e.empresa_id JOIN tipo_asistencia t ON a.tipo_id = t.tipo_id"
+        "SELECT a.asistencia_id, a.fecha, a.hora, a.tipo_id, a.user_id, u.nombres, u.apellidos, u.cedula, e.nombre_empresa, t.tipo_asistencia FROM asistencia a JOIN users u ON a.user_id = u.user_id JOIN empresas e ON u.empresa_id = e.empresa_id JOIN tipo_asistencia t ON a.tipo_id = t.tipo_id ORDER BY a.asistencia_id DESC"
       );
       return attendances;
     } catch (error) {
@@ -18,7 +18,7 @@ export class AttendanceModel {
   static async getById({ id }) {
     try {
       const [attendance] = await pool.query(
-        "SELECT a.asistencia_id, a.fecha, a.hora, u.nombres, u.apellidos, u.cedula, e.nombre_empresa, t.tipo_asistencia FROM asistencia a JOIN users u ON a.user_id = u.user_id JOIN empresas e ON u.empresa_id = e.empresa_id JOIN tipo_asistencia t ON a.tipo_id = t.tipo_id WHERE a.asistencia_id = ?",
+        "SELECT a.asistencia_id, a.fecha, a.hora, a.tipo_id, a.user_id, u.nombres, u.apellidos, u.cedula, e.nombre_empresa, t.tipo_asistencia FROM asistencia a JOIN users u ON a.user_id = u.user_id JOIN empresas e ON u.empresa_id = e.empresa_id JOIN tipo_asistencia t ON a.tipo_id = t.tipo_id WHERE a.asistencia_id = ?",
         [id]
       );
       return attendance;
@@ -51,7 +51,7 @@ export class AttendanceModel {
 
     try {
       const [result] = await pool.query(
-        "UPDATE asistencia SET fecha = ? hora = ? tipo_id = ? user_id = ? WHERE asistencia_id = ?",
+        "UPDATE asistencia SET fecha = ?, hora = ?, tipo_id = ?, user_id = ? WHERE asistencia_id = ?",
         [date, time, attendanceTypeId, userId, id]
       );
 
