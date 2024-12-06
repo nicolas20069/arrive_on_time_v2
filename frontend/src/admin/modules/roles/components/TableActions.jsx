@@ -72,7 +72,7 @@ export function TableActions({ rol }) {
         icon="pi pi-pencil"
         size="small"
         className="secondary-button"
-        tooltip="Editar Empresa"
+        tooltip="Editar Rol"
         tooltipOptions={{ position: "bottom" }}
         style={{ marginRight: ".5em" }}
         onClick={() => setUpdateVisible(true)}
@@ -81,7 +81,7 @@ export function TableActions({ rol }) {
         icon="pi pi-trash"
         size="small"
         className="danger-button"
-        tooltip="Eliminar Empresa"
+        tooltip="Eliminar Rol"
         tooltipOptions={{ position: "bottom" }}
         onClick={deleteRolDialog}
       />

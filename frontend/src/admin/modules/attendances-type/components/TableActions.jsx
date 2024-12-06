@@ -72,7 +72,7 @@ export function TableActions({ attendanceType }) {
         icon="pi pi-pencil"
         size="small"
         className="secondary-button"
-        tooltip="Editar Empresa"
+        tooltip="Editar Tipo de Asistencia"
         tooltipOptions={{ position: "bottom" }}
         style={{ marginRight: ".5em" }}
         onClick={() => setUpdateVisible(true)}
@@ -81,7 +81,7 @@ export function TableActions({ attendanceType }) {
         icon="pi pi-trash"
         size="small"
         className="danger-button"
-        tooltip="Eliminar Empresa"
+        tooltip="Eliminar Tipo de Asistencia"
         tooltipOptions={{ position: "bottom" }}
         onClick={deleteAttendanceTypeDialog}
       />
