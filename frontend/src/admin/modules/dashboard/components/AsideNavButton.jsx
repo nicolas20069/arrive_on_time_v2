@@ -4,7 +4,7 @@ export function AsideNavButton({ to, icon, title }) {
   return (
     <Link to={to}>
       <article>
-        <img src={`/dashboard/${icon}.svg`} alt="" />
+        <img src={`/${icon}.svg`} alt="" />
 
         <div>
           <span>{title}</span>
