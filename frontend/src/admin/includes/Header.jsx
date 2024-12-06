@@ -6,11 +6,11 @@ export function Header() {
   const location = useLocation();
 
   const items = [
-    { label: "Empleados", path: "/admin/employees" },
-    { label: "Reportes", path: "/admin/reports" },
-    { label: "Asistencias", path: "/admin/attendances" },
-    { label: "Empresas", path: "/admin/companies" },
+    { label: "Usuarios", path: "/admin/employees" },
     { label: "Roles", path: "/admin/roles" },
+    { label: "Asistencias", path: "/admin/attendances" },
+    { label: "Empresas o Instituciones", path: "/admin/companies" },
+    /* { label: "Reportes", path: "/admin/reports" }, */
     { label: "Tipos de Asistencias", path: "/admin/attendances-type" },
   ];
 
