@@ -46,6 +46,12 @@ export function Dashboard() {
       icon: "dashboard/calendar-check",
       title: "Gestionar Tipos de Asistencias",
     },
+
+    {
+      to: "/admin/your-attendances",
+      icon: "dashboard/calendar-month",
+      title: "Ver tus Asistencias",
+    },
   ];
   return (
     <>
