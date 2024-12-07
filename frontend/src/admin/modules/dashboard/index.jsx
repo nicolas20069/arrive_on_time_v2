@@ -2,7 +2,20 @@ import { Header } from "../../includes/Header.jsx";
 import "./styles/main.css";
 import { AsideNavButton } from "./components/AsideNavButton.jsx";
 
+import { getUserById } from "./api/user.js";
+import { useEffect, useState } from "react";
+
 export function Dashboard() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    getUserById({ userId: user.user_id }).then((data) => {
+      setUserData(data[0]);
+    });
+  }, []);
+
   const asideNavItems = [
     {
       to: "/admin/users",
@@ -42,7 +55,7 @@ export function Dashboard() {
   ];
   return (
     <>
-      <Header />
+      <Header user={userData} />
 
       <section className="dashboard">
         <main className="dashboard-main">
