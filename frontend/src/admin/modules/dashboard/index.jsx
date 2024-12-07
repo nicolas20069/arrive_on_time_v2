@@ -5,7 +5,7 @@ import { AsideNavButton } from "./components/AsideNavButton.jsx";
 export function Dashboard() {
   const asideNavItems = [
     {
-      to: "/admin/employees",
+      to: "/admin/users",
       icon: "dashboard/users",
       title: "Gestionar Usuarios",
     },

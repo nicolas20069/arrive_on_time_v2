@@ -6,7 +6,7 @@ export function Header() {
   const location = useLocation();
 
   const items = [
-    { label: "Usuarios", path: "/admin/employees" },
+    { label: "Usuarios", path: "/admin/users" },
     { label: "Roles", path: "/admin/roles" },
     { label: "Asistencias", path: "/admin/attendances" },
     { label: "Empresas o Instituciones", path: "/admin/companies" },
