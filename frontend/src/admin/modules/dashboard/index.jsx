@@ -46,12 +46,6 @@ export function Dashboard() {
       icon: "dashboard/calendar-check",
       title: "Gestionar Tipos de Asistencias",
     },
-
-    {
-      to: "/admin/profile",
-      icon: "user",
-      title: "Ver Perfil",
-    },
   ];
   return (
     <>
