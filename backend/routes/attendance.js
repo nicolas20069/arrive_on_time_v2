@@ -6,6 +6,7 @@ export const attendanceRouter = Router();
 
 attendanceRouter.get("/", AttendanceController.getAll);
 attendanceRouter.get("/:id", AttendanceController.getById);
+attendanceRouter.get("/user/:userId", AttendanceController.getByUserId);
 
 attendanceRouter.post("/", AttendanceController.create);
 attendanceRouter.put("/:id", AttendanceController.update);
