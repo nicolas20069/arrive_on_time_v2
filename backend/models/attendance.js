@@ -28,6 +28,20 @@ export class AttendanceModel {
     }
   }
 
+  // Query para obtener todas las asistencias de un usuario
+  static async getByUserId({ userId }) {
+    try {
+      const [attendances] = await pool.query(
+        "SELECT a.fecha, a.hora, a.user_id, u.nombres, u.apellidos, u.cedula, e.nombre_empresa, t.tipo_asistencia FROM asistencia a JOIN users u ON a.user_id = u.user_id JOIN empresas e ON u.empresa_id = e.empresa_id JOIN tipo_asistencia t ON a.tipo_id = t.tipo_id WHERE a.user_id = ? ORDER BY a.asistencia_id DESC",
+        [userId]
+      );
+      return attendances;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
   // Query para crear un tipo de asistencia
   static async create({ input }) {
     const { date, time, attendanceTypeId, userId } = input;
