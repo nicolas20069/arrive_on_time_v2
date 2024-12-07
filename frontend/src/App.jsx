@@ -10,6 +10,7 @@ import { Attendance } from "./admin/modules/attendances/index.jsx";
 import { Companies } from "./admin/modules/companies/index.jsx";
 import { Roles } from "./admin/modules/roles/index.jsx";
 import { AttendancesType } from "./admin/modules/attendances-type/index.jsx";
+import { YourAttendances } from "./user/modules/your-attendances/index.jsx";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -58,7 +59,8 @@ function App() {
               ]}
             >
               <Routes>
-                <Route path="" element={<h1>User modules</h1>} />
+                <Route path="" element={<YourAttendances/>} />
+                <Route path="profile" element={<YourAttendances/>} />
               </Routes>
             </ProtectedRoute>
           }
