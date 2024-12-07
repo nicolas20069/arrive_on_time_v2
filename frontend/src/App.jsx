@@ -11,6 +11,7 @@ import { Companies } from "./admin/modules/companies/index.jsx";
 import { Roles } from "./admin/modules/roles/index.jsx";
 import { AttendancesType } from "./admin/modules/attendances-type/index.jsx";
 import { YourAttendances } from "./user/modules/your-attendances/index.jsx";
+import { YourAttendancesAdmin } from "./admin/modules/your-attendances/index.jsx";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -41,6 +42,7 @@ function App() {
                 <Route path="users" element={<Employees />} />
                 {/* <Route path="reports" element={<Reports />} /> */}
                 <Route path="attendances" element={<Attendance />} />
+                <Route path="your-attendances" element={<YourAttendancesAdmin />} />
                 <Route path="companies" element={<Companies />} />
                 <Route path="roles" element={<Roles />} />
                 <Route path="attendances-type" element={<AttendancesType />} />
