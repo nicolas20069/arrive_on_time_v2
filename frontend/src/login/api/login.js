@@ -1,0 +1,30 @@
+export async function login({
+    cedula,
+    contraseña,
+  }) {
+    try {
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cedula,
+          contraseña,
+        }),
+      });
+      
+      if (!response.ok) {
+        const { error } = await response.json();
+        return [error, null];
+      }
+  
+      const data = await response.json();
+      return [null, data];
+    } catch (error) {
+      console.error(error)
+      throw new Error(error);
+    }
+  
+  }
+  
