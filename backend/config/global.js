@@ -6,4 +6,5 @@ export const {
     PORT = 5000,
     NODE_ENV = 'development',
     FRONTEND_URL = "http://localhost:5173",
+    SECRET_JWT_KEY = "secret",
 } = process.env
