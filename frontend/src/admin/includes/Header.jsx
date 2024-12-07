@@ -3,11 +3,21 @@ import { Link, useLocation } from "react-router-dom";
 import { Tooltip } from 'primereact/tooltip';
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export function Header({ user }) {
+import { getUserById } from "./api/getUser.js"
+
+export function Header() {
+  const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
   const [visibleRight, setVisibleRight] = useState(false);
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    getUserById({userId: user.user_id}).then((data) => {
+      setUserData(data[0]);
+    });
+  }, []);
   
   const items = [
     { label: "Usuarios", path: "/admin/users" },
@@ -60,10 +70,10 @@ export function Header({ user }) {
       >
         <h2
           style={{ marginBlock: "2px" }}
-        >{`${user.nombres} ${user.apellidos}`}</h2>
-        <p style={{ marginBlock: "1px" }}>{user.cedula}</p>
-        <h2 style={{ marginBlock: "2px" }}>{user.nombre_empresa}</h2>
-        <p style={{ marginBlock: "1px" }}>{user.rol_name}</p>
+        >{`${userData.nombres} ${userData.apellidos}`}</h2>
+        <p style={{ marginBlock: "1px" }}>{userData.cedula}</p>
+        <h2 style={{ marginBlock: "2px" }}>{userData.nombre_empresa}</h2>
+        <p style={{ marginBlock: "1px" }}>{userData.rol_name}</p>
 
         <div style={{ marginTop: "40px" }}>
           {/* <Link to="/user/edit">
