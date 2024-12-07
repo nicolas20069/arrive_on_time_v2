@@ -26,6 +26,19 @@ export class AttendanceController {
     }
   }
 
+  // Método para obtener todas las asistencias de un usuario
+  static async getByUserId(req, res) {
+    const { userId } = req.params;
+
+    try {
+      const attendances = await AttendanceModel.getByUserId({ userId });
+      res.json(attendances);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error al obtener las asistencias" });
+    }
+  }
+
   // Método para crear un tipo de asistencia siendo administrador
   static async create(req, res) {
     const result = validateAttendance(req.body);
