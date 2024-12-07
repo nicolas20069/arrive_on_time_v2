@@ -7,11 +7,14 @@ import { rolesRouter } from "./routes/roles.js";
 import { companiesRouter } from "./routes/companies.js";
 import { attendanceRouter } from "./routes/attendance.js";
 import { attendancesTypeRouter } from "./routes/attendancesType.js";
+import { loginRouter } from "./routes/login.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors(FRONTEND_URL));
 app.disable("x-powered-by");
+
+app.use('/login', loginRouter)
 
 app.use('/users', usersRouter)
 app.use('/roles', rolesRouter)
