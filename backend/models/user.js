@@ -27,7 +27,7 @@ export class UserModel {
   // Query para obtener un usuario por su id
   static async getById({ id }) {
     try {
-      const [user] = await pool.query("SELECT * FROM users WHERE user_id = ?", [
+      const [user] = await pool.query("SELECT u.*, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id WHERE u.user_id = ?", [
         id,
       ]);
       return user;
@@ -136,5 +136,24 @@ export class UserModel {
       console.error(error);
       throw new Error("Error al eliminar el usuario");
     }
+  }
+
+  // Iniciar sesion
+  static async login({ cedula, contraseña }) {
+    if (!cedula || !contraseña) {
+      throw new Error("Usuario y contraseña son requeridos"); 
+    }
+
+    const [user] = await pool.query("SELECT * FROM users WHERE cedula = ?", [
+      cedula
+    ]);
+    if (user.length === 0) throw new Error("Usuario no encontrado");
+
+    const isValidPassword = await bycrypt.compare(contraseña, user[0].contraseña);
+    if (!isValidPassword) throw new Error("Contraseña incorrecta");
+
+    const { contraseña: _, ...publicUser } = user[0];
+
+    return publicUser;
   }
 }
