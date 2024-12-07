@@ -5,9 +5,8 @@ export async function getUsers() {
   return data;
 }
 
-export async function getUserById({ id }) {
-  if (!id) return;
-  const response = await fetch(`http://localhost:5000/users/${id}`);
+export async function getUserById({ userId }) {
+  const response = await fetch(`http://localhost:5000/users/${userId}`);
   const data = await response.json();
 
   return data;
@@ -46,17 +45,15 @@ export async function createUser({
         adminId,
       }),
     });
-    
+
     if (!response.ok) {
-      return(null);
+      return null;
     }
 
     const data = await response.json();
     return data;
-
   } catch (error) {
-    console.error(error)
+    console.error(error);
     throw new Error(error);
   }
-
 }
