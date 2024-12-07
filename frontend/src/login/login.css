@@ -71,6 +71,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.password-input {
+  display: flex;
+}
+
+#contraseña {
+  width: 100%;
+}
+
+.btn-show-password {
+  border-radius: 6px;
+  width: 46px;
+  height: 46px;
+  margin-left: 2px;
+  cursor: pointer;
+}
+
 .login-button {
   width: 100%;
   margin-top: 15px;
