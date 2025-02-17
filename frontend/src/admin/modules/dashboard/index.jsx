@@ -79,7 +79,7 @@ export function Dashboard() {
 
           <footer className="dashboard-footer">
             <div>
-              <span>©Arrive On Time 2024 </span>
+              <span>©Arrive On Time 2025 </span>
               <span>- Todos los derechos reservados</span>
             </div>
 
