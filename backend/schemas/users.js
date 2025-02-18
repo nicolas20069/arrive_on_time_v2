@@ -3,7 +3,7 @@ import z from "zod";
 const userSchema = z.object({
   nombres: z.string(),
   apellidos: z.string(),
-  edad: z.number().int().positive(),
+  fechaNacimiento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Formato de fecha inválido (YYYY-MM-DD)"),
   cedula: z.number(),
   correo: z.string().email(),
   direccion: z.string().optional(),
