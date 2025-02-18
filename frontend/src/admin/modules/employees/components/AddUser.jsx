@@ -3,11 +3,13 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
+import { addLocale } from "primereact/api";
 import { useState, useRef, useEffect } from "react";
 
 import { createUser } from "../api/users.js";
 import { getCompanies } from "../api/companies.js";
 import { getRoles } from "../api/roles.js";
+import { Calendar } from "primereact/calendar";
 
 export function AddUser({ visible, setVisible }) {
   const toast = useRef(null);
@@ -18,7 +20,7 @@ export function AddUser({ visible, setVisible }) {
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [correo, setCorreo] = useState("");
-  const [edad, setEdad] = useState();
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [cedula, setCedula] = useState();
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState();
@@ -65,12 +67,58 @@ export function AddUser({ visible, setVisible }) {
     });
   };
 
+  addLocale("es", {
+    firstDayOfWeek: 1,
+    showMonthAfterYear: true,
+    dayNames: [
+      "domingo",
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sábado",
+    ],
+    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+    monthNames: [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ],
+    monthNamesShort: [
+      "ene",
+      "feb",
+      "mar",
+      "abr",
+      "may",
+      "jun",
+      "jul",
+      "ago",
+      "sep",
+      "oct",
+      "nov",
+      "dic",
+    ],
+    today: "Hoy",
+    clear: "Limpiar",
+  });
+
   const handleCreateUser = async (e) => {
     if (
       !nombres ||
       !apellidos ||
       !correo ||
-      !edad ||
+      !fechaNacimiento ||
       !cedula ||
       !telefono ||
       !contraseña ||
@@ -81,7 +129,8 @@ export function AddUser({ visible, setVisible }) {
       return;
     }
 
-    const parsedEdad = Number(edad);
+    const parsedFechaNacimiento = fechaNacimiento.toISOString().split("T")[0];
+    console.log(parsedFechaNacimiento);
     const parsedCedula = Number(cedula);
     const parsedTelefono = Number(telefono);
     const empresaId = Number(selectCompany.empresa_id);
@@ -92,7 +141,7 @@ export function AddUser({ visible, setVisible }) {
         nombres,
         apellidos,
         correo,
-        edad: parsedEdad,
+        fechaNacimiento: parsedFechaNacimiento,
         cedula: parsedCedula,
         direccion,
         telefono: parsedTelefono,
@@ -192,16 +241,18 @@ export function AddUser({ visible, setVisible }) {
             />
           </label>
 
-          <label className="label-form" htmlFor="edad">
-            Edad
-            <InputText
-              id="edad"
-              type="number"
-              keyfilter="pnum"
-              placeholder="Edad"
+          <label className="label-form" htmlFor="fecha-nacimiento">
+            Fecha de Nacimiento
+            <Calendar
+              id="fecha-nacimiento"
+              placeholder="Fecha de Nacimiento"
+              dateFormat="yy-mm-dd"
               required
-              value={edad}
-              onChange={(e) => setEdad(e.target.value)}
+              value={fechaNacimiento}
+              onChange={(e) => setFechaNacimiento(e.target.value)}
+              locale="es"
+              showIcon
+              showButtonBar
             />
           </label>
 

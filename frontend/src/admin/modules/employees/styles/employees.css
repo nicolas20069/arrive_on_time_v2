@@ -27,3 +27,28 @@ input[type=number]::-webkit-outer-spin-button {
   flex-direction: column;
   gap: 2px;
 }
+
+#fecha-nacimiento {
+  button {
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+  }
+}
+
+.p-datepicker-calendar {
+  .p-datepicker-today {
+    span {
+      background-color: var(--secondary-color);
+    }
+  }
+
+  .p-highlight {
+    background-color: var(--primary-color);
+  }
+}
+

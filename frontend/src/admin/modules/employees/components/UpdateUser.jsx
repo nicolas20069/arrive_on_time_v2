@@ -5,9 +5,11 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
+import { addLocale } from "primereact/api";
 
 import { getCompanies } from "../api/companies";
 import { getRoles } from "../api/roles";
+import { Calendar } from "primereact/calendar";
 
 export function UpdateUser({ visible, setVisible, user }) {
   const toast = useRef(null);
@@ -18,7 +20,7 @@ export function UpdateUser({ visible, setVisible, user }) {
   const [userData, setUserData] = useState({
     nombres: "",
     apellidos: "",
-    edad: Number(),
+    fechaNacimiento: new Date(),
     cedula: null,
     correo: "",
     direccion: "",
@@ -60,7 +62,7 @@ export function UpdateUser({ visible, setVisible, user }) {
       setUserData({
         nombres: user.nombres,
         apellidos: user.apellidos,
-        edad: Number(user.edad),
+        fechaNacimiento: new Date(user.fecha_nacimiento),
         cedula: user.cedula,
         correo: user.correo,
         direccion: user.direccion,
@@ -79,18 +81,23 @@ export function UpdateUser({ visible, setVisible, user }) {
   
     setUserData((prevData) => ({
       ...prevData,
-      [field]: field === "edad" || field === "telefono" || field === "cedula" ? Number(value) : value,
+      [field]: field === "telefono" || field === "cedula" ? Number(value) : value,
     }));
   };
 
   const handleSubmit = async () => {
+    const newUserData = {
+      ...userData,
+      fechaNacimiento: userData.fechaNacimiento.toISOString().split("T")[0],
+    }
+    console.log(newUserData);
     try {
       const response = await fetch(`http://localhost:5000/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(newUserData),
       });
 
       if (!response.ok) {
@@ -120,6 +127,52 @@ export function UpdateUser({ visible, setVisible, user }) {
       });
     }
   };
+
+  addLocale("es", {
+    firstDayOfWeek: 1,
+    showMonthAfterYear: true,
+    dayNames: [
+      "domingo",
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sábado",
+    ],
+    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+    monthNames: [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ],
+    monthNamesShort: [
+      "ene",
+      "feb",
+      "mar",
+      "abr",
+      "may",
+      "jun",
+      "jul",
+      "ago",
+      "sep",
+      "oct",
+      "nov",
+      "dic",
+    ],
+    today: "Hoy",
+    clear: "Limpiar",
+  });
 
   const footerContent = (
     <div>
@@ -194,7 +247,7 @@ export function UpdateUser({ visible, setVisible, user }) {
           </label>
 
           <label className="label-form" htmlFor="edad">
-            Edad
+            {/* Edad
             <InputText
               id="edad"
               type="number"
@@ -203,6 +256,18 @@ export function UpdateUser({ visible, setVisible, user }) {
               required
               value={userData.edad}
               onChange={(e) => handleChange(e, "edad")}
+            /> */}
+            Fecha de Nacimiento
+            <Calendar
+              id="fecha-nacimiento"
+              placeholder="Fecha de Nacimiento"
+              dateFormat="yy-mm-dd"
+              required
+              value={userData.fechaNacimiento}
+              onChange={(e) => handleChange(e, "fechaNacimiento")}
+              locale="es"
+              showIcon
+              showButtonBar
             />
           </label>
 

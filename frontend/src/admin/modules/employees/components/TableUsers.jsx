@@ -27,20 +27,12 @@ export function TableUsers({ users }) {
         <Column field="apellidos" header="Apellidos"></Column>
         <Column field="cedula" header="Cedula"></Column>
         <Column field="correo" header="Correo"></Column>
+        <Column field="fecha_nacimiento" header="Fecha Nacimiento" body={(rowData) => new Date(rowData.fecha_nacimiento).toISOString().split("T")[0]}></Column>
         <Column field="edad" header="Edad"></Column>
         <Column field="direccion" header="Direccion"></Column>
         <Column field="nombre_empresa" header="Empresa"></Column>
         <Column field="rol_name" header="Rol"></Column>
-        {/* <Column
-          header="Empresa"
-          body={(user) =>
-            user.empresa_id === 3 ? "Arrive On Time" : user.empresa_id
-          }
-        ></Column> */}
-        {/* <Column
-          header="Rol"
-          body={(user) => (user.rol_id === 1 ? "Administrador" : "Empleado")}
-        ></Column> */}
+
         <Column
           header="Acciones"
           body={(user) => <TableActions user={user} />}
