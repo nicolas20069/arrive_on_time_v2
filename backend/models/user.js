@@ -5,7 +5,7 @@ export class UserModel {
   // Query para obtener todos los usuarios
   static async getAll() {
     try {
-      const [users] = await pool.query("SELECT u.*, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id");
+      const [users] = await pool.query("SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id");
       return users;
     } catch (error) {
       console.log(error);
@@ -27,7 +27,7 @@ export class UserModel {
   // Query para obtener un usuario por su id
   static async getById({ id }) {
     try {
-      const [user] = await pool.query("SELECT u.*, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id WHERE u.user_id = ?", [
+      const [user] = await pool.query("SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id WHERE u.user_id = ?", [
         id,
       ]);
       return user;
@@ -43,7 +43,7 @@ export class UserModel {
       const {
         nombres,
         apellidos,
-        edad,
+        fechaNacimiento,
         cedula,
         correo,
         direccion,
@@ -64,11 +64,11 @@ export class UserModel {
       const passwordHash = await bycrypt.hash(contraseña, 10);
 
       const [result] = await pool.query(
-        "INSERT INTO users (nombres, apellidos, edad, cedula, correo, direccion, telefono, contraseña, empresa_id, rol_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO users (nombres, apellidos, fecha_nacimiento, cedula, correo, direccion, telefono, contraseña, empresa_id, rol_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           nombres,
           apellidos,
-          edad,
+          fechaNacimiento,
           cedula,
           correo,
           direccion,
@@ -93,7 +93,7 @@ export class UserModel {
       const {
         nombres,
         apellidos,
-        edad,
+        fechaNacimiento,
         cedula,
         correo,
         direccion,
@@ -103,11 +103,11 @@ export class UserModel {
       } = input;
 
       const [result] = await pool.query(
-        "UPDATE users SET nombres = ?, apellidos = ?, edad = ?, cedula = ?, correo = ?, direccion = ?, telefono = ?, empresa_id = ?, rol_id = ? WHERE user_id = ?",
+        "UPDATE users SET nombres = ?, apellidos = ?, fecha_nacimiento = ?, cedula = ?, correo = ?, direccion = ?, telefono = ?, empresa_id = ?, rol_id = ? WHERE user_id = ?",
         [
           nombres,
           apellidos,
-          edad,
+          fechaNacimiento,
           cedula,
           correo,
           direccion,
