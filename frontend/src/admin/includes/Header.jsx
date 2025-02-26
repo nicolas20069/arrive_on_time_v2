@@ -1,11 +1,13 @@
-import "./styles/header.css";
+import "./styles/index.css";
+import { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Tooltip } from 'primereact/tooltip';
+import { Tooltip } from "primereact/tooltip";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
-import { useEffect, useState } from "react";
+import { FileUpload } from 'primereact/fileupload';
+import { Toast } from 'primereact/toast';
 
-import { getUserById } from "./api/getUser.js"
+import { getUserById } from "./api/getUser.js";
 
 export function Header() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,12 +15,14 @@ export function Header() {
   const [visibleRight, setVisibleRight] = useState(false);
   const [userData, setUserData] = useState([]);
 
+  const toast = useRef(null);
+
   useEffect(() => {
-    getUserById({userId: user.user_id}).then((data) => {
+    getUserById({ userId: user.user_id }).then((data) => {
       setUserData(data[0]);
     });
   }, []);
-  
+
   const items = [
     { label: "Usuarios", path: "/admin/users" },
     { label: "Roles", path: "/admin/roles" },
@@ -28,6 +32,14 @@ export function Header() {
     /* { label: "Reportes", path: "/admin/reports" }, */
     { label: "Tipos de Asistencias", path: "/admin/attendances-type" },
   ];
+
+  const userImg = userData.user_img_profile ? userData.user_img_profile : "/user.svg";
+
+  // funcion para subir la imagen de perfil
+  const onUpload = () => {
+    toast.current.show({ severity: 'info', summary: 'Success', detail: 'Imagen subida correctamente' });
+    window.location.reload();
+};
 
   return (
     <>
@@ -59,7 +71,7 @@ export function Header() {
             className="user"
             data-pr-tooltip="Ver Perfil"
           >
-            <img className="user-img" src="/user.svg" />
+            <img className="user-img" src={userImg} />
           </Button>
         </div>
       </header>
@@ -69,18 +81,35 @@ export function Header() {
         position="right"
         onHide={() => setVisibleRight(false)}
       >
-        <h2
-          style={{ marginBlock: "2px" }}
-        >{`${userData.nombres} ${userData.apellidos}`}</h2>
-        <p style={{ marginBlock: "1px" }}>{userData.cedula}</p>
-        <h2 style={{ marginBlock: "2px" }}>{userData.nombre_empresa}</h2>
-        <p style={{ marginBlock: "1px" }}>{userData.rol_name}</p>
+        <h2 style={{ margin: "0 0 20px 0" }}>Perfil de Usuario</h2>
+        <header className="aside-header-profile">
+          <img
+            style={{ width: "68px", height: "68px", borderRadius: "50%", border: "1px solid #000" }}
+            src={userImg}
+          />
 
-        <div style={{ marginTop: "40px" }}>
-          {/* <Link to="/user/edit">
-            <Button style={{width: "100%"}} className="primary-button" label="Editar Perfil" icon="pi pi-user-edit" />
-          </Link> */}
+          <div>
+            <h2>{`${userData.nombres} ${userData.apellidos}`}</h2>
 
+            <p style={{ marginBlock: "1px" }}>{userData.cedula}</p>
+          </div>
+        </header>
+
+        <h2 style={{ margin: "12px 0 2px 0" }}>{userData.nombre_empresa}</h2>
+        <p style={{margin: "0"}}>{userData.rol_name}</p>
+
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "200px", gap: "10px" }}>
+        <Toast ref={toast} />
+        <FileUpload 
+          className="file-upload"
+          url={`http://localhost:5000/users/image-profile/${userData.user_id}`}
+          name="user_img_profile"
+          mode="basic" 
+          accept="image/*" 
+          chooseLabel="Cambiar Foto de Perfil" 
+          onUpload={onUpload}
+        />
+          
           <Button
             style={{ width: "100%" }}
             className="danger-button"
