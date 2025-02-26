@@ -9,7 +9,7 @@ export function HeaderTable() {
   return (
     <>
       <div className="table-header">
-        <h2>Roles</h2>
+        <h2>Tipos de Asistencias</h2>
         <Button
           label="Agregar nuevo tipo de asistencia"
           icon="pi pi-plus"
