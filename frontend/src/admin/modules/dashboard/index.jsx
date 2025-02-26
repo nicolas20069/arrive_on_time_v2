@@ -13,7 +13,6 @@ export function Dashboard() {
   useEffect(() => {
     getUserById({ userId: user.user_id }).then((data) => {
       setUserData(data[0]);
-      const asideNavItems = getAsideNavItems(data[0]);
     });
   }, []);
 

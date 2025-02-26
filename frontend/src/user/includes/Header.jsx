@@ -9,7 +9,10 @@ export function Header({ user }) {
   const location = useLocation();
   const [visibleRight, setVisibleRight] = useState(false);
 
-  const items = [{ label: "Tus Asistencias", path: "/user" }];
+  const items = [
+    { label: "Tus Asistencias", path: "/user" },
+    { label: "Descargar Tus Asistencias", path: `http://localhost:5000/resources/your-attendances/${user.user_id}` }
+  ];
 
   return (
     <>

@@ -2,13 +2,14 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 import { Tag } from "primereact/tag";
+import { HeaderTable } from "./HeaderTable.jsx";
 
 export function TableAttendances({ attendances, user }) {
   return (
     <div className="card users-table">
       <DataTable
         value={attendances}
-        header={<h2>Tus Asistencias: {`${user.nombres} ${user.apellidos}`}</h2>}
+        header={<HeaderTable user={user}/>}
         size="small"
         resizableColumns
         showGridlines
