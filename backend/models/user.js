@@ -5,7 +5,9 @@ export class UserModel {
   // Query para obtener todos los usuarios
   static async getAll() {
     try {
-      const [users] = await pool.query("SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id");
+      const [users] = await pool.query(
+        "SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id"
+      );
       return users;
     } catch (error) {
       console.log(error);
@@ -27,9 +29,10 @@ export class UserModel {
   // Query para obtener un usuario por su id
   static async getById({ id }) {
     try {
-      const [user] = await pool.query("SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id WHERE u.user_id = ?", [
-        id,
-      ]);
+      const [user] = await pool.query(
+        "SELECT u.*, TIMESTAMPDIFF(YEAR, u.`fecha_nacimiento`, CURDATE()) AS edad, e.nombre_empresa, r.rol_name FROM users u INNER JOIN empresas e ON u.empresa_id = e.empresa_id INNER JOIN user_rol r ON u.rol_id = r.rol_id WHERE u.user_id = ?",
+        [id]
+      );
       return user;
     } catch (error) {
       console.log(error);
@@ -53,10 +56,10 @@ export class UserModel {
         rolId,
       } = input;
 
-      const [confirmUser] = await pool.query("SELECT * FROM users WHERE cedula = ? OR correo = ?", [
-        cedula,
-        correo,
-      ]);
+      const [confirmUser] = await pool.query(
+        "SELECT * FROM users WHERE cedula = ? OR correo = ?",
+        [cedula, correo]
+      );
       if (confirmUser.length > 0) {
         throw new Error("El usuario ya existe con la misma cédula o correo");
       }
@@ -80,10 +83,44 @@ export class UserModel {
       );
 
       const { contraseña: _, ...user } = input;
-      return { message: 'Usuario creado correctamente' , id: result.insertId, user };
+      return {
+        message: "Usuario creado correctamente",
+        id: result.insertId,
+        user,
+      };
     } catch (error) {
       console.log(error);
       throw new Error(error);
+    }
+  }
+
+  // Metodo para subir la imagen de perfil de un usuario
+  static async setImageProfile({ id, imageUrl }) {
+    try {
+      const [result] = await pool.query(
+        "UPDATE users SET user_img_profile = ? WHERE user_id = ?",
+        [imageUrl, id]
+      );
+      
+      return result.affectedRows;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al establecer la imagen de perfil del usuario");
+    }
+  }
+
+  // Metodo para subir la imagen de perfil de un usuario a la base de datos en formato blob
+  static async setImageProfileDB({ id, imageData }) {
+    try {
+      const [result] = await pool.query(
+        "UPDATE users SET user_img_profile_blob = ? WHERE user_id = ?",
+        [imageData, id]
+      );
+      
+      return result.affectedRows;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al establecer la imagen de perfil del usuario");
     }
   }
 
@@ -141,15 +178,18 @@ export class UserModel {
   // Iniciar sesion
   static async login({ cedula, contraseña }) {
     if (!cedula || !contraseña) {
-      throw new Error("Usuario y contraseña son requeridos"); 
+      throw new Error("Usuario y contraseña son requeridos");
     }
 
     const [user] = await pool.query("SELECT * FROM users WHERE cedula = ?", [
-      cedula
+      cedula,
     ]);
     if (user.length === 0) throw new Error("Usuario no encontrado");
 
-    const isValidPassword = await bycrypt.compare(contraseña, user[0].contraseña);
+    const isValidPassword = await bycrypt.compare(
+      contraseña,
+      user[0].contraseña
+    );
     if (!isValidPassword) throw new Error("Contraseña incorrecta");
 
     const { contraseña: _, ...publicUser } = user[0];
