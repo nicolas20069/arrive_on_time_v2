@@ -1,18 +1,38 @@
 import "./styles/header.css";
+import { useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
-import { useState } from "react";
+import { FileUpload } from 'primereact/fileupload';
+import { Toast } from 'primereact/toast';
 
 export function Header({ user }) {
   const location = useLocation();
   const [visibleRight, setVisibleRight] = useState(false);
+  const toast = useRef(null);
 
   const items = [
     { label: "Tus Asistencias", path: "/user" },
     { label: "Descargar Tus Asistencias", path: `http://localhost:5000/resources/your-attendances/${user.user_id}` }
   ];
+
+  let userImg =  "/user.svg";
+
+
+  if (user.user_img_profile_blob) {
+    // convertir el blob a un objeto de imagen
+    const arrayBufferView = new Uint8Array(user.user_img_profile_blob.data);
+    const blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+    const imageUrl = URL.createObjectURL(blob);
+    userImg = imageUrl;
+  }
+
+  // funcion para subir la imagen de perfil
+  const onUpload = () => {
+    toast.current.show({ severity: 'info', summary: 'Success', detail: 'Imagen subida correctamente' });
+    window.location.reload();
+};
 
   return (
     <>
@@ -44,7 +64,7 @@ export function Header({ user }) {
             className="user"
             data-pr-tooltip="Ver Perfil"
           >
-            <img className="user-img" src="/user.svg" />
+            <img className="user-img" src={userImg} />
           </Button>
         </div>
       </header>
@@ -54,18 +74,35 @@ export function Header({ user }) {
         position="right"
         onHide={() => setVisibleRight(false)}
       >
-        <h2
-          style={{ marginBlock: "2px" }}
-        >{`${user.nombres} ${user.apellidos}`}</h2>
-        <p style={{ marginBlock: "1px" }}>{user.cedula}</p>
-        <h2 style={{ marginBlock: "2px" }}>{user.nombre_empresa}</h2>
-        <p style={{ marginBlock: "1px" }}>{user.rol_name}</p>
+        <h2 style={{ margin: "0 0 20px 0" }}>Perfil de Usuario</h2>
+        <header className="aside-header-profile">
+          <img
+            style={{ width: "68px", height: "68px", borderRadius: "50%", border: "1px solid #000" }}
+            src={userImg}
+          />
 
-        <div style={{ marginTop: "40px" }}>
-          {/* <Link to="/user/edit">
-            <Button style={{width: "100%"}} className="primary-button" label="Editar Perfil" icon="pi pi-user-edit" />
-          </Link> */}
+          <div>
+            <h2>{`${user.nombres} ${user.apellidos}`}</h2>
 
+            <p style={{ marginBlock: "1px" }}>{user.cedula}</p>
+          </div>
+        </header>
+
+        <h2 style={{ margin: "12px 0 2px 0" }}>{user.nombre_empresa}</h2>
+        <p style={{margin: "0"}}>{user.rol_name}</p>
+
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "200px", gap: "10px" }}>
+        <Toast ref={toast} />
+        <FileUpload 
+          className="file-upload"
+          url={`http://localhost:5000/users/image-profile-db/${user.user_id}`}
+          name="user_img_profile"
+          mode="basic" 
+          accept="image/*" 
+          chooseLabel="Cambiar Foto de Perfil" 
+          onUpload={onUpload}
+        />
+          
           <Button
             style={{ width: "100%" }}
             className="danger-button"
