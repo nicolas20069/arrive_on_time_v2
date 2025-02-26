@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export const {
     DB_HOST = "localhost",
     DB_USER = "root",
@@ -7,4 +11,7 @@ export const {
     NODE_ENV = 'development',
     FRONTEND_URL = "http://localhost:5173",
     SECRET_JWT_KEY = "secret",
+    CLOUD_NAME,
+    API_KEY,
+    API_SECRET,
 } = process.env
