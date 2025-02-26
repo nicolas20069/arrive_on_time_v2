@@ -1,58 +1,24 @@
+import { useEffect, useState } from "react";
 import { Header } from "../../includes/Header.jsx";
-import "./styles/main.css";
 import { AsideNavButton } from "./components/AsideNavButton.jsx";
+import "./styles/main.css";
 
 import { getUserById } from "./api/user.js";
-import { useEffect, useState } from "react";
+import { getAsideNavItems } from "./data/navItems.js";
 
 export function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
-
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     getUserById({ userId: user.user_id }).then((data) => {
       setUserData(data[0]);
+      const asideNavItems = getAsideNavItems(data[0]);
     });
   }, []);
 
-  const asideNavItems = [
-    {
-      to: "/admin/users",
-      icon: "dashboard/users",
-      title: "Gestionar Usuarios",
-    },
+  const asideNavItems = getAsideNavItems(userData);
 
-    {
-      to: "/admin/companies",
-      icon: "dashboard/buildings",
-      title: "Gestionar Empresas o Instituciones",
-    },
-
-    {
-      to: "/admin/roles",
-      icon: "dashboard/user-tag",
-      title: "Gestionar Roles",
-    },
-
-    {
-      to: "/admin/attendances",
-      icon: "dashboard/calendar-alt",
-      title: "Gestionar Asistencias",
-    },
-
-    {
-      to: "/admin/attendances-type",
-      icon: "dashboard/calendar-check",
-      title: "Gestionar Tipos de Asistencias",
-    },
-
-    {
-      to: "/admin/your-attendances",
-      icon: "dashboard/calendar-month",
-      title: "Ver tus Asistencias",
-    },
-  ];
   return (
     <>
       <Header user={userData} />
