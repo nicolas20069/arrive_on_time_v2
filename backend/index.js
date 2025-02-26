@@ -29,5 +29,5 @@ app.use('/attendances-type', attendancesTypeRouter)
 app.use('/resources', resourcesRouter)
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en: http://localhost:${PORT}`);
 });
