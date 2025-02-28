@@ -72,6 +72,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `contraseña` varchar(250) NOT NULL,
   `empresa_id` int(11) NOT NULL,
   `rol_id` int(11) NOT NULL,
+  `user_img_profile` varchar(255) DEFAULT NULL,
+  `user_img_profile_blob` longblob DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `fk_empresa_id` (`empresa_id`),
   KEY `fk_rol_id` (`rol_id`),
@@ -193,7 +195,9 @@ INSERT INTO
     `telefono`,
     `contraseña`,
     `empresa_id`,
-    `rol_id`
+    `rol_id`,
+    `user_img_profile`,
+    `user_img_profile_blob`
   )
 VALUES
   (
@@ -207,7 +211,9 @@ VALUES
     '3204860520',
     '$2b$10$ySf64Q/YM3JJaGPP5QtAl.ZgOlDZfo2M37jKbzGPZ.JUaSL/xvpyW',
     3,
-    1
+    1,
+    'http://res.cloudinary.com/deqobdpjv/image/upload/v1740616993/arrive_on_time/s47quke5jdwhzzi1fidj.png',
+    NULL
   );
 INSERT INTO
   `users` (
@@ -221,7 +227,9 @@ INSERT INTO
     `telefono`,
     `contraseña`,
     `empresa_id`,
-    `rol_id`
+    `rol_id`,
+    `user_img_profile`,
+    `user_img_profile_blob`
   )
 VALUES
   (
@@ -235,7 +243,9 @@ VALUES
     '3204860510',
     '$2b$10$eT/OnIXRd7BKkTvX.FjldeVwxSx7p0kP3CuZ3wdnhEB/v7mV8xsdu',
     3,
-    8
+    8,
+    '',
+    NULL
   );
 INSERT INTO
   `users` (
@@ -249,7 +259,9 @@ INSERT INTO
     `telefono`,
     `contraseña`,
     `empresa_id`,
-    `rol_id`
+    `rol_id`,
+    `user_img_profile`,
+    `user_img_profile_blob`
   )
 VALUES
   (
@@ -263,7 +275,9 @@ VALUES
     '3204860500',
     '$2b$10$UBDLeaYaTXGD5zRw5AZ75uSk3JxPCgSKbBSTsq8slkpR6l0/IBJLm',
     3,
-    1
+    1,
+    NULL,
+    NULL
   );
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
