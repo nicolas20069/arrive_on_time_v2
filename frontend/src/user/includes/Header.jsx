@@ -4,21 +4,24 @@ import { Link, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
-import { FileUpload } from 'primereact/fileupload';
-import { Toast } from 'primereact/toast';
+import { FileUpload } from "primereact/fileupload";
+import { Toast } from "primereact/toast";
 
 export function Header({ user }) {
   const location = useLocation();
   const [visibleRight, setVisibleRight] = useState(false);
   const toast = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const items = [
     { label: "Tus Asistencias", path: "/user" },
-    { label: "Descargar Tus Asistencias", path: `http://localhost:5000/resources/your-attendances/${user.user_id}` }
+    {
+      label: "Descargar Tus Asistencias",
+      path: `http://localhost:5000/resources/your-attendances/${user.user_id}`,
+    },
   ];
 
-  let userImg =  "/user.svg";
-
+  let userImg = "/user.svg";
 
   if (user.user_img_profile_blob) {
     // convertir el blob a un objeto de imagen
@@ -30,9 +33,26 @@ export function Header({ user }) {
 
   // funcion para subir la imagen de perfil
   const onUpload = () => {
-    toast.current.show({ severity: 'info', summary: 'Success', detail: 'Imagen subida correctamente' });
+    toast.current.show({
+      severity: "info",
+      summary: "Success",
+      detail: "Imagen subida correctamente",
+    });
     window.location.reload();
-};
+  };
+
+  // En caso de error al subir la imagen
+  const onError = (e) => {
+    const { message } = JSON.parse(e.xhr.response);
+
+    setLoading(false);
+
+    toast.current.show({
+      severity: "error",
+      summary: "Error",
+      detail: message,
+    });
+  };
 
   return (
     <>
@@ -77,7 +97,12 @@ export function Header({ user }) {
         <h2 style={{ margin: "0 0 20px 0" }}>Perfil de Usuario</h2>
         <header className="aside-header-profile">
           <img
-            style={{ width: "68px", height: "68px", borderRadius: "50%", border: "1px solid #000" }}
+            style={{
+              width: "68px",
+              height: "68px",
+              borderRadius: "50%",
+              border: "1px solid #000",
+            }}
             src={userImg}
           />
 
@@ -89,20 +114,36 @@ export function Header({ user }) {
         </header>
 
         <h2 style={{ margin: "12px 0 2px 0" }}>{user.nombre_empresa}</h2>
-        <p style={{margin: "0"}}>{user.rol_name}</p>
+        <p style={{ margin: "0" }}>{user.rol_name}</p>
 
-        <div style={{ display: "flex", flexDirection: "column", marginTop: "200px", gap: "10px" }}>
-        <Toast ref={toast} />
-        <FileUpload 
-          className="file-upload"
-          url={`http://localhost:5000/users/image-profile-db/${user.user_id}`}
-          name="user_img_profile"
-          mode="basic" 
-          accept="image/*" 
-          chooseLabel="Cambiar Foto de Perfil" 
-          onUpload={onUpload}
-        />
-          
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "200px",
+            gap: "10px",
+          }}
+        >
+          <Toast ref={toast} />
+          <FileUpload
+            className="file-upload"
+            url={`http://localhost:5000/users/image-profile-db/${user.user_id}`}
+            name="user_img_profile"
+            mode="basic"
+            accept=".jpg,.jpeg,.png"
+            chooseLabel="Cambiar Foto de Perfil"
+            maxFileSize={1000000}
+            onUpload={onUpload}
+            onError={onError}
+            onBeforeUpload={() => setLoading(true)}
+          />
+
+          {loading && (
+            <span style={{ color: "#000", fontSize: "12px" }}>
+              Subiendo imagen...
+            </span>
+          )}
+
           <Button
             style={{ width: "100%" }}
             className="danger-button"
