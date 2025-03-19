@@ -37,13 +37,13 @@ export const getAsideNavItems = (userData) => {
     },
   
     {
-      to: `http://localhost:5000/resources/db/${userData.rol_id}`,
+      to: `http://localhost:5000/resources/db/${userData.rol_id}/${userData.user_id}`,
       icon: "dashboard/db",
       title: "Exportar Base de Datos",
     },
   
     {
-      to: `http://localhost:5000/resources/all-attendances/${userData.rol_id}`,
+      to: `http://localhost:5000/resources/all-attendances/${userData.rol_id}/${userData.user_id}`,
       icon: "dashboard/table-down",
       title: "Descargar Todas las Asistencias",
     },

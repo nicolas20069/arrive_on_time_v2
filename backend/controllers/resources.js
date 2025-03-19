@@ -3,17 +3,18 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import mysqldump from "mysqldump";
 import xlsx from "xlsx-populate";
-import AdmZip from "adm-zip";
+import Minizip from "minizip-asm.js";
 
 import { dbConfig } from "../config/db.js";
 import { AttendanceModel } from "../models/attendance.js";
+import { UserModel } from "../models/user.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export class ResourcesController {
   // Metodo para exportar la base de datos
   static async getDB(req, res) {
-    const { rol_id } = req.params;
+    const { rol_id, user_id } = req.params;
 
     if (+rol_id !== 1) {
       return res.status(401).json({
@@ -25,9 +26,11 @@ export class ResourcesController {
     const zipFile = path.join(__dirname, "../../backup.zip");
 
     try {
+      const [user] = await UserModel.getById({ id: user_id });
+
       await mysqldump({ connection: dbConfig, dumpToFile: sqlFile });
 
-      await createZip(sqlFile, zipFile);
+      await createZip(sqlFile, zipFile, user.cedula.toString());
 
       res.download(zipFile, "backup.zip", (err) => {
         if (err) {
@@ -35,6 +38,7 @@ export class ResourcesController {
           res.status(500).send("Error al descargar la base de datos.");
         }
 
+        fs.unlinkSync(sqlFile);
         fs.unlinkSync(zipFile);
       });
     } catch (error) {
@@ -45,7 +49,7 @@ export class ResourcesController {
 
   // Método para descargar todas las asistencias en formato Excel
   static async getAllAttendances(req, res) {
-    const { rol_id } = req.params;
+    const { rol_id, user_id} = req.params;
 
     if (+rol_id !== 1) {
       return res.status(401).json({
@@ -58,9 +62,10 @@ export class ResourcesController {
 
     try {
       const attendances = await AttendanceModel.getAll();
+      const [user] = await UserModel.getById({ id: user_id });
       await generateExcel(attendances, excelFile);
 
-      await createZip(excelFile, zipFile);
+      await createZip(excelFile, zipFile, user.cedula.toString());
 
       res.download(zipFile, "asistencias.zip", (err) => {
         if (err) {
@@ -86,9 +91,11 @@ export class ResourcesController {
 
     try {
       const attendances = await AttendanceModel.getByUserId({ userId: id });
+      const [user] = await UserModel.getById({ id });
+
       await generateExcel(attendances, excelFile);
 
-      await createZip(excelFile, zipFile);
+      await createZip(excelFile, zipFile, user.cedula.toString());
 
       res.download(zipFile, `asistencias-${id}.zip`, (err) => {
         if (err) {
@@ -135,9 +142,27 @@ async function generateExcel(attendances, filePath) {
   await workbook.toFileAsync(filePath);
 }
 
-// funcion para crear un archivo ZIP
+async function createZip(sourceFile, zipFile, password) {
+  const mz = new Minizip();
+
+  // Leer el archivo SQL en un Buffer
+  const fileData = fs.readFileSync(sourceFile);
+
+  // Obtener solo el nombre del archivo sin la ruta completa
+  const fileName = path.basename(sourceFile);
+
+  // Agregar el archivo al ZIP con contraseña y sin incluir rutas completas
+  mz.append(fileName, fileData, { password });
+
+  // Guardar el ZIP en el sistema de archivos
+  fs.writeFileSync(zipFile, Buffer.from(mz.zip()));
+}
+
+/* import AdmZip from "adm-zip"; */
+
+/* // funcion para crear un archivo ZIP sin contraseña
 async function createZip(sourceFile, zipFile) {
   const zip = new AdmZip();
   zip.addLocalFile(sourceFile);
   zip.writeZip(zipFile);
-}
+} */
