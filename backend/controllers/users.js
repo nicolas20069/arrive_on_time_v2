@@ -80,29 +80,37 @@ export class UserController {
 
   // Método para establecer la imagen de perfil de un usuario
   static async setImageProfile(req, res) {
-    const { id } = req.params;
-
-    if (!req.file) {
-      return res.status(400).json({ message: "Imagen no encontrada" });
-    }
-
-    const { buffer } = req.file;
-
-    // Subir la imagen a cloudinary
-    const response = await new Promise((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream({
-            folder: "arrive_on_time",
-          },
-          (err, result) => {
-            if (err) reject(err);
-            resolve(result);
-          }
-        )
-        .end(buffer);
-    });
-
     try {
+      if (!req.file)
+        return res.status(400).json({ message: "No se ha subido ningun archivo" });
+
+      const { size } = req.file;
+      if (size > 1024 * 1024)
+        return res.status(400).json({ message: "La imagen debe pesar menos de 1MB" });
+
+      const { mimetype } = req.file;
+      if (!mimetype.startsWith("image") || !["image/jpeg", "image/png"].includes(mimetype)) {
+        return res.status(400).json({ message: "Tipo de archivo no valido" });
+      }
+
+      const { id } = req.params;
+      const { buffer } = req.file;
+
+      // Subir la imagen a cloudinary
+      const response = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: "arrive_on_time",
+            },
+            (err, result) => {
+              if (err) reject(err);
+              resolve(result);
+            }
+          )
+          .end(buffer);
+      });
+
       const result = await UserModel.setImageProfile({
         id,
         imageUrl: response.url,
@@ -116,15 +124,20 @@ export class UserController {
 
   // Metodo para guardar la imagen de perfil en la base de datos
   static async setImageProfileDB(req, res) {
-    const { id } = req.params;
-
-    if (!req.file) {
-      return res.status(400).json({ message: "Imagen no encontrada" });
-    }
-
-    const { buffer } = req.file;
-
     try {
+      if (!req.file) return res.status(400).json({ message: "No se ha subido ningun archivo" });
+
+      const { size } = req.file;
+      if (size > 1024 * 1024)return res.status(400).json({ message: "La imagen debe pesar menos de 1MB" });
+
+      const { mimetype } = req.file;
+      if (!mimetype.startsWith("image") || !["image/jpeg", "image/png"].includes(mimetype)) {
+        return res.status(400).json({ message: "Tipo de archivo no valido" });
+      }
+
+      const { id } = req.params;
+      const { buffer } = req.file;
+
       const result = await UserModel.setImageProfileDB({
         id,
         imageData: buffer,
