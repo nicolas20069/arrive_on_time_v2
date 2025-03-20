@@ -142,7 +142,7 @@ export function Header() {
             mode="basic"
             accept=".jpg,.jpeg,.png"
             chooseLabel="Cambiar Foto de Perfil" 
-            maxFileSize={1000000}
+            /* maxFileSize={1000000} */
             onUpload={onUpload}
             onError={onError}
             onBeforeUpload={() => setLoading(true)}
