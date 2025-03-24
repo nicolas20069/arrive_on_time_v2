@@ -7,7 +7,7 @@ import { rolesRouter } from "./routes/roles.js";
 import { companiesRouter } from "./routes/companies.js";
 import { attendanceRouter } from "./routes/attendance.js";
 import { attendancesTypeRouter } from "./routes/attendancesType.js";
-import { loginRouter } from "./routes/login.js";
+import { authRouter } from "./routes/auth.js";
 import { resourcesRouter } from "./routes/resources.js";
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(cors(FRONTEND_URL));
 app.disable("x-powered-by");
 
 // Ruta para gestionar el login
-app.use('/login', loginRouter)
+app.use('/auth', authRouter)
 
 // Rutas para gestionar los modulos 
 app.use('/users', usersRouter)

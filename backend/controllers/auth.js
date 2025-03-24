@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user.js";
 import { SECRET_JWT_KEY } from "../config/global.js";
 
-export class LoginController {
+export class AuthController {
   static async login(req, res) {
     const { cedula, contraseña } = req.body;
 
