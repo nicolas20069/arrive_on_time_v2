@@ -130,7 +130,6 @@ export function AddUser({ visible, setVisible }) {
     }
 
     const parsedFechaNacimiento = fechaNacimiento.toISOString().split("T")[0];
-    console.log(parsedFechaNacimiento);
     const parsedCedula = Number(cedula);
     const parsedTelefono = Number(telefono);
     const empresaId = Number(selectCompany.empresa_id);
@@ -148,7 +147,7 @@ export function AddUser({ visible, setVisible }) {
         contraseña,
         empresaId,
         rolId,
-        adminId: 1,
+        adminId: 2,
       });
 
       if (user) {
