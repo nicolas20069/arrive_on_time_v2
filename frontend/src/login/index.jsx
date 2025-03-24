@@ -1,11 +1,11 @@
+import "./login.css";
 import { useState, useRef } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 
 import { login } from "./api/login.js";
-
-import "./login.css";
+import { SEVERITY_TOAST, SUMMARY_TOAST } from "./constants/toast-config.js";
 
 export function Login() {
   const toast = useRef(null);
@@ -14,28 +14,10 @@ export function Login() {
   const [contraseña, setContraseña] = useState("");
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
 
-  const showSuccess = ({ detail }) => {
+  const showToast = ({ detail, severity, summary }) => {
     toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showWarn = ({ detail }) => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Warning",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showError = ({ detail }) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
+      severity,
+      summary,
       detail,
       life: 3000,
     });
@@ -50,7 +32,10 @@ export function Login() {
     e.preventDefault();
 
     if (!cedula || !contraseña) {
-      showWarn({ detail: "Porfavor llena todos los campos" });
+      showToast({ 
+        detail: "Porfavor llena todos los campos", 
+        severity: SEVERITY_TOAST.warn, 
+        summary: SUMMARY_TOAST.warn });
       return;
     }
 
@@ -61,7 +46,11 @@ export function Login() {
       });
 
       if (user) {
-        showSuccess({ detail: "Sesion Iniciada" });
+        showToast({ 
+          detail: "Sesion Iniciada",
+          severity: SEVERITY_TOAST.success,
+          summary: SUMMARY_TOAST.success
+         });
         localStorage.setItem("user", JSON.stringify(user.user));
 
         setTimeout(() => {
@@ -72,11 +61,16 @@ export function Login() {
           }
         }, 1000);
       } else {
-        showError({ detail: err });
+        showToast({ detail: err, 
+          severity: SEVERITY_TOAST.error, 
+          summary: SUMMARY_TOAST.error
+        });
       }
     } catch (error) {
-      showError({
+      showToast({
         detail: error.message,
+        severity: SEVERITY_TOAST.error,
+        summary: SUMMARY_TOAST.error,
       });
     }
   };
