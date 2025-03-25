@@ -3,6 +3,7 @@ import { UserModel } from "../models/user.js";
 import { SECRET_JWT_KEY } from "../config/global.js";
 
 export class AuthController {
+  // Metodo para iniciar sesion
   static async login(req, res) {
     const { cedula, contraseña } = req.body;
 
@@ -14,36 +15,16 @@ export class AuthController {
 
     try {
       const user = await UserModel.login({ cedula, contraseña });
-      const {
-        user_id,
-        nombres,
-        apellidos,
-        edad,
-        correo,
-        direccion,
-        telefono,
-        empresa_id,
-        rol_id,
-      } = user;
+      const { user_id } = user;
 
-      const token = jwt.sign(
-        {
-          user_id,
-          nombres,
-          apellidos,
-          edad,
-          cedula: user.cedula,
-          correo,
-          direccion,
-          telefono,
-          empresa_id,
-          rol_id,
+      const token = jwt.sign({
+          userId: user_id,
         },
         SECRET_JWT_KEY,
-        { expiresIn: "1h" }
+        { expiresIn: 86400 } // Expira en 24 horas
       );
 
-      res.status(200).json({ message: "Sesion iniciada", user, token });
+      res.status(200).json({ message: "Sesion iniciada", token, user });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
