@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
+import "./styles/main.css";
 import { Header } from "../../includes/Header.jsx";
 import { AsideNavButton } from "./components/AsideNavButton.jsx";
-import "./styles/main.css";
+import { Footer } from "./components/Footer.jsx";
 
-import { getUserById } from "./api/user.js";
 import { getAsideNavItems } from "./data/navItems.js";
 
 export function Dashboard() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [userData, setUserData] = useState([]);
-
-  useEffect(() => {
-    getUserById({ userId: user.user_id }).then((data) => {
-      setUserData(data[0]);
-    });
-  }, []);
-
-  const asideNavItems = getAsideNavItems(userData);
+  const asideNavItems = getAsideNavItems();
 
   return (
     <>
-      <Header/>
+      <Header />
 
       <section className="dashboard">
         <main className="dashboard-main">
@@ -42,17 +32,7 @@ export function Dashboard() {
             })}
           </div>
 
-          <footer className="dashboard-footer">
-            <div>
-              <span>©Arrive On Time 2025 </span>
-              <span>- Todos los derechos reservados</span>
-            </div>
-
-            <div>
-              <small>Desarrollado por: </small>
-              <small>Juan Cuellar y Nicolas Melo</small>
-            </div>
-          </footer>
+          <Footer />
         </main>
       </section>
     </>
