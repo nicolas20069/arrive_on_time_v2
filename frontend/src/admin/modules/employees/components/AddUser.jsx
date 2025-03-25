@@ -147,7 +147,7 @@ export function AddUser({ visible, setVisible }) {
         contraseña,
         empresaId,
         rolId,
-        adminId: 2,
+        adminId: 1,
       });
 
       if (user) {
