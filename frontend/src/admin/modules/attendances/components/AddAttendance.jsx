@@ -93,8 +93,6 @@ export function AddAttendance({ visible, setVisible }) {
     }
   };
 
-  addLocale("es", locale);
-
   const footerContent = (
     <div>
       <Button
@@ -115,6 +113,8 @@ export function AddAttendance({ visible, setVisible }) {
       />
     </div>
   );
+
+  addLocale("es", locale);
 
   return (
     <div className="card flex justify-content-center">
