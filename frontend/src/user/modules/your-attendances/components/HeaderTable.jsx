@@ -1,6 +1,7 @@
 import { Button } from "primereact/button";
 
 export function HeaderTable({ user }) {
+  const token = document.cookie.split("=")[1];
   return (
     <>
       <div className="table-header">
@@ -12,7 +13,7 @@ export function HeaderTable({ user }) {
           className="primary-button"
           style={{ marginRight: ".5em" }}
           onClick={() => {
-            window.open(`http://localhost:5000/resources/your-attendances/${user.user_id}`, "_blank")
+            window.open(`http://localhost:5000/resources/your-attendances?token=${token}`, "_blank")
           }}
         />
       </div>

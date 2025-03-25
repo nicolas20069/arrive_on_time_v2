@@ -19,7 +19,7 @@ export function Header({ user }) {
     { label: "Tus Asistencias", path: "/user" },
     {
       label: "Descargar Tus Asistencias",
-      path: `http://localhost:5000/resources/your-attendances/${user.user_id}?token=${token}`,
+      path: `http://localhost:5000/resources/your-attendances?token=${token}`,
     },
   ];
 
