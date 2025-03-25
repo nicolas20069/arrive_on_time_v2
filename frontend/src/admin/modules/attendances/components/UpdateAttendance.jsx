@@ -10,6 +10,7 @@ import { Message } from "primereact/message";
 
 import { getAttendancesType } from "../api/attendancesType";
 import { getUsers } from "../api/users";
+import { locale } from '../constants/calendar-locale.js';
 
 export function UpdateAttendance({ visible, setVisible, attendance }) {
   const toast = useRef(null);
@@ -69,51 +70,6 @@ export function UpdateAttendance({ visible, setVisible, attendance }) {
     }
   }, [attendance]);
 
-  addLocale("es", {
-    firstDayOfWeek: 1,
-    showMonthAfterYear: true,
-    dayNames: [
-      "domingo",
-      "lunes",
-      "martes",
-      "miércoles",
-      "jueves",
-      "viernes",
-      "sábado",
-    ],
-    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-    monthNames: [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "agosto",
-      "septiembre",
-      "octubre",
-      "noviembre",
-      "diciembre",
-    ],
-    monthNamesShort: [
-      "ene",
-      "feb",
-      "mar",
-      "abr",
-      "may",
-      "jun",
-      "jul",
-      "ago",
-      "sep",
-      "oct",
-      "nov",
-      "dic",
-    ],
-    today: "Hoy",
-    clear: "Limpiar",
-  });
 
   const handleChange = (e, field) => {
     const value = e.target ? e.target.value : e.value;
@@ -136,12 +92,14 @@ export function UpdateAttendance({ visible, setVisible, attendance }) {
     };
 
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(
         `http://localhost:5000/attendances/${attendanceId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "x-access-token": token
           },
           body: JSON.stringify(newAttendanceData),
         }
@@ -154,7 +112,7 @@ export function UpdateAttendance({ visible, setVisible, attendance }) {
       const data = await response.text();
       toast.current.show({
         severity: "success",
-        summary: "Felicidades",
+        summary: "Felicitaciones",
         detail: "Asistencia actualizada correctamente",
         life: 3000,
       });
@@ -174,6 +132,8 @@ export function UpdateAttendance({ visible, setVisible, attendance }) {
       });
     }
   };
+
+  addLocale("es", locale);
 
   const footerContent = (
     <div>

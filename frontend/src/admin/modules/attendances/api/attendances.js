@@ -1,15 +1,28 @@
-export async function getAttendances() {
-  const response = await fetch("http://localhost:5000/attendances");
-  const data = await response.json();
+const token = document.cookie.split("=")[1];
 
+export async function getAttendances() {
+  const response = await fetch("http://localhost:5000/attendances", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
+
+  const data = await response.json();
   return data;
 }
 
 export async function gerAttendanceById({ id }) {
-  if (!id) return;
-  const response = await fetch(`http://localhost:5000/attendances/${id}`);
-  const data = await response.json();
+  const response = await fetch(`http://localhost:5000/attendances/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
 
+  const data = await response.json();
   return data;
 }
 
@@ -24,6 +37,7 @@ export async function createAttendance({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token": token,
       },
       body: JSON.stringify({
         date,
@@ -32,17 +46,15 @@ export async function createAttendance({
         userId,
       }),
     });
-    
+
     if (!response.ok) {
-      return(null);
+      return null;
     }
 
     const data = await response.json();
     return data;
-
   } catch (error) {
-    console.error(error)
+    console.error(error);
     throw new Error(error);
   }
-
 }
