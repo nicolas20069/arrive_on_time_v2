@@ -66,6 +66,9 @@ export class AttendanceController {
     }
 
     try {
+      const [attendanceFound] = await AttendanceModel.getById({ id });
+      if (!attendanceFound) return res.status(404).json({ message: "Asistencia para eliminar no encontrada" });
+      
       const attendanceType = await AttendanceModel.update({ id, input: result.data });
       res.status(201).json({ affectedRows: attendanceType });
     } catch (error) {
@@ -79,6 +82,9 @@ export class AttendanceController {
     const { id } = req.params;
 
     try {
+      const [attendanceFound] = await AttendanceModel.getById({ id });
+      if (!attendanceFound) return res.status(404).json({ message: "Asistencia para eliminar no encontrada" });
+      
       const result = await AttendanceModel.delete({ id });
       res.json({ affectedRows: result });
     } catch (error) {
