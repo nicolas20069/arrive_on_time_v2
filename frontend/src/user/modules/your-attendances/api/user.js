@@ -1,7 +1,13 @@
 export async function getUserById({ userId }) {
-    const response = await fetch(`http://localhost:5000/users/${userId}`);
-    const data = await response.json();
+  const token = document.cookie.split("=")[1];
+  const response = await fetch(`http://localhost:5000/users/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
   
-    return data;
-  }
-  
+  const data = await response.json();
+  return data;
+}

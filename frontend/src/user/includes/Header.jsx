@@ -1,5 +1,6 @@
 import "./styles/header.css";
 import { useState, useRef } from "react";
+
 import { Link, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import { Sidebar } from "primereact/sidebar";
@@ -13,11 +14,12 @@ export function Header({ user }) {
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
 
+  const token = document.cookie.split("=")[1];
   const items = [
     { label: "Tus Asistencias", path: "/user" },
     {
       label: "Descargar Tus Asistencias",
-      path: `http://localhost:5000/resources/your-attendances/${user.user_id}`,
+      path: `http://localhost:5000/resources/your-attendances/${user.user_id}?token=${token}`,
     },
   ];
 
@@ -52,6 +54,21 @@ export function Header({ user }) {
       summary: "Error",
       detail: message,
     });
+  };
+
+  const handleLogout = async () => {
+    const response = await fetch("http://localhost:5000/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -125,9 +142,16 @@ export function Header({ user }) {
           }}
         >
           <Toast ref={toast} />
+
+          {loading && (
+            <span style={{ color: "#000", fontSize: "12px" }}>
+              Subiendo imagen...
+            </span>
+          )}
+
           <FileUpload
             className="file-upload"
-            url={`http://localhost:5000/users/image-profile-db/${user.user_id}`}
+            url={`http://localhost:5000/users/image-profile-db/${user.user_id}?token=${token}`}
             name="user_img_profile"
             mode="basic"
             accept=".jpg,.jpeg,.png"
@@ -138,21 +162,12 @@ export function Header({ user }) {
             onBeforeUpload={() => setLoading(true)}
           />
 
-          {loading && (
-            <span style={{ color: "#000", fontSize: "12px" }}>
-              Subiendo imagen...
-            </span>
-          )}
-
           <Button
             style={{ width: "100%" }}
             className="danger-button"
             label="Cerrar Sesión"
             icon="pi pi-sign-out"
-            onClick={() => {
-              localStorage.removeItem("user");
-              window.location.href = "/";
-            }}
+            onClick={handleLogout}
           />
         </div>
       </Sidebar>
