@@ -28,10 +28,10 @@ export class AttendanceController {
 
   // Método para obtener todas las asistencias de un usuario
   static async getByUserId(req, res) {
-    const { userId } = req.params;
+    const { id } = req.params;
 
     try {
-      const attendances = await AttendanceModel.getByUserId({ userId });
+      const attendances = await AttendanceModel.getByUserId({ userId: id });
       res.json(attendances);
     } catch (error) {
       console.error(error);
