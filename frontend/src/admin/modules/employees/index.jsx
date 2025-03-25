@@ -7,17 +7,18 @@ import './styles/employees.css'
 
 export function Employees() {
   const [users, setUsers] = useState([])
+  const [change, setChange] = useState(false)
 
   useEffect(() => {
     getUsers().then((data) => {
       setUsers(data)
     })
-  },[])
+  },[change])
 
   return (
     <>
       <Header />
-      { users && <TableUsers users={users}/>}
+      { users && <TableUsers users={users} setChange={setChange} />}
     </>
   );
 }

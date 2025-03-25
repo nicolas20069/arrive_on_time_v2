@@ -32,38 +32,34 @@ export function Login() {
     e.preventDefault();
 
     if (!cedula || !contraseña) {
-      showToast({ 
-        detail: "Porfavor llena todos los campos", 
-        severity: SEVERITY_TOAST.warn, 
-        summary: SUMMARY_TOAST.warn });
+      showToast({
+        detail: "Porfavor llena todos los campos",
+        severity: SEVERITY_TOAST.warn,
+        summary: SUMMARY_TOAST.warn,
+      });
       return;
     }
 
     try {
-      const [err, user] = await login({
+      const [error, data] = await login({
         cedula,
         contraseña,
       });
 
-      if (user) {
-        showToast({ 
-          detail: "Sesion Iniciada",
-          severity: SEVERITY_TOAST.success,
-          summary: SUMMARY_TOAST.success
-         });
-        localStorage.setItem("user", JSON.stringify(user.user));
+      if (data) {
+        const { user } = data;
+        localStorage.setItem("user", JSON.stringify(user));
 
-        setTimeout(() => {
-          if (user.user.rol_id === 1) {
-            window.location.href = "/admin";
-          } else {
-            window.location.href = "/user";
-          }
-        }, 1000);
+        if (user.rol_id === 1) {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/user";
+        }
       } else {
-        showToast({ detail: err, 
-          severity: SEVERITY_TOAST.error, 
-          summary: SUMMARY_TOAST.error
+        showToast({
+          detail: error,
+          severity: SEVERITY_TOAST.error,
+          summary: SUMMARY_TOAST.error,
         });
       }
     } catch (error) {

@@ -1,14 +1,28 @@
-export async function getUsers() {
-  const response = await fetch("http://localhost:5000/users");
-  const data = await response.json();
+const token = document.cookie.split("=")[1];
 
+export async function getUsers() {
+  const response = await fetch("http://localhost:5000/users", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
+
+  const data = await response.json();
   return data;
 }
 
 export async function getUserById({ userId }) {
-  const response = await fetch(`http://localhost:5000/users/${userId}`);
-  const data = await response.json();
+  const response = await fetch(`http://localhost:5000/users/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
 
+  const data = await response.json();
   return data;
 }
 
@@ -23,13 +37,13 @@ export async function createUser({
   contraseña,
   empresaId,
   rolId,
-  adminId,
 }) {
   try {
     const response = await fetch("http://localhost:5000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token": token,
       },
       body: JSON.stringify({
         nombres,
@@ -42,7 +56,6 @@ export async function createUser({
         contraseña,
         empresaId,
         rolId,
-        adminId,
       }),
     });
 

@@ -1,7 +1,14 @@
+const token = document.cookie.split("=")[1];
+
 export async function getRoles() {
-    const response = await fetch("http://localhost:5000/roles");
-    const data = await response.json();
+  const response = await fetch("http://localhost:5000/roles", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  });
   
-    return data;
-  }
-  
+  const data = await response.json();
+  return data;
+}

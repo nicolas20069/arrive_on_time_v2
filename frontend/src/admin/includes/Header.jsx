@@ -54,13 +54,27 @@ export function Header() {
     const { message } = JSON.parse(e.xhr.response);
 
     setLoading(false);
-    
+
     toast.current.show({
       severity: "error",
       summary: "Error",
       detail: message,
     });
+  };
 
+  const handleLogout = async () => {
+    const response = await fetch("http://localhost:5000/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -93,7 +107,11 @@ export function Header() {
             className="user"
             data-pr-tooltip="Ver Perfil"
           >
-            <img className="user-img" style={{ objectFit: "cover"}} src={userImg} />
+            <img
+              className="user-img"
+              style={{ objectFit: "cover" }}
+              src={userImg}
+            />
           </Button>
         </div>
       </header>
@@ -111,7 +129,7 @@ export function Header() {
               height: "68px",
               borderRadius: "50%",
               border: "1px solid #000",
-              objectFit: "contain"
+              objectFit: "contain",
             }}
             src={userImg}
           />
@@ -141,24 +159,24 @@ export function Header() {
             name="user_img_profile"
             mode="basic"
             accept=".jpg,.jpeg,.png"
-            chooseLabel="Cambiar Foto de Perfil" 
-            /* maxFileSize={1000000} */
+            chooseLabel="Cambiar Foto de Perfil"
             onUpload={onUpload}
             onError={onError}
             onBeforeUpload={() => setLoading(true)}
           />
 
-          { loading && <span style={{ color: "#000", fontSize: "12px" }}>Subiendo imagen...</span> }
+          {loading && (
+            <span style={{ color: "#000", fontSize: "12px" }}>
+              Subiendo imagen...
+            </span>
+          )}
 
           <Button
             style={{ width: "100%" }}
             className="danger-button"
             label="Cerrar Sesión"
             icon="pi pi-sign-out"
-            onClick={() => {
-              localStorage.removeItem("user");
-              window.location.href = "/";
-            }}
+            onClick={handleLogout}
           />
         </div>
       </Sidebar>

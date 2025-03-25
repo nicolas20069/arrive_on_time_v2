@@ -1,15 +1,18 @@
+import { useState, useRef, useEffect } from "react";
+
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
+import { Calendar } from "primereact/calendar";
 import { addLocale } from "primereact/api";
-import { useState, useRef, useEffect } from "react";
 
 import { createUser } from "../api/users.js";
 import { getCompanies } from "../api/companies.js";
 import { getRoles } from "../api/roles.js";
-import { Calendar } from "primereact/calendar";
+import { locale } from "../constants/calendar-locale.js";
+import { TOAST_SEVERITY, TOAST_SUMMARY } from "../constants/toast-config.js";
 
 export function AddUser({ visible, setVisible }) {
   const toast = useRef(null);
@@ -40,78 +43,16 @@ export function AddUser({ visible, setVisible }) {
     fetchData();
   }, []);
 
-  const showSuccess = ({ detail }) => {
+  const showToast = ({ detail, severity, summary }) => {
     toast.current.show({
-      severity: "success",
-      summary: "Success",
+      severity,
+      summary,
       detail,
       life: 3000,
     });
   };
 
-  const showWarn = ({ detail }) => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Warning",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showError = ({ detail }) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail,
-      life: 3000,
-    });
-  };
-
-  addLocale("es", {
-    firstDayOfWeek: 1,
-    showMonthAfterYear: true,
-    dayNames: [
-      "domingo",
-      "lunes",
-      "martes",
-      "miércoles",
-      "jueves",
-      "viernes",
-      "sábado",
-    ],
-    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-    monthNames: [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "agosto",
-      "septiembre",
-      "octubre",
-      "noviembre",
-      "diciembre",
-    ],
-    monthNamesShort: [
-      "ene",
-      "feb",
-      "mar",
-      "abr",
-      "may",
-      "jun",
-      "jul",
-      "ago",
-      "sep",
-      "oct",
-      "nov",
-      "dic",
-    ],
-    today: "Hoy",
-    clear: "Limpiar",
-  });
+  addLocale("es", locale);
 
   const handleCreateUser = async (e) => {
     if (
@@ -125,7 +66,11 @@ export function AddUser({ visible, setVisible }) {
       !selectCompany ||
       !selectRol
     ) {
-      showWarn({ detail: "Porfavor llena todos los campos" });
+      showToast({ 
+        detail: "Porfavor llena todos los campos", 
+        severity: TOAST_SEVERITY.warn, 
+        summary: TOAST_SUMMARY.warn 
+      });
       return;
     }
 
@@ -151,18 +96,28 @@ export function AddUser({ visible, setVisible }) {
       });
 
       if (user) {
-        showSuccess({ detail: "Usuario creado correctamente" });
+        showToast({ 
+          detail: "Usuario creado correctamente",
+          severity: TOAST_SEVERITY.success,
+          summary: TOAST_SUMMARY.success
+        });
         setVisible(false);
 
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        showError({ detail: "Error al crear el usuario" });
+        showToast({ 
+          detail: "Error al crear el usuario",
+          severity: TOAST_SEVERITY.error,
+          summary: TOAST_SUMMARY.error
+        });
       }
     } catch (error) {
-      showError({
+      showToast({
         detail: error.message,
+        severity: TOAST_SEVERITY.error,
+        summary: TOAST_SUMMARY.error,
       });
     }
   };

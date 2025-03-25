@@ -6,17 +6,18 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import { addLocale } from "primereact/api";
+import { Calendar } from "primereact/calendar";
 
 import { getCompanies } from "../api/companies";
 import { getRoles } from "../api/roles";
-import { Calendar } from "primereact/calendar";
+import { locale } from "../constants/calendar-locale.js";
 
 export function UpdateUser({ visible, setVisible, user }) {
   const toast = useRef(null);
   const [companies, setCompanies] = useState([]);
   const [roles, setRoles] = useState([]);
 
-  const [userId, setUserId] = useState({userId: user.user_id});
+  const [userId, setUserId] = useState({ userId: user.user_id });
   const [userData, setUserData] = useState({
     nombres: "",
     apellidos: "",
@@ -78,10 +79,11 @@ export function UpdateUser({ visible, setVisible, user }) {
 
   const handleChange = (e, field) => {
     const value = e.target ? e.target.value : e.value;
-  
+
     setUserData((prevData) => ({
       ...prevData,
-      [field]: field === "telefono" || field === "cedula" ? Number(value) : value,
+      [field]:
+        field === "telefono" || field === "cedula" ? Number(value) : value,
     }));
   };
 
@@ -89,13 +91,15 @@ export function UpdateUser({ visible, setVisible, user }) {
     const newUserData = {
       ...userData,
       fechaNacimiento: userData.fechaNacimiento.toISOString().split("T")[0],
-    }
-    console.log(newUserData);
+    };
+
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(`http://localhost:5000/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token": token,
         },
         body: JSON.stringify(newUserData),
       });
@@ -107,15 +111,17 @@ export function UpdateUser({ visible, setVisible, user }) {
       const data = await response.text();
       toast.current.show({
         severity: "success",
-        summary: "Felicidades",
+        summary: "Felicitaciones",
         detail: "Usuario actualizado con éxito",
         life: 3000,
       });
 
       setVisible(false);
+
       setTimeout(() => {
         window.location.reload();
       }, 1000);
+      
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
 
@@ -128,51 +134,7 @@ export function UpdateUser({ visible, setVisible, user }) {
     }
   };
 
-  addLocale("es", {
-    firstDayOfWeek: 1,
-    showMonthAfterYear: true,
-    dayNames: [
-      "domingo",
-      "lunes",
-      "martes",
-      "miércoles",
-      "jueves",
-      "viernes",
-      "sábado",
-    ],
-    dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-    dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
-    monthNames: [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "agosto",
-      "septiembre",
-      "octubre",
-      "noviembre",
-      "diciembre",
-    ],
-    monthNamesShort: [
-      "ene",
-      "feb",
-      "mar",
-      "abr",
-      "may",
-      "jun",
-      "jul",
-      "ago",
-      "sep",
-      "oct",
-      "nov",
-      "dic",
-    ],
-    today: "Hoy",
-    clear: "Limpiar",
-  });
+  addLocale("es", locale);
 
   const footerContent = (
     <div>
@@ -247,16 +209,6 @@ export function UpdateUser({ visible, setVisible, user }) {
           </label>
 
           <label className="label-form" htmlFor="edad">
-            {/* Edad
-            <InputText
-              id="edad"
-              type="number"
-              keyfilter="pnum"
-              placeholder="Edad"
-              required
-              value={userData.edad}
-              onChange={(e) => handleChange(e, "edad")}
-            /> */}
             Fecha de Nacimiento
             <Calendar
               id="fecha-nacimiento"

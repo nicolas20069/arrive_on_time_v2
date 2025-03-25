@@ -20,7 +20,7 @@ export function Dashboard() {
 
   return (
     <>
-      <Header user={userData} />
+      <Header/>
 
       <section className="dashboard">
         <main className="dashboard-main">

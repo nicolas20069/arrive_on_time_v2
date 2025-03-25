@@ -12,14 +12,12 @@ export function UpdateRol({ visible, setVisible, rol }) {
   });
   const [rolData, setRolData] = useState({
     rolName: "",
-    adminId: null,
   });
 
   useEffect(() => {
     if (rol) {
       setRolData({
         rolName: rol.rol_name,
-        adminId: 1,
       });
 
       setRolId(rol.rol_id);
@@ -37,10 +35,12 @@ export function UpdateRol({ visible, setVisible, rol }) {
 
   const handleSubmit = async () => {
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(`http://localhost:5000/roles/${rolId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token": token,
         },
         body: JSON.stringify(rolData),
       });
@@ -52,8 +52,8 @@ export function UpdateRol({ visible, setVisible, rol }) {
       const data = await response.text();
       toast.current.show({
         severity: "success",
-        summary: "Felicidades",
-        detail: "Empresa actualizada correctamente",
+        summary: "Felicitaciones",
+        detail: "Rol actualizada correctamente",
         life: 3000,
       });
 

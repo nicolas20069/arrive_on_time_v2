@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { HeaderTable } from "./HeaderTable";
 import { TableActions } from "./TableActions";
 
-export function TableUsers({ users }) {
+export function TableUsers({ users, setChange }) {
   return (
     <div className="card users-table">
       <DataTable
@@ -35,7 +35,7 @@ export function TableUsers({ users }) {
 
         <Column
           header="Acciones"
-          body={(user) => <TableActions user={user} />}
+          body={(user) => <TableActions user={user} setChange={setChange} />}
         ></Column>
       </DataTable>
     </div>

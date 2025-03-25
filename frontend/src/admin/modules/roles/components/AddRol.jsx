@@ -1,70 +1,64 @@
+import { useState, useRef } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { useState, useRef } from "react";
 
 import { createRol } from "../api/roles";
+import { TOAST_SEVERITY, TOAST_SUMMARY } from "../constants/toast-config.js";
 
 export function AddRol({ visible, setVisible }) {
   const toast = useRef(null);
 
   const [rolName, setRolName] = useState("");
 
-  const showSuccess = ({ detail }) => {
+  const showToast = ({ detail, severity, summary }) => {
     toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showWarn = ({ detail }) => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Warning",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showError = ({ detail }) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
+      severity,
+      summary,
       detail,
       life: 3000,
     });
   };
 
   const handleCreateRol = async (e) => {
-    if (
-      !rolName
-    ) {
-      showWarn({ detail: "Porfavor llena todos los campos" });
+    if (!rolName) {
+      showToast({
+        detail: "Porfavor llena todos los campos",
+        severity: TOAST_SEVERITY.warn,
+        summary: TOAST_SUMMARY.warn,
+      });
       return;
     }
 
     try {
       const rol = await createRol({
         rolName,
-        adminId: 1,
       });
 
       if (rol) {
-        showSuccess({ detail: "Rol creado correctamente" });
+        showToast({
+          detail: "Rol creado correctamente",
+          severity: TOAST_SEVERITY.success,
+          summary: TOAST_SUMMARY.success,
+        });
         setVisible(false);
 
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        showError({ detail: "Error al crear el rol" });
+        showToast({ 
+          detail: "Error al crear el rol",
+          severity: TOAST_SEVERITY.error,
+          summary: TOAST_SUMMARY.error,
+        });
       }
     } catch (error) {
-      showError({
-        detail: error.message
+      showToast({
+        detail: error.message,
+        severity: TOAST_SEVERITY.error,
+        summary: TOAST_SUMMARY.error
       });
     }
   };

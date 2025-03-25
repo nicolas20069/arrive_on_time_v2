@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 
 import { UpdateUser } from "./UpdateUser.jsx";
 
-export function TableActions({ user }) {
+export function TableActions({ user, setChange }) {
   const toast = useRef(null);
   const [visible, setVisible] = useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
@@ -20,10 +20,12 @@ export function TableActions({ user }) {
 
   const accept = async (id) => {
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(`http://localhost:5000/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token": token,
         },
       });
 
@@ -31,8 +33,8 @@ export function TableActions({ user }) {
         throw new Error("Error en la solicitud");
       }
 
+      setChange(true);
       setVisible(false);
-      window.location.reload();
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
 
