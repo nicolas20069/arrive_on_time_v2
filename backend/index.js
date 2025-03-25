@@ -12,7 +12,7 @@ import { resourcesRouter } from "./routes/resources.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors(FRONTEND_URL));
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.disable("x-powered-by");
 
 // Ruta para gestionar el login
