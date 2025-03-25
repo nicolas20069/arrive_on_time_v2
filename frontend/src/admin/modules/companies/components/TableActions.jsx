@@ -20,10 +20,12 @@ export function TableActions({ company }) {
 
   const accept = async (id) => {
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(`http://localhost:5000/companies/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token": token,
         },
       });
 

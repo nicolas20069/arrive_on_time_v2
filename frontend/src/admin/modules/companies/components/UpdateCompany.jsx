@@ -17,7 +17,6 @@ export function UpdateCompany({ visible, setVisible, company }) {
   const [companyData, setcompanyData] = useState({
     companyName: "",
     userAdminId: null,
-    adminId: null,
   });
 
   useEffect(() => {
@@ -44,7 +43,6 @@ export function UpdateCompany({ visible, setVisible, company }) {
       setcompanyData({
         companyName: company.nombre_empresa,
         userAdminId: Number(company.admin_id),
-        adminId: 1,
       });
 
       setCompanyId(company.empresa_id);
@@ -61,14 +59,15 @@ export function UpdateCompany({ visible, setVisible, company }) {
   };
 
   const handleSubmit = async () => {
-    console.log(companyId);
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(
         `http://localhost:5000/companies/${companyId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "x-access-token": token
           },
           body: JSON.stringify(companyData),
         }
@@ -81,7 +80,7 @@ export function UpdateCompany({ visible, setVisible, company }) {
       const data = await response.text();
       toast.current.show({
         severity: "success",
-        summary: "Felicidades",
+        summary: "Felicitaciones",
         detail: "Empresa actualizada correctamente",
         life: 3000,
       });

@@ -1,12 +1,13 @@
+import { useState, useRef, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { useState, useRef, useEffect } from "react";
+import { Dropdown } from "primereact/dropdown";
 
 import { createCompany } from "../api/companies.js";
 import { getUsersAdmins } from "../api/usersAdmins.js";
-import { Dropdown } from "primereact/dropdown";
+import { TOAST_SEVERITY, TOAST_SUMMARY } from "../constants/toast-config.js";
 
 export function AddCompany({ visible, setVisible }) {
   const toast = useRef(null);
@@ -26,28 +27,10 @@ export function AddCompany({ visible, setVisible }) {
     fetchData();
   }, []);
 
-  const showSuccess = ({ detail }) => {
+  const showToast = ({ detail, severity, summary }) => {
     toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showWarn = ({ detail }) => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Warning",
-      detail,
-      life: 3000,
-    });
-  };
-
-  const showError = ({ detail }) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
+      severity,
+      summary,
       detail,
       life: 3000,
     });
@@ -55,7 +38,11 @@ export function AddCompany({ visible, setVisible }) {
 
   const handleCreateCompany = async (e) => {
     if (!companyName || !userAdminId.user_id) {
-      showWarn({ detail: "Porfavor llena todos los campos" });
+      showToast({
+        detail: "Porfavor llena todos los campos",
+        severity: TOAST_SEVERITY.warn,
+        summary: TOAST_SUMMARY.warn,
+      });
       return;
     }
 
@@ -65,22 +52,31 @@ export function AddCompany({ visible, setVisible }) {
       const company = await createCompany({
         companyName,
         userAdminId: parsedUserAdmindId,
-        adminId: 1,
       });
 
       if (company) {
-        showSuccess({ detail: "Empresa creada correctamente" });
+        showToast({
+          detail: "Empresa creada correctamente",
+          severity: TOAST_SEVERITY.success,
+          summary: TOAST_SUMMARY.success,
+        });
         setVisible(false);
 
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        showError({ detail: "Error al crear la empresa" });
+        showToast({
+          detail: "Error al crear la empresa",
+          severity: TOAST_SEVERITY.error,
+          summary: TOAST_SUMMARY.error,
+        });
       }
     } catch (error) {
-      showError({
+      showToast({
         detail: error.message,
+        severity: TOAST_SEVERITY.error,
+        summary: TOAST_SUMMARY.error,
       });
     }
   };
