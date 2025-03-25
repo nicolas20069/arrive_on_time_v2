@@ -34,13 +34,6 @@ export class AttendanceTypeController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para crear tipos de asistencia" });
-    }
-
     try {
       const attendanceType = await AttendanceTypeModel.create({ input: result.data });
       res.status(201).json(attendanceType);
@@ -59,14 +52,10 @@ export class AttendanceTypeController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta actualizando sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para actualizar tipos de asistencia" });
-    }
-
     try {
+      const [attendanceTypeFound] = await AttendanceTypeModel.getById({ id });
+      if (!attendanceTypeFound) return res.status(404).json({ message: "Tipo de asistencia no encontrado para actualizar" });
+      
       const attendanceType = await AttendanceTypeModel.update({ id, input: result.data });
       res.status(201).json({ affectedRows: attendanceType });
     } catch (error) {
@@ -80,6 +69,9 @@ export class AttendanceTypeController {
     const { id } = req.params;
 
     try {
+      const [attendanceTypeFound] = await AttendanceTypeModel.getById({ id });
+      if (!attendanceTypeFound) return res.status(404).json({ message: "Tipo de asistencia no encontrado para eliminar"})
+        
       const result = await AttendanceTypeModel.delete({ id });
       res.json({ affectedRows: result });
     } catch (error) {
