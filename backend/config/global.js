@@ -10,7 +10,7 @@ export const {
     PORT = 5000,
     NODE_ENV = 'development',
     FRONTEND_URL = "http://localhost:5173",
-    SECRET_JWT_KEY = "secret",
+    SECRET_JWT_KEY,
     CLOUD_NAME,
     API_KEY,
     API_SECRET,
