@@ -5,6 +5,6 @@ import { verifyToken, isAdmin} from '../middlewares/auth.js';
 
 export const resourcesRouter = Router();
 
-resourcesRouter.get("/db/:rol_id/:user_id", [verifyToken, isAdmin], ResourcesController.getDB);
-resourcesRouter.get("/all-attendances/:rol_id/:user_id", [verifyToken, isAdmin], ResourcesController.getAllAttendances);
-resourcesRouter.get("/your-attendances/:id", verifyToken, ResourcesController.getYourAttendances);
+resourcesRouter.get("/db", [verifyToken, isAdmin], ResourcesController.getDB);
+resourcesRouter.get("/all-attendances", [verifyToken, isAdmin], ResourcesController.getAllAttendances);
+resourcesRouter.get("/your-attendances", verifyToken, ResourcesController.getYourAttendances);

@@ -4,7 +4,7 @@ import { UserModel } from "../models/user.js";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers["x-access-token"];
+    const token = req.headers["x-access-token"] || req.query.token;
     if (!token)
       return res.status(403).json({ message: "Token no proporcionado" });
 
