@@ -2,18 +2,21 @@ import { Router } from "express";
 import multer from "multer";
 
 import { UserController } from "../controllers/users.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.js";
 
 export const usersRouter = Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-usersRouter.get("/", UserController.getAll);
-usersRouter.get("/admins", UserController.getAdmins);
-usersRouter.get("/:id", UserController.getById);
+usersRouter.get("/", [verifyToken, isAdmin], UserController.getAll);
+usersRouter.get("/admins", [verifyToken, isAdmin], UserController.getAdmins);
+usersRouter.get("/:id", verifyToken, UserController.getById);
 
-usersRouter.post("/", UserController.create);
-usersRouter.post("/image-profile/:id", upload.single("user_img_profile"), UserController.setImageProfile);
-usersRouter.post("/image-profile-db/:id", upload.single("user_img_profile"), UserController.setImageProfileDB);
-usersRouter.put("/:id", UserController.update);
-usersRouter.delete("/:id", UserController.delete);
+usersRouter.post("/", [verifyToken, isAdmin], UserController.create);
+usersRouter.post("/image-profile/:id", [verifyToken, isAdmin, upload.single("user_img_profile")], UserController.setImageProfile);
+usersRouter.post("/image-profile-db/:id", [verifyToken, upload.single("user_img_profile")], UserController.setImageProfileDB);
+
+usersRouter.put("/:id", [verifyToken, isAdmin], UserController.update);
+
+usersRouter.delete("/:id", [verifyToken, isAdmin], UserController.delete);
