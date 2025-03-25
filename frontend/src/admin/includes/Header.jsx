@@ -8,6 +8,7 @@ import { FileUpload } from "primereact/fileupload";
 import { Toast } from "primereact/toast";
 
 import { getUserById } from "./api/getUser.js";
+import { navItems } from "./lib/nav-items.js";
 
 export function Header() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -24,16 +25,6 @@ export function Header() {
     });
   }, [loading]);
 
-  const items = [
-    { label: "Usuarios", path: "/admin/users" },
-    { label: "Roles", path: "/admin/roles" },
-    { label: "Asistencias", path: "/admin/attendances" },
-    { label: "Tus Asistencias", path: "/admin/your-attendances" },
-    { label: "Empresas o Instituciones", path: "/admin/companies" },
-    /* { label: "Reportes", path: "/admin/reports" }, */
-    { label: "Tipos de Asistencias", path: "/admin/attendances-type" },
-  ];
-
   const userImg = userData.user_img_profile
     ? userData.user_img_profile
     : "/user.svg";
@@ -42,7 +33,7 @@ export function Header() {
   const onUpload = (e) => {
     toast.current.show({
       severity: "info",
-      summary: "Success",
+      summary: "Felicitaciones",
       detail: "Imagen subida correctamente",
     });
 
@@ -90,7 +81,7 @@ export function Header() {
         <div className="aside-header">
           <nav className="nav">
             <ul className="nav-list">
-              {items.map((item, index) => (
+              {navItems.map((item, index) => (
                 <li
                   key={index}
                   className={location.pathname === item.path ? "active" : ""}
