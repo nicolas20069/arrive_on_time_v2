@@ -62,13 +62,6 @@ export class UserController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para crear usuarios" });
-    }
-
     try {
       const user = await UserModel.create({ input: result.data });
       res.status(201).json(user);
@@ -158,14 +151,10 @@ export class UserController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando el nuevo usuario sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para actualizar usuarios" });
-    }
-
     try {
+      const [userFound] = await UserModel.getById({ id });
+      if (!userFound) return res.status(404).json({ message: "Usuario para actualizar no encontrado" });
+      
       const resultUser = await UserModel.update({ id, input: result.data });
       res.status(201).json({
         message: "Usuario actualizado correctamente",

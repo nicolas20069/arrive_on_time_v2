@@ -34,13 +34,6 @@ export class RoleController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando el nuevo rol sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para crear roles" });
-    }
-
     try {
       const rol = await RolModel.create({ input: result.data });
       res.status(201).json(rol);
@@ -59,14 +52,10 @@ export class RoleController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta actualizando el rol sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para actualizar roles" });
-    }
-
     try {
+      const [rolFound] = await RolModel.getById({ id });
+      if (!rolFound) return res.status(404).json({ message: "Rol para Actualizar no Encontrado" });
+      
       const resultRol = await RolModel.update({ id, input: result.data });
       res.status(201).json({ affectedRows: resultRol });
     } catch (error) {
@@ -80,6 +69,9 @@ export class RoleController {
     const { id } = req.params;
 
     try {
+      const [rolFound] = await RolModel.getById({ id });
+      if (!rolFound) return res.status(404).json({ message: "Rol para Eliminar no Encontrado" });
+      
       const result = await RolModel.delete({ id });
       res.json({ affectedRows: result });
     } catch (error) {

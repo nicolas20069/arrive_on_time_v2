@@ -11,7 +11,6 @@ const userSchema = z.object({
   contraseña: z.string().min(6),
   empresaId: z.number().int(),
   rolId: z.number().int(),
-  adminId: z.number().int(),
 });
 
 const userSchemaWithoutPassword = userSchema.omit({ contraseña: true });

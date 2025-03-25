@@ -15,19 +15,30 @@ export class AuthController {
 
     try {
       const user = await UserModel.login({ cedula, contraseña });
-      const { user_id } = user;
 
-      const token = jwt.sign({
-          userId: user_id,
+      const token = jwt.sign(
+        {
+          userId: user.user_id,
         },
         SECRET_JWT_KEY,
         { expiresIn: 86400 } // Expira en 24 horas
       );
 
-      res.status(200).json({ message: "Sesion iniciada", token, user });
+      res.cookie("token", token, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+      });
+      res.status(200).json({ message: "Sesion iniciada", user });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
     }
+  }
+
+  // Metodo para cerrar sesion
+  static async logout(req, res) {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Sesion cerrada" });
   }
 }
