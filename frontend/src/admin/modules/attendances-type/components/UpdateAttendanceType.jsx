@@ -12,14 +12,12 @@ export function UpdateAttendanceType({ visible, setVisible, attendanceType }) {
   });
   const [attendanceTypeData, setAttendanceTypeData] = useState({
     attendanceTypeName: "",
-    adminId: null,
   });
 
   useEffect(() => {
     if (attendanceType) {
       setAttendanceTypeData({
         attendanceTypeName: attendanceType.tipo_asistencia,
-        adminId: 1,
       });
 
       setAttendanceTypeId(attendanceType.tipo_id);
@@ -37,10 +35,12 @@ export function UpdateAttendanceType({ visible, setVisible, attendanceType }) {
 
   const handleSubmit = async () => {
     try {
+      const token = document.cookie.split("=")[1];
       const response = await fetch(`http://localhost:5000/attendances-type/${attendanceTypeId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "x-access-token": token,
         },
         body: JSON.stringify(attendanceTypeData),
       });
@@ -52,8 +52,8 @@ export function UpdateAttendanceType({ visible, setVisible, attendanceType }) {
       const data = await response.text();
       toast.current.show({
         severity: "success",
-        summary: "Felicidades",
-        detail: "Tipo de asistencia actualizada correctamente",
+        summary: "Felicitaciones",
+        detail: "Tipo de asistencia actualizada",
         life: 3000,
       });
 
