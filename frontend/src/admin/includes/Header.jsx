@@ -25,10 +25,6 @@ export function Header() {
     });
   }, [loading]);
 
-  const userImg = userData.user_img_profile
-    ? userData.user_img_profile
-    : "/user.svg";
-
   // funcion para subir la imagen de perfil
   const onUpload = (e) => {
     toast.current.show({
@@ -67,6 +63,12 @@ export function Header() {
       window.location.href = "/";
     }
   };
+
+  const userImg = userData.user_img_profile
+    ? userData.user_img_profile
+    : "/user.svg";
+
+  const token = document.cookie.split("=")[1];
 
   return (
     <>
@@ -144,9 +146,16 @@ export function Header() {
           }}
         >
           <Toast ref={toast} />
+
+          {loading && (
+            <span style={{ color: "#000", fontSize: "12px" }}>
+              Subiendo imagen...
+            </span>
+          )}
+
           <FileUpload
             className="file-upload"
-            url={`http://localhost:5000/users/image-profile/${userData.user_id}`}
+            url={`http://localhost:5000/users/image-profile/${userData.user_id}?token=${token}`}
             name="user_img_profile"
             mode="basic"
             accept=".jpg,.jpeg,.png"
@@ -155,12 +164,6 @@ export function Header() {
             onError={onError}
             onBeforeUpload={() => setLoading(true)}
           />
-
-          {loading && (
-            <span style={{ color: "#000", fontSize: "12px" }}>
-              Subiendo imagen...
-            </span>
-          )}
 
           <Button
             style={{ width: "100%" }}
