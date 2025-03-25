@@ -15,9 +15,10 @@ import { YourAttendancesAdmin } from "./admin/modules/your-attendances/index.jsx
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const token = document.cookie.split("=")[1];
 
   const ProtectedRoute = ({ children, allowedRoles }) => {
-    if (!user) {
+    if (!user || !token || token == "null") {
       return <Navigate to="/" replace />;
     }
 
@@ -62,7 +63,6 @@ function App() {
             >
               <Routes>
                 <Route path="" element={<YourAttendances/>} />
-                <Route path="profile" element={<YourAttendances/>} />
               </Routes>
             </ProtectedRoute>
           }
