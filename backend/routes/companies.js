@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import { CompanyController } from "../controllers/companies.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.js"
 
 export const companiesRouter = Router();
 
-companiesRouter.get("/", CompanyController.getAll);
-companiesRouter.get("/:id", CompanyController.getById);
+companiesRouter.get("/", [verifyToken, isAdmin], CompanyController.getAll);
+companiesRouter.get("/:id", [verifyToken, isAdmin], CompanyController.getById);
 
-companiesRouter.post("/", CompanyController.create);
-companiesRouter.put("/:id", CompanyController.update);
-companiesRouter.delete("/:id", CompanyController.delete);
+companiesRouter.post("/", [verifyToken, isAdmin], CompanyController.create);
+companiesRouter.put("/:id", [verifyToken, isAdmin], CompanyController.update);
+companiesRouter.delete("/:id", [verifyToken, isAdmin], CompanyController.delete);

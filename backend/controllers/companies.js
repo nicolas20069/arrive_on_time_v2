@@ -34,13 +34,6 @@ export class CompanyController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta creando la nueva empresa sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para crear empresas" });
-    }
-
     try {
       const company = await CompanyModel.create({ input: result.data });
       res.status(201).json(company);
@@ -59,14 +52,10 @@ export class CompanyController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    // Validar que el usuario que esta actualizando la empresa sea un administrador
-    if (result.data.adminId != 1) {
-      return res
-        .status(400)
-        .json({ message: "No tienes permisos para actualizar empresas" });
-    }
-
     try {
+      const [companyFound] = await CompanyModel.getById({ id });
+      if (!companyFound) return res.status(404).json({ message: "Empresa para Actualizar no encontrada" });
+
       const resultCompany = await CompanyModel.update({ id, input: result.data });
       res.status(201).json({ affectedRows: resultCompany });
     } catch (error) {
@@ -80,6 +69,9 @@ export class CompanyController {
     const { id } = req.params;
 
     try {
+      const [companyFound] = await CompanyModel.getById({ id });
+      if (!companyFound) return res.status(404).json({ message: "Empresa para Eliminar no encontrada" });
+      
       const result = await CompanyModel.delete({ id });
       res.json({ affectedRows: result });
     } catch (error) {
