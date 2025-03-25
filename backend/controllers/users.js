@@ -182,6 +182,9 @@ export class UserController {
     const { id } = req.params;
 
     try {
+      const [userFound] = await UserModel.getById({ id });
+      if (!userFound) return res.status(404).json({ message: "Usuario para eliminar no encontrado" });
+      
       const result = await UserModel.delete({ id });
       res.json({
         message: "Usuario eliminado correctamente",
