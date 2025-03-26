@@ -36,6 +36,15 @@ export class AuthController {
     }
   }
 
+  static async authenticate(req, res) {
+    const { userId } = req
+
+    const [user] = await UserModel.getById({ id: userId });
+    if (!user) return res.status(404).json({ message: "El usuario no existe" });
+
+    res.status(200).json({ message: "Autenticado", rolId: user.rol_id });
+  }
+
   // Metodo para cerrar sesion
   static async logout(req, res) {
     res.clearCookie("token");
