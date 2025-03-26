@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
@@ -14,19 +15,46 @@ import { YourAttendances } from "./user/modules/your-attendances/index.jsx";
 import { YourAttendancesAdmin } from "./admin/modules/your-attendances/index.jsx";
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = document.cookie.split("=")[1];
-
   const ProtectedRoute = ({ children, allowedRoles }) => {
-    if (!user || !token || token == "null") {
-      return <Navigate to="/" replace />;
+    const [isAllowed, setIsAllowed] = useState(null);
+    const token = document.cookie.split("=")[1];
+  
+    useEffect(() => {
+      if (!token || token === "null") {
+        setIsAllowed(false);
+        return;
+      }
+  
+      fetch("http://localhost:5000/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          throw new Error("Unauthorized");
+        })
+        .then((data) => {
+          if (allowedRoles && !allowedRoles.includes(data.rolId)) {
+            setIsAllowed(false);
+          } else {
+            setIsAllowed(true);
+          }
+        })
+        .catch(() => {
+          setIsAllowed(false);
+        });
+    }, [token, allowedRoles]);
+  
+    if (isAllowed === null) {
+      return <div>Cargando...</div>; // Puedes mostrar un loader
     }
-
-    if (allowedRoles && !allowedRoles.includes(user.rol_id)) {
-      return <Navigate to="/" replace />;
-    }
-
-    return children;
+  
+    return isAllowed ? children : <Navigate to="/" replace />;
   };
 
   return (
@@ -43,7 +71,10 @@ function App() {
                 <Route path="users" element={<Employees />} />
                 {/* <Route path="reports" element={<Reports />} /> */}
                 <Route path="attendances" element={<Attendance />} />
-                <Route path="your-attendances" element={<YourAttendancesAdmin />} />
+                <Route
+                  path="your-attendances"
+                  element={<YourAttendancesAdmin />}
+                />
                 <Route path="companies" element={<Companies />} />
                 <Route path="roles" element={<Roles />} />
                 <Route path="attendances-type" element={<AttendancesType />} />
@@ -62,7 +93,7 @@ function App() {
               ]}
             >
               <Routes>
-                <Route path="" element={<YourAttendances/>} />
+                <Route path="" element={<YourAttendances />} />
               </Routes>
             </ProtectedRoute>
           }
