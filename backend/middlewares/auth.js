@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { SECRET_JWT_KEY } from "../config/global.js";
 import { UserModel } from "../models/user.js";
 
+// Middleware para verificar el token. Si corresponde a un usuario existente en la base de datos.
 export const verifyToken = async (req, res, next) => {
   try {
     const token = req.headers["x-access-token"] || req.query.token;
@@ -21,6 +22,7 @@ export const verifyToken = async (req, res, next) => {
   }
 };
 
+// Middleware para verificar si el usuario es administrador
 export const isAdmin = async (req, res, next) => {
   try {
     const { userId } = req;

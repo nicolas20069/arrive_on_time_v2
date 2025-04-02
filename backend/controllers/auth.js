@@ -14,7 +14,7 @@ export class AuthController {
     }
 
     try {
-      const user = await UserModel.login({ cedula, contraseña });
+      const user = await UserModel.getByCC({ cedula, contraseña });
 
       const token = jwt.sign(
         {
@@ -36,6 +36,38 @@ export class AuthController {
     }
   }
 
+  // Metodo para iniciar sesion con google
+  static async loginGoogle(req, res){
+    const { value: email } = req.user.emails[0];
+
+    if (!email) {
+      return res.status(400).json({ message: "No se logro iniciar sesion con google" });
+    }
+
+    try {
+      const user = await UserModel.getByEmail({ email });
+
+      const token = jwt.sign(
+        {
+          userId: user.user_id,
+        },
+        SECRET_JWT_KEY,
+        { expiresIn: 86400 } // Expira en 24 horas
+      );
+
+      res.cookie("token", token, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+      });
+      res.status(200).json({ message: "Sesion iniciada", user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  // Metodo para autenticar al usuario segun su rol
   static async authenticate(req, res) {
     const { userId } = req
 

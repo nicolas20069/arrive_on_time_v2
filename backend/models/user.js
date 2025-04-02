@@ -175,8 +175,8 @@ export class UserModel {
     }
   }
 
-  // Iniciar sesion
-  static async login({ cedula, contraseña }) {
+  // Iniciar sesion con cedula y contraseña
+  static async getByCC({ cedula, contraseña }) {
     if (!cedula || !contraseña) {
       throw new Error("Usuario y contraseña son requeridos");
     }
@@ -191,6 +191,22 @@ export class UserModel {
       user[0].contraseña
     );
     if (!isValidPassword) throw new Error("Contraseña incorrecta");
+
+    const { contraseña: _, ...publicUser } = user[0];
+
+    return publicUser;
+  }
+
+  // Iniciar sesion con google
+  static async getByEmail({ email }) {
+    if (!email) {
+      throw new Error("No se logro iniciar sesion con google");
+    }
+
+    const [user] = await pool.query("SELECT * FROM users WHERE correo = ?", [
+      email,
+    ]);
+    if (user.length === 0) throw new Error("Usuario no encontrado");
 
     const { contraseña: _, ...publicUser } = user[0];
 
