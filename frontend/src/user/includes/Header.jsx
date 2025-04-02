@@ -66,7 +66,6 @@ export function Header({ user }) {
     });
 
     if (response.ok) {
-      localStorage.removeItem("user");
       window.location.href = "/";
     }
   };

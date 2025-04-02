@@ -7,11 +7,11 @@ import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
 import { Toast } from "primereact/toast";
 
-import { getUserById } from "./api/getUser.js";
+import { getUserById, auth } from "./api/getUser.js";
 import { navItems } from "./lib/nav-items.js";
 
 export function Header() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const token = document.cookie.split("=")[1];
   const location = useLocation();
   const [visibleRight, setVisibleRight] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,9 +20,14 @@ export function Header() {
   const toast = useRef(null);
 
   useEffect(() => {
-    getUserById({ userId: user.user_id }).then((data) => {
-      setUserData(data[0]);
-    });
+    const fetchData = async () => {
+      const dataUser = await auth(token);
+
+      getUserById({ userId: dataUser.userId }).then((data) => {
+        setUserData(data[0]);
+      });
+    }
+    fetchData()
   }, [loading]);
 
   // funcion para subir la imagen de perfil
@@ -59,7 +64,6 @@ export function Header() {
     });
 
     if (response.ok) {
-      localStorage.removeItem("user");
       window.location.href = "/";
     }
   };
@@ -67,8 +71,6 @@ export function Header() {
   const userImg = userData.user_img_profile
     ? userData.user_img_profile
     : "/user.svg";
-
-  const token = document.cookie.split("=")[1];
 
   return (
     <>

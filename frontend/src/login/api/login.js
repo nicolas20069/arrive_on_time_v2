@@ -24,26 +24,3 @@ export async function login({ cedula, contraseña }) {
     throw new Error(error);
   }
 }
-
-export async function loginWithGoogle() {
-  try {
-    const response = await fetch("http://localhost:5000/auth/login/google", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      const { error } = await response.json();
-      return [error, null];
-    }
-
-    const data = await response.json();
-    return [null, data];
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
-  }
-}

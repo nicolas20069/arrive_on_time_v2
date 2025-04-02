@@ -1,35 +1,39 @@
+import "./styles/attendances.css";
 import { useEffect, useState } from "react";
 import { Header } from "../../includes/Header.jsx";
 import { TableAttendances } from "./components/TableAttendances.jsx";
 
 import { getYourAttendances } from "./api/your-attendances.js";
-import { getUserById } from "./api/user.js";
-import "./styles/attendances.css";
+import { getUserById, auth } from "./api/user.js";
 
 export function YourAttendancesAdmin() {
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    return
-  }
+  const token = document.cookie.split("=")[1];
 
   const [attendances, setAttendances] = useState([]);
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    getYourAttendances({userId: user.user_id}).then((data) => {
-      setAttendances(data);
-    });
+    const fetchData = async () => {
+      const dataUser = await auth(token);
 
-    getUserById({userId: user.user_id}).then((data) => {
-      setUserData(data[0]);
-    });
+      getYourAttendances({ userId: dataUser.userId }).then((data) => {
+        setAttendances(data);
+      });
+
+      getUserById({ userId: dataUser.userId }).then((data) => {
+        setUserData(data[0]);
+      });
+    };
+    fetchData();
   }, []);
 
   return (
     <>
-      <Header user={userData} />
-      {attendances && <TableAttendances attendances={attendances} user={user} />}
+      <Header />
+
+      {attendances && (
+        <TableAttendances attendances={attendances} user={userData} />
+      )}
     </>
   );
 }
