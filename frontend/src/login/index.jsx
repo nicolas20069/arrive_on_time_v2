@@ -126,11 +126,30 @@ export function Login() {
 
         <Button
           type="submit"
-          label="Iniciar sesion"
+          label="Iniciar Sesión"
+          icon="custom-login-icon"
+          iconPos="left"
           size="small"
           className="primary-button login-button"
           onClick={handleLogin}
         />
+
+        <div class="separator">
+          <div class="line"/>
+          <span>o</span>
+          <div class="line"/>
+        </div>
+
+        <Button
+          type="button"
+          label="Iniciar sesión con Google"
+          icon="custom-google-icon"
+          size="small"
+          iconPos="left"
+          className="primary-button login-button"
+          style={{ marginTop: "0" }}
+        />
+
       </form>
     </main>
   );

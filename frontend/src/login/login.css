@@ -62,7 +62,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
+  max-width: 450px;
   gap: 15px;
   padding: 15px;
   margin: 0 auto;
@@ -91,4 +91,40 @@
   width: 100%;
   margin-top: 15px;
   font-size: 16px;
+}
+
+.custom-login-icon {
+  background-image: url('/login.svg');
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+}
+
+.custom-google-icon {
+  background-image: url('/google.svg');
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.separator .line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #121a1d;
+}
+
+.separator span {
+  white-space: nowrap;
+  color: #000;
+  font-weight: bold;
 }
