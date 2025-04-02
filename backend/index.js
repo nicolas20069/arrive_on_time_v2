@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import passport from "passport";
 
 import { FRONTEND_URL, PORT } from "./config/global.js";
 import { usersRouter } from "./routes/users.js";
@@ -12,6 +13,7 @@ import { resourcesRouter } from "./routes/resources.js";
 
 const app = express();
 app.use(express.json());
+app.use(passport.initialize());
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.disable("x-powered-by");
 
