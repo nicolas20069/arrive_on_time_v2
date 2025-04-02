@@ -199,17 +199,22 @@ export class UserModel {
 
   // Iniciar sesion con google
   static async getByEmail({ email }) {
-    if (!email) {
-      throw new Error("No se logro iniciar sesion con google");
+    try {
+      if (!email) {
+        throw new Error("No se logro iniciar sesion con google");
+      }
+  
+      const [user] = await pool.query("SELECT * FROM users WHERE correo = ?", [
+        email,
+      ]);
+      if (user.length === 0) throw new Error("Usuario no encontrado. El acceso con Google no esta habilitado para este usuario");
+  
+      const { contraseña: _, ...publicUser } = user[0];
+  
+      return publicUser;
+    } catch (error) {
+      throw new Error(error);
     }
-
-    const [user] = await pool.query("SELECT * FROM users WHERE correo = ?", [
-      email,
-    ]);
-    if (user.length === 0) throw new Error("Usuario no encontrado. El acceso con Google no esta habilitado para este usuario");
-
-    const { contraseña: _, ...publicUser } = user[0];
-
-    return publicUser;
+    
   }
 }
