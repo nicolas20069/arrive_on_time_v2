@@ -36,7 +36,7 @@ function App() {
           if (response.status === 200) {
             return response.json();
           }
-          throw new Error("Unauthorized");
+          throw new Error("No Autorizado");
         })
         .then((data) => {
           if (allowedRoles && !allowedRoles.includes(data.rolId)) {
