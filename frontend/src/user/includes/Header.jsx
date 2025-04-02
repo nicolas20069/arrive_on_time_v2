@@ -23,14 +23,12 @@ export function Header({ user }) {
     },
   ];
 
-  let userImg = "/user.svg";
+  let userImg = ""
 
-  if (user.user_img_profile_blob) {
-    // convertir el blob a un objeto de imagen
-    const arrayBufferView = new Uint8Array(user.user_img_profile_blob.data);
-    const blob = new Blob([arrayBufferView], { type: "image/jpeg" });
-    const imageUrl = URL.createObjectURL(blob);
-    userImg = imageUrl;
+  if (user.user_img_profile_path) {
+    userImg = `http://localhost:5000/users/${user.user_id}/image`;
+  }else {
+    userImg = "/user.svg";
   }
 
   // funcion para subir la imagen de perfil
@@ -100,7 +98,7 @@ export function Header({ user }) {
             className="user"
             data-pr-tooltip="Ver Perfil"
           >
-            <img className="user-img" src={userImg} />
+            <img className="user-img" src={userImg}  />
           </Button>
         </div>
       </header>
