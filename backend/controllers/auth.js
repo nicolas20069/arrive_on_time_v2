@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user.js";
-import { SECRET_JWT_KEY } from "../config/global.js";
+import { SECRET_JWT_KEY, FRONTEND_URL } from "../config/global.js";
 
 export class AuthController {
   // Metodo para iniciar sesion
@@ -38,13 +38,17 @@ export class AuthController {
 
   // Metodo para iniciar sesion con google
   static async loginGoogle(req, res){
-    const { value: email } = req.user.emails[0];
-
-    if (!email) {
-      return res.status(400).json({ message: "No se logro iniciar sesion con google" });
-    }
-
     try {
+      if (!req.user) {
+        return res.status(400).json({ message: "No se pudo iniciar sesión con Google" });
+      }
+
+      const { value: email } = req.user.emails[0];
+
+      if (!email) {
+        return res.status(400).json({ message: "No se logro iniciar sesion con google" });
+      }
+
       const user = await UserModel.getByEmail({ email });
 
       const token = jwt.sign(
@@ -60,7 +64,9 @@ export class AuthController {
         secure: process.env.NODE_ENV === "production",
         sameSite: "Lax",
       });
-      res.status(200).json({ message: "Sesion iniciada", user });
+  
+      const redirectUrl = user.rol_id !== 1 ? `${FRONTEND_URL}/user` : `${FRONTEND_URL}/admin`;
+      res.redirect(redirectUrl);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
@@ -74,7 +80,7 @@ export class AuthController {
     const [user] = await UserModel.getById({ id: userId });
     if (!user) return res.status(404).json({ message: "El usuario no existe" });
 
-    res.status(200).json({ message: "Autenticado", rolId: user.rol_id });
+    res.status(200).json({ message: "Autenticado", rolId: user.rol_id, userId: user.user_id });
   }
 
   // Metodo para cerrar sesion

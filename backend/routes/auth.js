@@ -12,7 +12,7 @@ authRouter.get("/login/google", passport.authenticate("auth-google", {
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email"
     ],
-    session: false
+    session: false,
 }), AuthController.loginGoogle);
 
 authRouter.post("/", verifyToken, AuthController.authenticate);
