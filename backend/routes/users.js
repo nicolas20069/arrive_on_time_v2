@@ -13,6 +13,7 @@ const upload = multer({ storage: storage });
 usersRouter.get("/", [verifyToken, isAdmin], UserController.getAll);
 usersRouter.get("/admins", [verifyToken, isAdmin], UserController.getAdmins);
 usersRouter.get("/:id", [verifyToken, isAuth], UserController.getById);
+usersRouter.get("/:id/image", UserController.getImageProfile);
 
 usersRouter.post("/", [verifyToken, isAdmin], UserController.create);
 usersRouter.post("/image-profile/:id", [verifyToken, isAdmin, upload.single("user_img_profile")], UserController.setImageProfile);

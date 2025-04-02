@@ -110,11 +110,11 @@ export class UserModel {
   }
 
   // Metodo para subir la imagen de perfil de un usuario a la base de datos en formato blob
-  static async setImageProfileDB({ id, imageData }) {
+  static async setImageProfileDB({ id, imageData, imagePath }) {
     try {
       const [result] = await pool.query(
-        "UPDATE users SET user_img_profile_blob = ? WHERE user_id = ?",
-        [imageData, id]
+        "UPDATE users SET user_img_profile_blob = ?, user_img_profile_path = ? WHERE user_id = ?",
+        [imageData, imagePath, id]
       );
       
       return result.affectedRows;
