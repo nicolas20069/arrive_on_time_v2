@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 
-import { login } from "./api/login.js";
+import { login, loginWithGoogle } from "./api/login.js";
 import { SEVERITY_TOAST, SUMMARY_TOAST } from "./constants/toast-config.js";
 
 export function Login() {
@@ -45,6 +45,37 @@ export function Login() {
         cedula,
         contraseña,
       });
+
+      if (data) {
+        const { user } = data;
+        localStorage.setItem("user", JSON.stringify(user));
+
+        if (user.rol_id === 1) {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/user";
+        }
+      } else {
+        showToast({
+          detail: error,
+          severity: SEVERITY_TOAST.error,
+          summary: SUMMARY_TOAST.error,
+        });
+      }
+    } catch (error) {
+      showToast({
+        detail: error.message,
+        severity: SEVERITY_TOAST.error,
+        summary: SUMMARY_TOAST.error,
+      });
+    }
+  };
+
+  const handleLoginWithGoogle = async (e) => {
+    e.preventDefault();
+
+    try {
+      const [error, data] = await loginWithGoogle();
 
       if (data) {
         const { user } = data;
@@ -148,6 +179,7 @@ export function Login() {
           iconPos="left"
           className="primary-button login-button"
           style={{ marginTop: "0" }}
+          onClick={handleLoginWithGoogle}
         />
 
       </form>
