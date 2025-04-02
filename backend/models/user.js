@@ -206,7 +206,7 @@ export class UserModel {
     const [user] = await pool.query("SELECT * FROM users WHERE correo = ?", [
       email,
     ]);
-    if (user.length === 0) throw new Error("Usuario no encontrado");
+    if (user.length === 0) throw new Error("Usuario no encontrado. El acceso con Google no esta habilitado para este usuario");
 
     const { contraseña: _, ...publicUser } = user[0];
 
