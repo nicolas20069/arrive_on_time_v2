@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const {
-    DB_HOST = "localhost",
-    DB_USER = "root",
-    DB_PASSWORD = "",
+    DB_HOST = "192.168.1.7",
+    DB_USER = "linux",
+    DB_PASSWORD = "tonsquemami",
     DB_DATABASE = "arrive_on_time",
     PORT = 5000,
     NODE_ENV = 'development',
