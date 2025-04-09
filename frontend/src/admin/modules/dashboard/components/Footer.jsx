@@ -8,7 +8,7 @@ export function Footer() {
 
       <div>
         <small>Desarrollado por: </small>
-        <small>Juan Cuellar y Nicolas Melo</small>
+        <small>Juan Cuellar, Nicolas Melo y Nicolas Mueses</small>
       </div>
     </footer>
   );
