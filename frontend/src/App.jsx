@@ -20,11 +20,13 @@ function App() {
     const token = document.cookie.split("=")[1];
   
     useEffect(() => {
+      const start = Date.now();
+  
       if (!token || token === "null") {
         setIsAllowed(false);
         return;
       }
-  
+
       fetch("http://localhost:5000/auth", {
         method: "POST",
         headers: {
@@ -33,25 +35,38 @@ function App() {
         },
       })
         .then((response) => {
-          if (response.status === 200) {
-            return response.json();
-          }
-          throw new Error("No Autorizado");
+          if (response.status === 200) return response.json();
+          throw new Error("No autorizado");
         })
         .then((data) => {
-          if (allowedRoles && !allowedRoles.includes(data.rolId)) {
-            setIsAllowed(false);
-          } else {
-            setIsAllowed(true);
-          }
+          const elapsed = Date.now() - start;
+          const remaining = 1000 - elapsed;
+  
+          setTimeout(() => {
+            if (allowedRoles && !allowedRoles.includes(data.rolId)) {
+              setIsAllowed(false);
+            } else {
+              setIsAllowed(true);
+            }
+          }, remaining > 0 ? remaining : 0);
         })
         .catch(() => {
-          setIsAllowed(false);
+          const elapsed = Date.now() - start;
+          const remaining = 1000 - elapsed;
+  
+          setTimeout(() => {
+            setIsAllowed(false);
+          }, remaining > 0 ? remaining : 0);
         });
     }, [token, allowedRoles]);
   
     if (isAllowed === null) {
-      return <div>Cargando...</div>; // Puedes mostrar un loader
+      return (
+        <div className="loader-container">
+        <div className="loader"></div>
+        <p className="text-sesion">Iniciando Sesión</p>
+        </div>
+      );
     }
   
     return isAllowed ? children : <Navigate to="/" replace />;
