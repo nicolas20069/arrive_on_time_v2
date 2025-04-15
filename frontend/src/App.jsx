@@ -62,9 +62,8 @@ function App() {
   
     if (isAllowed === null) {
       return (
-        <div className="loader-container">
-        <div className="loader"></div>
-        <p className="text-sesion">Iniciando Sesión</p>
+        <div className="loader-bar-container">
+          <div className="loader-bar"></div>
         </div>
       );
     }

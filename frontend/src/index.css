@@ -54,41 +54,44 @@ input:focus, textarea:focus, select:focus {
   }
 }
 
-/* Spinner CSS */
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f9fafb;
+/* Loader de barra superior */
+.loader-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: transparent;
+  z-index: 9999;
 }
 
-.loader {
-  border: 6px solid #e0e0e0;
-  border-top: 6px solid #00ff91;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(to right, #00ff91, #00c86f);
+  animation: loaderProgress 1s linear forwards;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes loaderProgress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
-.text-sesion {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #5eff00;
-  animation: fadeIn 0.4s ease-in-out infinite alternate;
+/* Texto opcional debajo */
+.loader-text {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  letter-spacing: 1px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0.3; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4px 12px;
+  border-radius: 5px;
+  animation: fadeIn 0.4s ease-in-out infinite alternate;
+  z-index: 9999;
 }
