@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getUsersAdmins() {
-  const response = await fetch("http://localhost:5000/users/admins", {
+  const response = await fetch("https://localhost:5000/users/admins", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

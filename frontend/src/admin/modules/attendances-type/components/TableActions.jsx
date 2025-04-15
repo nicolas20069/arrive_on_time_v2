@@ -21,7 +21,7 @@ export function TableActions({ attendanceType }) {
   const accept = async (id) => {
     try {
       const token = document.cookie.split("=")[1];
-      const response = await fetch(`http://localhost:5000/attendances-type/${id}`, {
+      const response = await fetch(`https://localhost:5000/attendances-type/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

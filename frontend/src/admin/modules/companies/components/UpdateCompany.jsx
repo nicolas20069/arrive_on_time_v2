@@ -62,7 +62,7 @@ export function UpdateCompany({ visible, setVisible, company }) {
     try {
       const token = document.cookie.split("=")[1];
       const response = await fetch(
-        `http://localhost:5000/companies/${companyId}`,
+        `https://localhost:5000/companies/${companyId}`,
         {
           method: "PUT",
           headers: {

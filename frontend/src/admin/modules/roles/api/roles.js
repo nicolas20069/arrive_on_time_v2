@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getRoles() {
-  const response = await fetch("http://localhost:5000/roles", {
+  const response = await fetch("https://localhost:5000/roles", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export async function getRoles() {
 }
 
 export async function getRolById({ id }) {
-  const response = await fetch(`http://localhost:5000/roles/${id}`, {
+  const response = await fetch(`https://localhost:5000/roles/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export async function getRolById({ id }) {
 
 export async function createRol({ rolName }) {
   try {
-    const response = await fetch("http://localhost:5000/roles", {
+    const response = await fetch("https://localhost:5000/roles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

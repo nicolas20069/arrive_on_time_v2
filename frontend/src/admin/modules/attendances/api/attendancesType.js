@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getAttendancesType() {
-  const response = await fetch("http://localhost:5000/attendances-type", {
+  const response = await fetch("https://localhost:5000/attendances-type", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

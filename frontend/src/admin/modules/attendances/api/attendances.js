@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getAttendances() {
-  const response = await fetch("http://localhost:5000/attendances", {
+  const response = await fetch("https://localhost:5000/attendances", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export async function getAttendances() {
 }
 
 export async function gerAttendanceById({ id }) {
-  const response = await fetch(`http://localhost:5000/attendances/${id}`, {
+  const response = await fetch(`https://localhost:5000/attendances/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export async function createAttendance({
   userId,
 }) {
   try {
-    const response = await fetch("http://localhost:5000/attendances", {
+    const response = await fetch("https://localhost:5000/attendances", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

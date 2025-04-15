@@ -36,7 +36,7 @@ export function UpdateAttendanceType({ visible, setVisible, attendanceType }) {
   const handleSubmit = async () => {
     try {
       const token = document.cookie.split("=")[1];
-      const response = await fetch(`http://localhost:5000/attendances-type/${attendanceTypeId}`, {
+      const response = await fetch(`https://localhost:5000/attendances-type/${attendanceTypeId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

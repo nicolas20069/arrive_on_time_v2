@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getUserById({ userId }) {
-  const response = await fetch(`http://localhost:5000/users/${userId}`, {
+  const response = await fetch(`https://localhost:5000/users/${userId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export async function getUserById({ userId }) {
 }
 
 export async function auth(token) {
-  const response = await fetch(`http://localhost:5000/auth`, {
+  const response = await fetch(`https://localhost:5000/auth`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

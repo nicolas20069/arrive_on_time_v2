@@ -94,7 +94,7 @@ export function UpdateAttendance({ visible, setVisible, attendance }) {
     try {
       const token = document.cookie.split("=")[1];
       const response = await fetch(
-        `http://localhost:5000/attendances/${attendanceId}`,
+        `https://localhost:5000/attendances/${attendanceId}`,
         {
           method: "PUT",
           headers: {

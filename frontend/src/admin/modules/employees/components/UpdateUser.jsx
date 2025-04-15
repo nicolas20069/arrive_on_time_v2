@@ -95,7 +95,7 @@ export function UpdateUser({ visible, setVisible, user }) {
 
     try {
       const token = document.cookie.split("=")[1];
-      const response = await fetch(`http://localhost:5000/users/${userId}`, {
+      const response = await fetch(`https://localhost:5000/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

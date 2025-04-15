@@ -71,7 +71,7 @@ export function Login() {
   };
 
   const handleLoginWithGoogle = async () => {
-    window.location.href = "http://localhost:5000/auth/login/google";
+    window.location.href = "https://localhost:5000/auth/login/google";
   };
 
   return (

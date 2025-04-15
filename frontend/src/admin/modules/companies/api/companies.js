@@ -1,7 +1,7 @@
 const token = document.cookie.split("=")[1];
 
 export async function getCompanies() {
-  const response = await fetch("http://localhost:5000/companies", {
+  const response = await fetch("https://localhost:5000/companies", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export async function getCompanies() {
 }
 
 export async function getCompanyById({ id }) {
-  const response = await fetch(`http://localhost:5000/companies/${id}`, {
+  const response = await fetch(`https://localhost:5000/companies/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export async function getCompanyById({ id }) {
 
 export async function createCompany({ companyName, userAdminId }) {
   try {
-    const response = await fetch("http://localhost:5000/companies", {
+    const response = await fetch("https://localhost:5000/companies", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

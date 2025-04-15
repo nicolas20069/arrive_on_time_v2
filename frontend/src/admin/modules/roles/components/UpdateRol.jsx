@@ -36,7 +36,7 @@ export function UpdateRol({ visible, setVisible, rol }) {
   const handleSubmit = async () => {
     try {
       const token = document.cookie.split("=")[1];
-      const response = await fetch(`http://localhost:5000/roles/${rolId}`, {
+      const response = await fetch(`https://localhost:5000/roles/${rolId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -38,19 +38,19 @@ export const getAsideNavItems = () => {
     },
 
     {
-      to: `http://localhost:5000/resources/db?token=${token}`,
+      to: `https://localhost:5000/resources/db?token=${token}`,
       icon: "dashboard/db",
       title: "Exportar Base de Datos",
     },
 
     {
-      to: `http://localhost:5000/resources/all-attendances?token=${token}`,
+      to: `https://localhost:5000/resources/all-attendances?token=${token}`,
       icon: "dashboard/table-down",
       title: "Descargar Todas las Asistencias",
     },
 
     {
-      to: `http://localhost:5000/resources/your-attendances?token=${token}`,
+      to: `https://localhost:5000/resources/your-attendances?token=${token}`,
       icon: "dashboard/file-excel",
       title: "Descargar Tus Asistencias",
     },

@@ -27,7 +27,7 @@ function App() {
         return;
       }
 
-      fetch("http://localhost:5000/auth", {
+      fetch("https://localhost:5000/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

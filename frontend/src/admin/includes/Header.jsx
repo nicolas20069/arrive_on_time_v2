@@ -55,7 +55,7 @@ export function Header() {
   };
 
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:5000/auth/logout", {
+    const response = await fetch("https://localhost:5000/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -157,7 +157,7 @@ export function Header() {
 
           <FileUpload
             className="file-upload"
-            url={`http://localhost:5000/users/image-profile/${userData.user_id}?token=${token}`}
+            url={`https://localhost:5000/users/image-profile/${userData.user_id}?token=${token}`}
             name="user_img_profile"
             mode="basic"
             accept=".jpg,.jpeg,.png"
