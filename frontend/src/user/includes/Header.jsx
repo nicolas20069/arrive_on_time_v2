@@ -19,14 +19,14 @@ export function Header({ user }) {
     { label: "Tus Asistencias", path: "/user" },
     {
       label: "Descargar Tus Asistencias",
-      path: `http://localhost:5000/resources/your-attendances?token=${token}`,
+      path: `https://localhost:5000/resources/your-attendances?token=${token}`,
     },
   ];
 
   let userImg = ""
 
   if (user.user_img_profile_path) {
-    userImg = `http://localhost:5000/users/${user.user_id}/image`;
+    userImg = `https://localhost:5000/users/${user.user_id}/image`;
   }else {
     userImg = "/user.svg";
   }
@@ -55,7 +55,7 @@ export function Header({ user }) {
   };
 
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:5000/auth/logout", {
+    const response = await fetch("https://localhost:5000/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export function Header({ user }) {
 
           <FileUpload
             className="file-upload"
-            url={`http://localhost:5000/users/image-profile-db/${user.user_id}?token=${token}`}
+            url={`https://localhost:5000/users/image-profile-db/${user.user_id}?token=${token}`}
             name="user_img_profile"
             mode="basic"
             accept=".jpg,.jpeg,.png"

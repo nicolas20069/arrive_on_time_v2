@@ -13,7 +13,7 @@ export function HeaderTable({ user }) {
           className="primary-button"
           style={{ marginRight: ".5em" }}
           onClick={() => {
-            window.open(`http://localhost:5000/resources/your-attendances?token=${token}`, "_blank")
+            window.open(`https://localhost:5000/resources/your-attendances?token=${token}`, "_blank")
           }}
         />
       </div>
