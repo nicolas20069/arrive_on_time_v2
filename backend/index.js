@@ -1,3 +1,6 @@
+import https from 'node:https'
+import fs from 'node:fs'
+
 import express from "express";
 import cors from "cors";
 import passport from "passport";
@@ -30,6 +33,18 @@ app.use('/attendances-type', attendancesTypeRouter)
 // Rutas para gestionar la descarga de recursos
 app.use('/resources', resourcesRouter)
 
-app.listen(PORT, () => {
+// configuracion para habilitar https
+const httpsOptions = {
+  key: fs.readFileSync("./ssl/localhost-key.pem"),
+  cert: fs.readFileSync("./ssl/localhost.pem")
+}
+
+// Crear servidor https
+https.createServer(httpsOptions, app).listen(PORT, () => {
+  console.log(`Servidor corriendo en: https://localhost:${PORT}`);
+})
+
+// Servidor http
+/* app.listen(PORT, () => {
   console.log(`Servidor corriendo en: http://localhost:${PORT}`);
-});
+}); */
