@@ -1,6 +1,7 @@
 # ARRIVE_ON_TIME
 
 Software para la toma de asistencias autónomas en una empresa o institución.
+
 Desarrollador por:
 - Juan Cuellar
 - Nicolas Melo
