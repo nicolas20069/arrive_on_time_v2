@@ -6,7 +6,7 @@ import "primeicons/primeicons.css";
 import { Login } from "./login/index.jsx";
 import { Employees } from "./admin/modules/employees/index.jsx";
 import { Dashboard } from "./admin/modules/dashboard/index.jsx";
-// import { Reports } from "./admin/modules/reports/index.jsx";
+import { Queries } from "./admin/modules/queries/index.jsx";
 import { Attendance } from "./admin/modules/attendances/index.jsx";
 import { Companies } from "./admin/modules/companies/index.jsx";
 import { Roles } from "./admin/modules/roles/index.jsx";
@@ -83,7 +83,7 @@ function App() {
               <Routes>
                 <Route path="" element={<Dashboard />} />
                 <Route path="users" element={<Employees />} />
-                {/* <Route path="reports" element={<Reports />} /> */}
+                <Route path="queries" element={<Queries />} />
                 <Route path="attendances" element={<Attendance />} />
                 <Route
                   path="your-attendances"
