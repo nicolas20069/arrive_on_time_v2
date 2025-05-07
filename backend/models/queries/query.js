@@ -24,3 +24,14 @@ WHERE
         ) AS max_conteo
     )
 ORDER BY conteo.user_id;`
+
+export const queryDos = `SELECT u.user_id, u.nombres, u.apellidos, 
+(SELECT tp.tipo_asistencia FROM tipo_asistencia AS tp 
+    WHERE tp.tipo_id = 1) AS tipo_de_asistencia
+FROM users AS u
+WHERE EXISTS (
+    SELECT u.nombres, u.apellidos FROM asistencia AS a
+    WHERE a.user_id = u.user_id
+        AND a.tipo_id = 1
+        AND a.hora < '16:30:00'
+);`

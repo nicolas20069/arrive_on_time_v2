@@ -10,4 +10,14 @@ export class QueriesController {
             res.status(500).json({ message: "Error al obtener la consulta uno" });
         }
     }
+
+    static async queryDos(req, res) {
+        try {
+            const data = await QueryModel.queryDos()
+            res.json(data);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error al obtener la consulta dos" });
+        }
+    }
 }
