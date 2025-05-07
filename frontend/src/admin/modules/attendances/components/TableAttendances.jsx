@@ -16,7 +16,7 @@ export function TableAttendances({ attendances }) {
         showGridlines
         stripedRows
         paginator
-        rows={5}
+        rows={25}
         rowsPerPageOptions={[5, 10, 25, 50]}
         tableStyle={{ minWidth: "50rem" }}
       >
