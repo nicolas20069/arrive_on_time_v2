@@ -40,7 +40,7 @@ export function QueryForm() {
 
         try {
             const res = await getQueries({ queryId: selectQuery })
-            setQueryResult(res.data);
+            setQueryResult(res);
 
         } catch (error) {
             showToast({

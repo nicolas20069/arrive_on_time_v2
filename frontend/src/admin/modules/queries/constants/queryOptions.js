@@ -1,4 +1,4 @@
 export const queryOptions = [
-    { label: "Consulta 1", value: "uno" },
+    { label: 'Traer el o los usuarios que han registrado más asistencias del tipo "Entrada"', value: "uno" },
     { label: "Consulta 2", value: "dos" },
 ]

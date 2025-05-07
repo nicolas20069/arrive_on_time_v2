@@ -1,22 +1,38 @@
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+
 export function QueryResults({ queryResult }) {
     return (
         <div>
             {
                 queryResult && (
                     <div className="query-result">
-                        <h3>Resultado de la consulta</h3>
-
-                        <ol>
+                        <DataTable
+                            value={queryResult}
+                            size="small"
+                            resizableColumns
+                            showGridlines
+                            stripedRows
+                            paginator
+                            rows={5}
+                            rowsPerPageOptions={[5, 10, 25, 50]}
+                            tableStyle={{ minWidth: "50rem", padding: "20px" }}
+                        >
+                            <Column
+                                header="#"
+                                body={(_, rowIndex) => rowIndex.rowIndex + 1}
+                            />
+                            
                             {
-                                queryResult.map((item, index) => {
-                                    return (
-                                        <li key={index}>
-                                            {JSON.stringify(item)}
-                                        </li>
-                                    )
-                                })
+                                Object.keys(queryResult[0])
+                                    .map(key =>
+                                        <Column
+                                            key={key}
+                                            field={key}
+                                            header={key.toUpperCase().split("_").join(" ")}
+                                        />)
                             }
-                        </ol>
+                        </DataTable>
                     </div>
                 )
             }
