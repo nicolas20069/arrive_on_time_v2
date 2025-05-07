@@ -38,9 +38,15 @@ export const getAsideNavItems = () => {
     },
 
     {
+      to: "/admin/queries",
+      icon: "dashboard/user-search",
+      title: "Realizar Consultas",
+    },
+
+    {
       to: `https://localhost:5000/resources/db?token=${token}`,
       icon: "dashboard/db",
-      title: "Exportar Base de Datos",
+      title: "Descargar Base de Datos en SQL",
     },
 
     {
