@@ -2,28 +2,12 @@ import { QueryModel } from "../models/query.js"
 
 export class QueriesController {
     static async queryUno(req, res) {
-        res.status(200).json({ message: "Funciona query 1", data: [
-            {
-                id: 1,
-                name: "John"
-            },
-            {
-                id: 2,
-                name: "Jane"
-            }
-        ]})
-    }
-
-    static async queryDos(req, res) {
-        res.status(200).json({ message: "Funciona query 2", data: [
-            {
-                id: 3,
-                name: "John"
-            },
-            {
-                id: 4,
-                name: "Jane"
-            }
-        ]})
+        try {
+            const data = await QueryModel.queryUno()
+            res.json(data);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error al obtener la consulta uno" });
+        }
     }
 }

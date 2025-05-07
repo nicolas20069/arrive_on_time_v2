@@ -5,5 +5,4 @@ import { verifyToken, isAdmin} from '../middlewares/auth.js';
 
 export const queriesRouter = Router();
 
-queriesRouter.get("/uno", /* [verifyToken, isAdmin], */ QueriesController.queryUno);
-queriesRouter.get("/dos", /* [verifyToken, isAdmin], */ QueriesController.queryDos);
+queriesRouter.get("/uno", [verifyToken, isAdmin], QueriesController.queryUno);
