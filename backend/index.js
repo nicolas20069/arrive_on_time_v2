@@ -13,6 +13,7 @@ import { attendanceRouter } from "./routes/attendance.js";
 import { attendancesTypeRouter } from "./routes/attendancesType.js";
 import { authRouter } from "./routes/auth.js";
 import { resourcesRouter } from "./routes/resources.js";
+import { queriesRouter } from './routes/queries.js';
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,9 @@ app.use('/attendances-type', attendancesTypeRouter)
 
 // Rutas para gestionar la descarga de recursos
 app.use('/resources', resourcesRouter)
+
+// Ruta para gestionar las consultas de datos
+app.use('/queries', queriesRouter)
 
 // configuracion para habilitar https
 const httpsOptions = {
