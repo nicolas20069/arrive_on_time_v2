@@ -19,7 +19,7 @@ WHERE
             FROM users as u
             inner JOIN asistencia as a ON u.user_id = a.user_id
             inner JOIN tipo_asistencia as ta ON a.tipo_id = ta.tipo_id
-            WHERE ta.tipo_asistencia = 'Entrada'
+            WHERE ta.tipo_id = 1
             GROUP BY u.user_id
         ) AS max_conteo
     )
