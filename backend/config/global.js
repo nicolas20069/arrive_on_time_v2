@@ -5,7 +5,7 @@ dotenv.config();
 export const {
     DB_HOST, 
     DB_USER,
-    DB_PASSWORD = "", 
+    DB_PASSWORD, 
     DB_DATABASE,
     PORT = 5000,
     NODE_ENV = 'development',
