@@ -2,14 +2,11 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8
+    build: ./db
     container_name: mysql
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: arrive_on_time
-      MYSQL_USER: juanjk
-      MYSQL_PASSWORD: juanjk
+    env_file:
+      - ./db/.env
     ports:
       - "3306:3306"
     volumes:
