@@ -137,10 +137,10 @@ export function Login() {
           onClick={handleLogin}
         />
 
-        <div class="separator">
-          <div class="line"/>
+        <div className="separator">
+          <div className="line"/>
           <span>o</span>
-          <div class="line"/>
+          <div className="line"/>
         </div>
 
         <Button
