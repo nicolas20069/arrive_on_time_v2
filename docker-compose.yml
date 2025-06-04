@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mysql:
-    build: ./db # usa la imagen de db
+    image: juanjk24/arrive-on-time-db # usa la imagen de db de dockerhub
     container_name: mysql
     restart: always 
     env_file:
@@ -13,18 +13,18 @@ services:
       - mysql-data:/var/lib/mysql  
 
   backend:
-    build: ./backend
+    image: juanjk24/arrive-on-time-backend # usa la imagen del backend de dockerhub
     container_name: backend
     restart: always
     ports:
       - "5000:5000"
     env_file:
-      - ./backend/.env
+      - ./backend/.env.docker
     depends_on:
       - mysql
 
   frontend:
-    build: ./frontend
+    image: juanjk24/arrive-on-time-frontend # usa la imagen del frontend de dockerhub
     container_name: frontend
     restart: always
     ports:
