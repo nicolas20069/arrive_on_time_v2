@@ -1,0 +1,40 @@
+# Estas son las instrucciones para correr el software Arrive On Time sin usar Docker
+# Solamente debes seguir los pasos que se presentan posteriormente.
+
+# Antes de seguir, asegúrate de contar con los siguientes programas:
+PRERREQUISITOS: 
+    - Git
+    - Node.js - Versión 20 o mayor (Se recomienda contar con la versión LTS)
+    - Base de Datos MySQL
+    - Contar con la Base de Datos de arrive_on_time. En caso de no ser así, mira el punto 6.
+
+1. Clonar el repositorio del proyecto [terminal].
+    git clone https://github.com/juanjk24/arrive-on-time.git --depth 1
+
+2. Entrar a la carpeta del proyecto [terminal].
+    cd arrive-on-time
+
+3. Instalar las dependencias del proyecto backend [terminal].
+    cd backend
+    npm install
+
+4. Instalar las dependencias del proyecto frontend [terminal].
+    cd ../frontend
+    npm install
+
+5. Añadir el archivo .env a la carpeta backend y modificar las variables de entorno: DB_USER y DB_PASSWORD
+    Por tu usuario y contraseña correspondiente de tu usuario de Base de Datos.
+
+6. Ejecutar el código SQL arrive_on_time.sql que está dentro de la carpeta: db
+
+7. Correr el proyecto backend [terminal]:
+    npm start
+
+8. Correr el proyecto frontend [terminal]:
+    npm run dev
+
+9. Ingresar en un navegador a: https://localhost:5173
+
+10. Ingresar con usuario y contraseña. Por defecto, el usuario administrador es:
+    cedula: 1111111111
+    contraseña: admin123

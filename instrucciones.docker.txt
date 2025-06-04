@@ -1,0 +1,23 @@
+# Estas son las instrucciones para correr el software Arrive On Time usando Docker
+# Solamente debes seguir los pasos que se presentan posteriormente.
+
+# Antes de seguir, asegúrate de contar con los siguientes programas:
+PRERREQUISITOS: 
+    - Docker
+
+1. Clonar el repositorio del proyecto [terminal].
+    git clone https://github.com/juanjk24/arrive-on-time.git --depth 1
+
+2. Entrar a la carpeta del proyecto [terminal].
+    cd arrive-on-time
+
+3. Añadir el archivo .env.docker a la carpeta backend.
+
+4. Correr el docker-compose.yml [terminal].
+    docker-compose up -d
+
+5. Ingresar en un navegador a: https://localhost:5173
+
+6. Ingresar con usuario y contraseña. Por defecto, el usuario administrador es:
+    cedula: 1120066810
+    contraseña: juanjk
