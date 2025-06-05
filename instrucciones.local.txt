@@ -38,3 +38,8 @@ PRERREQUISITOS:
 10. Ingresar con usuario y contraseña. Por defecto, el usuario administrador es:
     cedula: 1111111111
     contraseña: admin123
+
+IMPORTANTE: 
+En caso iniciar sesion y que de un error de: Failed to fech
+Ingresar a https://localhost:5000
+Aceptar o Permitir que se pueda navegar en ese sitio web
