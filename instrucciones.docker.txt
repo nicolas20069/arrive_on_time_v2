@@ -3,6 +3,7 @@
 
 # Antes de seguir, asegúrate de contar con los siguientes programas:
 PRERREQUISITOS: 
+    - Git
     - Docker
 
 1. Clonar el repositorio del proyecto [terminal].
