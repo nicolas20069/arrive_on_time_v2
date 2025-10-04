@@ -3,35 +3,21 @@
         <!-- Título principal del módulo -->
         <h2>Registro de Asistencia</h2>
         <p>Por favor, ingresa tu código de empleado y selecciona tu acción.</p>
-
         <!-- Campo para ingresar el ID del empleado -->
-        <input 
-            v-model="employeeId" 
-            type="number" 
-            placeholder="Código de Empleado" 
-            :disabled="loading" 
-            @blur="getHistory" 
-        />
+        <input v-model="employeeId" type="number" placeholder="Código de Empleado" :disabled="loading"
+            @blur="getHistory" />
 
         <!-- Botones para registrar entrada o salida -->
         <div class="actions">
             <!-- Botón de ENTRADA -->
             <!-- Se desactiva si no hay employeeId o está cargando -->
-            <button 
-                @click="recordAssistance('entrada')" 
-                :disabled="!employeeId || loading" 
-                class="btn-check-in"
-            >
+            <button @click="recordAssistance('entrada')" :disabled="!employeeId || loading" class="btn-check-in">
                 <!-- Muestra texto dinámico dependiendo del estado -->
                 {{ loading && actionType === 'entrada' ? 'Registrando...' : 'Marcar ENTRADA' }}
             </button>
 
             <!-- Botón de SALIDA -->
-            <button 
-                @click="recordAssistance('salida')" 
-                :disabled="!employeeId || loading" 
-                class="btn-check-out"
-            >
+            <button @click="recordAssistance('salida')" :disabled="!employeeId || loading" class="btn-check-out">
                 {{ loading && actionType === 'salida' ? 'Registrando...' : 'Marcar SALIDA' }}
             </button>
         </div>
@@ -46,11 +32,35 @@
         <div v-if="history.length > 0" class="history-section">
             <!-- Estado actual del empleado (Entrada o Salida) -->
             <h3>
-                Estado Actual: 
+                Estado Actual:
                 <span :class="currentStatus === 'Entrada' ? 'status-in' : 'status-out'">
                     {{ currentStatus }}
                 </span>
             </h3>
+
+            <!-- Tabla del historial reciente -->
+            <h4>Historial Reciente:</h4>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Renderiza dinámicamente cada registro de asistencia -->
+                    <tr v-for="(record, index) in history" :key="index">
+                        <td>
+                            <span :class="record.type === 'Entrada' ? 'status-in' : 'status-out'">
+                                {{ record.type }}
+                            </span>
+                        </td>
+                        <td>{{ record.fecha }}</td>
+                        <td>{{ record.hora }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -75,6 +85,44 @@ const actionType = ref('');        // Acción actual ('entrada' o 'salida')
 const history = ref([]);           // Historial de asistencias
 const currentStatus = ref('desconocido'); // Estado actual del empleado
 
+// ======================
+// Función: Obtener Historial
+// ======================
+const getHistory = async () => {
+    // Si no hay ID, reiniciamos los valores
+    if (!employeeId.value) {
+        history.value = [];
+        currentStatus.value = 'desconocido';
+        return;
+    }
+
+    try {
+        // Petición GET al backend para obtener el historial del empleado
+        const response = await axios.get(`${API_URL}/public/attendances/${employeeId.value}`);
+
+        // Si la respuesta es exitosa, actualizamos el historial
+        if (response.data.success) {
+            history.value = response.data.history;
+            currentStatus.value = response.data.current_status;
+        }
+    } catch (error) {
+        // Si ocurre un error, lo mostramos en consola y limpiamos los datos
+        console.error('Error al obtener el historial:', error);
+        history.value = [];
+        currentStatus.value = 'desconocido';
+    }
+};
+
+// ======================
+// Watcher: Observa cambios en employeeId
+// ======================
+// Si el usuario borra el código, se limpia el historial
+watch(employeeId, (newId) => {
+    if (!newId) {
+        history.value = [];
+        currentStatus.value = 'desconocido';
+    }
+});
 
 // ======================
 // Función: Registrar Asistencia
@@ -93,9 +141,9 @@ const recordAssistance = async (type) => {
     message.value = '';
 
     // Datos a enviar al backend
-    const assistanceData = { 
-        employeeId: employeeId.value, 
-        type: type 
+    const assistanceData = {
+        employeeId: employeeId.value,
+        type: type
     };
 
     try {
@@ -106,7 +154,7 @@ const recordAssistance = async (type) => {
         if (response.data.success) {
             message.value = response.data.message;
             statusType.value = 'success';
-            //..
+            await getHistory(); // Refrescamos historial
             employeeId.value = null; // Limpiamos el campo
         }
     } catch (error) {
@@ -127,7 +175,6 @@ const recordAssistance = async (type) => {
     }
 };
 </script>
-
 
 <style scoped>
 .assistance-module {
@@ -157,9 +204,20 @@ input {
     transition: background-color 0.3s;
 }
 
-.btn-check-in { background-color: #4CAF50; color: white; }
-.btn-check-out { background-color: #f44336; color: white; }
-.actions button:disabled { background-color: #cccccc; cursor: not-allowed; }
+.btn-check-in {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-check-out {
+    background-color: #f44336;
+    color: white;
+}
+
+.actions button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
 
 .status-message {
     padding: 10px;
@@ -167,9 +225,63 @@ input {
     border-radius: 4px;
 }
 
-.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
 
-.status-in { font-weight: bold; color: #155724; }
-.status-out { font-weight: bold; color: #721c24; }
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.history-section {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    text-align: left;
+}
+
+.history-section h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.history-table th,
+.history-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.history-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.history-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.status-in {
+    font-weight: bold;
+    color: #155724;
+}
+
+.status-out {
+    font-weight: bold;
+    color: #721c24;
+}
 </style>
