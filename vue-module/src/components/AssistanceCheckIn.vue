@@ -85,33 +85,6 @@ const actionType = ref('');        // Acción actual ('entrada' o 'salida')
 const history = ref([]);           // Historial de asistencias
 const currentStatus = ref('desconocido'); // Estado actual del empleado
 
-// ======================
-// Función: Obtener Historial
-// ======================
-const getHistory = async () => {
-    // Si no hay ID, reiniciamos los valores
-    if (!employeeId.value) {
-        history.value = [];
-        currentStatus.value = 'desconocido';
-        return;
-    }
-
-    try {
-        // Petición GET al backend para obtener el historial del empleado
-        const response = await axios.get(`${API_URL}/public/attendances/${employeeId.value}`);
-
-        // Si la respuesta es exitosa, actualizamos el historial
-        if (response.data.success) {
-            history.value = response.data.history;
-            currentStatus.value = response.data.current_status;
-        }
-    } catch (error) {
-        // Si ocurre un error, lo mostramos en consola y limpiamos los datos
-        console.error('Error al obtener el historial:', error);
-        history.value = [];
-        currentStatus.value = 'desconocido';
-    }
-};
 
 // ======================
 // Watcher: Observa cambios en employeeId
@@ -174,6 +147,36 @@ const recordAssistance = async (type) => {
         actionType.value = '';
     }
 };
+
+
+// ======================
+// Función: Obtener Historial
+// ======================
+const getHistory = async () => {
+    // Si no hay ID, reiniciamos los valores
+    if (!employeeId.value) {
+        history.value = [];
+        currentStatus.value = 'desconocido';
+        return;
+    }
+
+    try {
+        // Petición GET al backend para obtener el historial del empleado
+        const response = await axios.get(`${API_URL}/public/attendances/${employeeId.value}`);
+
+        // Si la respuesta es exitosa, actualizamos el historial
+        if (response.data.success) {
+            history.value = response.data.history;
+            currentStatus.value = response.data.current_status;
+        }
+    } catch (error) {
+        // Si ocurre un error, lo mostramos en consola y limpiamos los datos
+        console.error('Error al obtener el historial:', error);
+        history.value = [];
+        currentStatus.value = 'desconocido';
+    }
+};
+
 </script>
 
 <style scoped>
