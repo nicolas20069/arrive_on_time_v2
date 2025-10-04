@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
+import { Dialog } from "primereact/dialog"; // Importar Dialog
 
 import { login } from "./api/login.js";
 import { SEVERITY_TOAST, SUMMARY_TOAST } from "./constants/toast-config.js";
@@ -13,6 +14,7 @@ export function Login() {
   const [cedula, setCedula] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
 
   const showToast = ({ detail, severity, summary }) => {
     toast.current.show({
@@ -154,7 +156,30 @@ export function Login() {
           onClick={handleLoginWithGoogle}
         />
 
+        {/* Botón para abrir el módulo de asistencia */}
+        <Button
+          type="button"
+          label="Marcar Asistencia"
+          icon="pi pi-clock"
+          className="p-button-secondary login-button"
+          style={{ marginTop: "1rem" }}
+          onClick={() => setIsModalOpen(true)}
+        />
       </form>
+
+      {/* Ventana Modal para el Módulo de Vue */}
+      <Dialog 
+        header="Registro de Asistencia" 
+        visible={isModalOpen} 
+        style={{ width: '50vw', height: '80vh' }}
+        onHide={() => setIsModalOpen(false)}
+      >
+        <iframe 
+          src="https://localhost:3000" 
+          title="Módulo de Asistencia"
+          style={{ width: '100%', height: '100%', border: 'none' }}
+        />
+      </Dialog>
     </main>
   );
 }

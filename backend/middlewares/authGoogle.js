@@ -7,6 +7,7 @@ import {
   GOOGLE_CALLBACK_URL,
 } from "../config/global.js";
 
+/*
 passport.use(
   "auth-google",
   new GoogleStrategy(
@@ -20,3 +21,4 @@ passport.use(
     }
   )
 );
+*/
