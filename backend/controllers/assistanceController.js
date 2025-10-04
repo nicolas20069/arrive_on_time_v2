@@ -73,6 +73,8 @@ export const recordAssistance = async (req, res) => {
 };
 
 
+
+
 // ================================================
 // Controlador para consultar el historial de asistencia
 // ================================================

@@ -148,7 +148,6 @@ const recordAssistance = async (type) => {
     }
 };
 
-
 // ======================
 // Función: Obtener Historial
 // ======================
